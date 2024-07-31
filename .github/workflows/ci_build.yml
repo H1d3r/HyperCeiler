@@ -67,7 +67,7 @@ jobs:
           if [ ${{ env.IS_DEBUG }} = true ]; then
             APK_FILE=$(find app/build/outputs/apk/debug -name '*.apk')
           else
-            APK_FILE=$(find app/build/outputs/apk/canary -name '*.apk')
+            APK_FILE=$(find app/build/outputs/apk -name '*.apk')
           fi
           echo "APK_FILE=$APK_FILE" >> $GITHUB_ENV
           echo "APK_FILE_NAME=$(basename $APK_FILE .apk)" >> $GITHUB_ENV
