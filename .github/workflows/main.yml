@@ -13,7 +13,7 @@ on:
       - ".github/workflows/crowdin.yml"
       - "crowdin.yml"
   push:
-    branches: [main]
+    branches: [nolog]
     paths-ignore:
       - ".github/**"
       - "!.github/workflows/**"

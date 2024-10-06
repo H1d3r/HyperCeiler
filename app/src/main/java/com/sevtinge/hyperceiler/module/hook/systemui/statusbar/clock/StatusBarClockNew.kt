@@ -110,7 +110,9 @@ object StatusBarClockNew : BaseHook() {
     override fun init() {
         statusBarClass.constructorFinder()
             .filterByParamCount(3)
-            .first().createAfterHook {
+            .filterByParamTypes {
+                it[0] == Context::class.java
+            }.first().createAfterHook {
                 try {
                     val miuiClock = it.thisObject as TextView
                     val miuiClockName = miuiClock.resources.getResourceEntryName(miuiClock.id)
@@ -278,7 +280,7 @@ object StatusBarClockNew : BaseHook() {
         val mMiuiStatusBarClockController =
             textV.getObjectField("mMiuiStatusBarClockController")
         val mCalendar =
-            if (isAndroidVersion(34)) {
+            if (isMoreAndroidVersion(34)) {
                 mMiuiStatusBarClockController?.getObjectField("mCalendar")
             } else {
                 mMiuiStatusBarClockController?.callMethod("getCalendar")
