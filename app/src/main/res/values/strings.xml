@@ -445,7 +445,6 @@
     <string name="system_framework_disable_app_link_verify_desc">Revert to opening supported apps directly when opening links without enabling supported links in app settings</string>
     <string name="system_framework_clean_share_menu">Clean up share menu</string>
     <string name="system_framework_clean_share_apps">Selected apps</string>
-    <string name="system_framework_auto_start_apps">Restriction chain exemptions</string>
     <string name="system_framework_clean_share_apps_desc">The selected app won\'t appear in the share menu</string>
     <string name="system_framework_clean_open_menu">Clean up open with menu</string>
     <string name="system_framework_clean_open_apps">Selected apps</string>
@@ -453,6 +452,9 @@
     <string name="system_framework_clean_process_text_menu">Clean up text context menu</string>
     <string name="system_framework_clean_process_text_apps">Selected apps</string>
     <string name="system_framework_clean_process_text_apps_desc">The selected app won\'t appear in the text context menu</string>
+    <string name="system_framework_auto_start_menu">Restriction chain exemptions</string>
+    <string name="system_framework_auto_start_apps">Selected apps</string>
+    <string name="system_framework_auto_start_apps_desc">The selected application will not be restricted by the restriction chain and can start automatically</string>
     <string name="system_other_flag_secure">Allow screenshot</string>
     <string name="system_other_flag_secure_desc">Allows screenshots and screen recordings of any app</string>
     <string name="system_other_delete_on_post_notification">Remove the upper display notification</string>
@@ -893,6 +895,7 @@
     <string name="system_ui_control_center_media_control_progress_wavy">Wavy</string>
     <string name="system_ui_control_center_media_control_progress_sleek">Sleek</string>
     <string name="system_ui_control_center_media_control_progress_thickness">Thickness</string>
+    <string name="system_ui_control_center_media_control_progress_corner_radius">Progress bar corner radius</string>
     <string name="system_ui_control_center_media_control_time_view_text_size">Time view text size</string>
     <string name="system_ui_control_center_media_control_seekbar_color">Progress bar color</string>
     <string name="system_ui_control_center_media_control_seekbar_thumb_color">Slider color</string>
@@ -1554,7 +1557,7 @@
     <string name="security_center_invert_color_summary">Invert the selected icon colors on some backgrounds for better visibility.\nThis function may have abnormal color inversions. Please enable it as appropriate.</string>
     <string name="security_center_blurradius">Sidebar blur value</string>
     <string name="security_center_color">Sidebar color</string>
-    <string name="security_center_other_title">Others</string>
+    <string name="security_center_other_title">Others</string>  
     <string name="security_center_sidebar_line_color">Sidebar line color custom</string>
     <string name="security_center_sidebar_line_color_default">Sidebar line color default</string>
     <string name="security_center_sidebar_line_color_dark">Sidebar line color dark</string>
@@ -1580,6 +1583,8 @@
     <string name="security_center_game_speed_desc">When launching the game, it passes the opening screen animation at 3x speed, which is only supported by some games.</string>
     <string name="security_center_bypass_simlock_miaccount_auth">Bypass Xiaomi Account SIM security</string>
     <string name="security_center_bypass_simlock_miaccount_auth_desc">You can use this function even without logging into your Xiaomi Account.</string>
+    <string name="security_center_remove_simlock_success_dialog">Remove the dialog for successful SIM card security verification</string>
+    <string name="security_center_remove_simlock_success_dialog_desc">No more dialog after powering on the phone to indicate that the SIM card security protection has been successfully verified.</string>
     <string name="security_center_aosp_app_info_label">AOSP app info</string>
     <string name="security_center_aosp_app_info">Add AOSP app info entry</string>
     <string name="security_center_aosp_app_manager_label">AOSP app manager</string>

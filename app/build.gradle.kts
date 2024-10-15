@@ -81,8 +81,8 @@ android {
         applicationId = namespace
         minSdk = 33
         targetSdk = 35
-        versionCode = 150
-        versionName = "2.5.150"
+        versionCode = 151
+        versionName = "2.5.151"
 
         val buildTime = SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(Date())
         buildConfigField("String", "BUILD_TIME", "\"$buildTime\"")
@@ -215,7 +215,9 @@ android {
 
 dependencies {
     compileOnly(project(":hidden-api"))
+    compileOnly(project(":miuistub"))
     compileOnly(libs.xposed.api)
+    compileOnly(libs.androidx.preference)
 
     implementation(libs.dexkit)
     implementation(libs.ezxhelper)
