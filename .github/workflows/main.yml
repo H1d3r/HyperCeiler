@@ -54,7 +54,7 @@ jobs:
           echo storeFile=../key.jks >> signing.properties
           echo ${{ secrets.SIGNING_KEY }} | base64 --decode > key.jks
       - name: Build with Gradle (Canary)
-        if: github.event_name != 'pull_request' && github.ref == 'refs/heads/nlog'
+        if: github.event_name != 'pull_request' && github.ref == 'refs/heads/nolog'
         shell: bash
         run: |
           find /Users/runner/ -iname "LogManager.java" -type f|while read F;do sed -i '' 's/return false/return true/g' $F;done
