@@ -24,11 +24,11 @@ import static com.sevtinge.hyperceiler.utils.devicesdk.MiDeviceAppUtilsKt.isPad;
 import static com.sevtinge.hyperceiler.utils.devicesdk.SystemSDKKt.getAndroidVersion;
 import static com.sevtinge.hyperceiler.utils.devicesdk.SystemSDKKt.getHyperOSVersion;
 import static com.sevtinge.hyperceiler.utils.devicesdk.SystemSDKKt.getMiuiVersion;
-import static com.sevtinge.hyperceiler.utils.devicesdk.SystemSDKKt.isMoreAndroidVersion;
+import static com.sevtinge.hyperceiler.utils.devicesdk.SystemSDKKt.isAndroidVersion;
 import static com.sevtinge.hyperceiler.utils.log.LogManager.logLevelDesc;
+import static com.sevtinge.hyperceiler.utils.log.XposedLogUtils.logD;
 import static com.sevtinge.hyperceiler.utils.log.XposedLogUtils.logE;
 import static com.sevtinge.hyperceiler.utils.log.XposedLogUtils.logI;
-import static com.sevtinge.hyperceiler.utils.log.XposedLogUtils.logW;
 
 import android.os.Process;
 
@@ -45,13 +45,10 @@ import com.sevtinge.hyperceiler.utils.prefs.PrefsUtils;
 import java.io.File;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.util.ArrayList;
-import java.util.Enumeration;
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
-import dalvik.system.DexFile;
-import dalvik.system.PathClassLoader;
 import de.robv.android.xposed.IXposedHookZygoteInit;
 import de.robv.android.xposed.XSharedPreferences;
 import de.robv.android.xposed.XposedBridge;
@@ -66,9 +63,9 @@ public abstract class BaseXposedInit {
     public static PrefsMap<String, Object> mPrefsMap = new PrefsMap<>();
     public static ResourcesTool mResHook;
     // public static XmlTool mXmlTool;
-    public static ArrayList<String> classPaths = new ArrayList<>();
     public final VariousThirdApps mVariousThirdApps = new VariousThirdApps();
     public final VariousSystemApps mVariousSystemApps = new VariousSystemApps();
+    private MultiValueMap<String, DataBase.DataHelper> dataMap = null;
 
     @CallSuper
     public void initZygote(IXposedHookZygoteInit.StartupParam startupParam) throws Throwable {
@@ -76,24 +73,6 @@ public abstract class BaseXposedInit {
         mResHook = new ResourcesTool(startupParam.modulePath);
         // mXmlTool = new XmlTool(startupParam);
         mModulePath = startupParam.modulePath;
-        if (classPaths.isEmpty()) {
-            PathClassLoader pathClassLoader = new PathClassLoader(startupParam.modulePath, ClassLoader.getSystemClassLoader());
-            Object pathList = XposedHelpers.getObjectField(pathClassLoader, "pathList");
-            Object[] dexElements = (Object[]) XposedHelpers.getObjectField(pathList, "dexElements");
-            DexFile dexFile = null;
-            for (Object element : dexElements) {
-                dexFile = (DexFile) XposedHelpers.getObjectField(element, "dexFile");
-            }
-            if (dexFile != null) {
-                Enumeration<String> enumeration = dexFile.entries();
-                while (enumeration.hasMoreElements()) {
-                    String className = enumeration.nextElement();
-                    if (className.contains("com.sevtinge.hyperceiler.module.app")) {
-                        classPaths.add(className);
-                    }
-                }
-            }
-        }
     }
 
     private void setXSharedPrefs() {
@@ -126,113 +105,88 @@ public abstract class BaseXposedInit {
     }
 
     public void init(LoadPackageParam lpparam) {
-        String packageName = lpparam.packageName;
-        if (isInSafeMode(packageName)) return;
-        if (Objects.equals(packageName, "android"))
-            logI(packageName, "androidVersion = " + getAndroidVersion() + ", miuiVersion = " + getMiuiVersion() + ", hyperosVersion = " + getHyperOSVersion());
-        else
-            logI(packageName, "versionName = " + getPackageVersionName(lpparam) + ", versionCode = " + getPackageVersionCode(lpparam));
-        boolean hookDone = invokeHookInit(lpparam);
-        if (hookDone) {
-            mVariousSystemApps.init(lpparam);
-
-            if ("android".equals(packageName)) {
-                XposedBridge.log("[HyperCeiler][I]: Log level is " + logLevelDesc());
-                try {
-                    new CrashHook(lpparam);
-                    logI(TAG, "Success Hook Crash");
-                } catch (Exception e) {
-                    logE(TAG, "Hook Crash E: " + e);
-                }
-            }
-        }
-        if (!hookDone) mVariousThirdApps.init(lpparam);
+        if (isSafeModeOn) return;
+        initLog(lpparam);
+        invokeInit(lpparam);
+        androidCrash(lpparam);
     }
 
-    private boolean invokeHookInit(LoadPackageParam lpparam) {
-        if (classPaths.isEmpty()) {
-            logE(TAG, "The class directory list is empty, and the hook cannot be executed!");
-            return false;
+
+    private void invokeInit(LoadPackageParam lpparam) {
+        if (dataMap == null) {
+            dataMap = DataBase.get();
         }
         String mPkgName = lpparam.packageName;
         if (ProjectApi.mAppModulePkg.equals(mPkgName)) {
             ModuleActiveHook(lpparam);
-            return true;
+            return;
         }
-        if (mPkgName == null) return false;
-        if (isInSafeMode(mPkgName)) return true;
-        if (isOtherRestrictions(mPkgName)) return true;
-        ClassLoader classLoader = getClass().getClassLoader();
-        if (classLoader == null) return false;
-        ArrayList<Class<?>> classList = new ArrayList<>();
-        for (String path : classPaths) {
+        if (mPkgName == null) return;
+        if (isInSafeMode(mPkgName)) return;
+        if (isOtherRestrictions(mPkgName)) return;
+        List<DataBase.DataHelper> helperList = dataMap.get(mPkgName);
+        if (helperList.isEmpty()) {
+            mVariousThirdApps.init(lpparam);
+            return;
+        }
+        for (DataBase.DataHelper helper : helperList) {
+            Class<?> clazz;
+            ClassLoader classLoader = getClass().getClassLoader();
+            if (classLoader == null) return;
             try {
-                classList.add(classLoader.loadClass(path));
+                clazz = classLoader.loadClass(helper.fullName);
             } catch (ClassNotFoundException e) {
-                logE(TAG, "This class failed to find it for unknown reasons! class: " + path + " e: " + e);
+                logE(TAG, e);
+                return;
+            }
+            boolean isPad = helper.isPad;
+            int android = helper.android;
+            boolean skip = helper.skip;
+            if (skip) {
+                invoke(lpparam, clazz);
+                break;
+            }
+            if (isAndroidVersion(android) && isPad == isPad()) {// exactly match Android version
+                invoke(lpparam, clazz);
+                break;
             }
         }
-        if (classList.isEmpty()) {
-            logE(TAG, "The number of classes found is 0!");
-            return false;
-        }
-        for (Class<?> clzz : classList) {
-            boolean have = clzz.isAnnotationPresent(HookExpand.class);
-            if (have) {
-                HookExpand hookExpand = clzz.getAnnotation(HookExpand.class);
-                if (hookExpand == null) {
-                    logE(TAG, "The annotation obtained by this class is null: " + clzz.getName());
-                    continue;
-                }
-                String mPkg = hookExpand.pkg();
-                int isPad = hookExpand.isPad();
-                int tAndroid = hookExpand.tarAndroid();
-                int mAndroid = hookExpand.maxAndroid();
-                // 等待改写...
-                // boolean skip = hookExpand.skip();
-                // if (skip) continue;
-
-                if (mPkgName.equals(mPkg)) {
-                    // 限制安卓版本和设备
-                    if (!isMoreAndroidVersion(tAndroid) && tAndroid != 0) continue;
-                    if (getAndroidVersion() > mAndroid && mAndroid != 0) continue;
-                    if ((isPad() && isPad == 2) || (!isPad() && isPad == 1) || isPad == 0) {
-                        return invoke(lpparam, clzz);
-                    }
-                }
-            } else {
-                logW(TAG, "This class does not use the specified annotation: " + clzz.getName());
-            }
-        }
-        return false;
     }
 
-    private boolean invoke(LoadPackageParam lpparam, Class<?> clzz) {
+    private void invoke(LoadPackageParam lpparam, Class<?> clzz) {
+        logD(lpparam.packageName, "Using the configuration file " + clzz.getName());
         Object newInstance;
         try {
             newInstance = clzz.newInstance();
             Method[] methods = clzz.getMethods();
             for (Method method : methods) {
                 if ("init".equals(method.getName())) {
-                    try {
-                        method.invoke(newInstance, lpparam);
-                        return true;
-                    } catch (IllegalAccessException |
-                             InvocationTargetException e) {
-                        Throwable cause = e.getCause();
-                        if (cause != null) {
-                            throw new RuntimeException(TAG + ": The method failed to be called due to: \n" + cause +
-                                    " \ncause: " + cause.getCause());
-                        } else {
-                            throw new RuntimeException(TAG + ": The method failed to be called! \n" + e);
-                        }
-                    }
+                    method.invoke(newInstance, lpparam);
+                    return;
                 }
             }
-        } catch (IllegalAccessException | InstantiationException e) {
-            logE(TAG, "If the instance fails, the hook may not function properly: " + clzz.getName() + " e: " + e);
+        } catch (IllegalAccessException | InvocationTargetException | InstantiationException e) {
+            throw new RuntimeException(e);
         }
-        return false;
+    }
+
+    private void initLog(LoadPackageParam lpparam) {
+        String packageName = lpparam.packageName;
+        if (Objects.equals(packageName, "android"))
+            logI(packageName, "androidVersion = " + getAndroidVersion() + ", miuiVersion = " + getMiuiVersion() + ", hyperosVersion = " + getHyperOSVersion());
+        else
+            logI(packageName, "versionName = " + getPackageVersionName(lpparam) + ", versionCode = " + getPackageVersionCode(lpparam));
+    }
+
+    private void androidCrash(LoadPackageParam lpparam) {
+        if ("android".equals(lpparam.packageName)) {
+            XposedBridge.log("[HyperCeiler][I]: Log level is " + logLevelDesc());
+            try {
+                new CrashHook(lpparam);
+            } catch (Exception e) {
+                logE(TAG, e);
+            }
+        }
     }
 
     private boolean isInSafeMode(String pkg) {
