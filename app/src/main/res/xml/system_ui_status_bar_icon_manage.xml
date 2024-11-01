@@ -20,35 +20,35 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     app:myLocation="@string/system_ui_statusbar_iconmanage_title">
     <PreferenceCategory android:title="@string/system_ui_statusbar_iconmanage_wifi_title">
-        <DropDownPreference
+        <fan.preference.DropDownPreference
             android:defaultValue="0"
             android:key="prefs_key_system_ui_status_bar_icon_wifi"
             android:title="@string/system_ui_status_bar_icon_wifi"
             app:entries="@array/status_bar_icon_mode"
             app:entryValues="@array/status_bar_icon_mode_value" />
 
-        <DropDownPreference
+        <fan.preference.DropDownPreference
             android:defaultValue="0"
             android:key="prefs_key_system_ui_status_bar_icon_wifi_standard"
             android:title="@string/system_ui_status_bar_icon_wifi_standard"
             app:entries="@array/status_bar_icon_mode"
             app:entryValues="@array/status_bar_icon_mode_value" />
 
-        <DropDownPreference
+        <fan.preference.DropDownPreference
             android:defaultValue="0"
             android:key="prefs_key_system_ui_status_bar_icon_hotspot"
             android:title="@string/system_ui_status_bar_icon_hotspot"
             app:entries="@array/status_bar_icon_mode"
             app:entryValues="@array/status_bar_icon_mode_value" />
 
-        <DropDownPreference
+        <fan.preference.DropDownPreference
             android:defaultValue="0"
             android:key="prefs_key_system_ui_status_bar_icon_wifi_slave"
             android:title="@string/system_ui_status_bar_icon_wifi_slave"
             app:entries="@array/status_bar_icon_mode"
             app:entryValues="@array/status_bar_icon_mode_value" />
 
-        <DropDownPreference
+        <fan.preference.DropDownPreference
             android:defaultValue="0"
             android:key="prefs_key_system_ui_status_bar_icon_wifi_network_indicator"
             android:title="@string/system_ui_status_bar_icon_wifi_network_indicator"
@@ -58,14 +58,14 @@
     </PreferenceCategory>
 
     <PreferenceCategory android:title="@string/system_ui_statusbar_iconmanage_bluetooth_title">
-        <DropDownPreference
+        <fan.preference.DropDownPreference
             android:defaultValue="0"
             android:key="prefs_key_system_ui_status_bar_icon_bluetooth"
             android:title="@string/system_ui_status_bar_icon_bluetooth"
             app:entries="@array/status_bar_icon_bluetooth"
             app:entryValues="@array/status_bar_icon_bluetooth_value" />
 
-        <DropDownPreference
+        <fan.preference.DropDownPreference
             android:defaultValue="0"
             android:key="prefs_key_system_ui_status_bar_icon_bluetooth_battery"
             android:title="@string/system_ui_status_bar_icon_bluetooth_battery"
@@ -75,35 +75,35 @@
     </PreferenceCategory>
 
     <PreferenceCategory android:title="@string/system_ui_statusbar_iconmanage_mobile_title">
-        <DropDownPreference
+        <fan.preference.DropDownPreference
             android:defaultValue="0"
             android:key="prefs_key_system_ui_status_bar_icon_new_hd"
             android:title="@string/system_ui_status_bar_icon_new_hd"
             app:entries="@array/status_bar_icon_mode"
             app:entryValues="@array/status_bar_icon_mode_value" />
 
-        <DropDownPreference
+        <fan.preference.DropDownPreference
             android:defaultValue="0"
             android:key="prefs_key_system_ui_status_bar_icon_small_hd"
             android:title="@string/system_ui_status_bar_icon_small_hd"
             app:entries="@array/status_bar_icon_mode"
             app:entryValues="@array/status_bar_icon_mode_value" />
 
-        <DropDownPreference
+        <fan.preference.DropDownPreference
             android:defaultValue="0"
             android:key="prefs_key_system_ui_status_bar_icon_big_hd"
             android:title="@string/system_ui_status_bar_icon_big_hd"
             app:entries="@array/status_bar_icon_mode"
             app:entryValues="@array/status_bar_icon_mode_value" />
 
-        <DropDownPreference
+        <fan.preference.DropDownPreference
             android:defaultValue="0"
             android:key="prefs_key_system_ui_status_bar_icon_mobile_network_signal_no_card"
             android:title="@string/system_ui_status_bar_icon_mobile_network_signal_no_card"
             app:entries="@array/status_bar_icon_mode"
             app:entryValues="@array/status_bar_icon_mode_value" />
 
-        <DropDownPreference
+        <fan.preference.DropDownPreference
             android:defaultValue="0"
             android:key="prefs_key_system_ui_status_bar_icon_airplane"
             android:title="@string/system_ui_status_bar_icon_airplane"
@@ -148,16 +148,16 @@
             android:title="@string/system_ui_status_bar_use_new_hd" />
 
         <Preference
-            android:fragment="com.sevtinge.hyperceiler.ui.fragment.systemui.statusbar.MobileNetworkTypeSettings"
+            android:fragment="com.sevtinge.hyperceiler.ui.fragment.app.systemui.statusbar.MobileNetworkTypeSettings"
             android:title="@string/system_ui_status_bar_mobile_type_single_title" />
 
         <Preference
-            android:fragment="com.sevtinge.hyperceiler.ui.fragment.systemui.statusbar.DoubleLineNetworkSettings"
+            android:fragment="com.sevtinge.hyperceiler.ui.fragment.app.systemui.statusbar.DoubleLineNetworkSettings"
             android:title="@string/system_ui_statusbar_iconmanage_mobile_network_title" />
     </PreferenceCategory>
 
     <PreferenceCategory android:title="@string/system_ui_statusbar_iconmanage_location_title">
-        <DropDownPreference
+        <fan.preference.DropDownPreference
             android:defaultValue="0"
             android:key="prefs_key_system_ui_status_bar_icon_location"
             android:title="@string/system_ui_status_bar_icon_location"
@@ -167,7 +167,7 @@
     </PreferenceCategory>
 
     <PreferenceCategory android:title="@string/system_ui_statusbar_iconmanage_status_title">
-        <DropDownPreference
+        <fan.preference.DropDownPreference
             android:defaultValue="0"
             android:key="prefs_key_system_ui_status_bar_icon_headset"
             android:title="@string/system_ui_status_bar_icon_headset"
@@ -181,7 +181,7 @@
             app:entries="@array/status_bar_icon_alarm_clock"
             app:entryValues="@array/status_bar_icon_alarm_clock_value" />
 
-        <SeekBarPreferenceEx
+        <SeekBarPreferenceCompat
             android:defaultValue="0"
             android:key="prefs_key_system_ui_status_bar_icon_alarm_clock_n"
             android:title="@string/system_ui_status_bar_icon_alarm_clock_n"
@@ -239,7 +239,7 @@
             android:key="prefs_key_system_ui_status_bar_notification_dots_maximum_enable"
             android:title="@string/system_ui_status_bar_notification_dots_maximum" />
 
-        <SeekBarPreferenceEx
+        <SeekBarPreferenceCompat
             android:defaultValue="3"
             android:dependency="prefs_key_system_ui_status_bar_notification_dots_maximum_enable"
             android:key="prefs_key_system_ui_status_bar_notification_dots_maximum"
@@ -255,7 +255,7 @@
             android:key="prefs_key_system_ui_status_bar_notification_icon_maximum_enable"
             android:title="@string/system_ui_status_bar_notification_icon_maximum" />
 
-        <SeekBarPreferenceEx
+        <SeekBarPreferenceCompat
             android:defaultValue="3"
             android:dependency="prefs_key_system_ui_status_bar_notification_icon_maximum_enable"
             android:key="prefs_key_system_ui_status_bar_notification_icon_maximum"
@@ -292,11 +292,11 @@
             android:title="@string/system_ui_status_bar_battery_icon" />
 
         <Preference
-            android:fragment="com.sevtinge.hyperceiler.ui.fragment.systemui.statusbar.BatteryStyleSettings"
+            android:fragment="com.sevtinge.hyperceiler.ui.fragment.app.systemui.statusbar.BatteryStyleSettings"
             android:title="@string/system_ui_status_bar_battery_style_title" />
 
         <Preference
-            android:fragment="com.sevtinge.hyperceiler.ui.fragment.systemui.statusbar.BatteryIndicatorSettings"
+            android:fragment="com.sevtinge.hyperceiler.ui.fragment.app.systemui.statusbar.BatteryIndicatorSettings"
             android:title="@string/system_ui_status_bar_battery_indicator_title"
             app:isPreferenceVisible="false" />
     </PreferenceCategory>

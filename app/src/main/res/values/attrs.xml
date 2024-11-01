@@ -72,13 +72,13 @@
     </declare-styleable>
 
     <!-- Default style for seekbar preferences. -->
-    <attr name="seekBarPreferenceExStyle" format="reference" />
+    <attr name="SeekBarPreferenceCompatStyle" format="reference" />
 
     <attr name="myLocation" format="string" />
     <attr name="myLocationHyper" format="string" />
     <attr name="myLocationPad" format="string" />
 
-    <declare-styleable name="SeekBarPreferenceEx">
+    <declare-styleable name="SeekBarPreferenceCompat">
         <attr name="note" format="string" />
         <attr name="format" format="string" />
         <attr name="minValue" format="integer" />
@@ -113,5 +113,10 @@
         save the Seekbar value while it is being dragged. If false, the Seekbar value is only saved
         when released. By default, this boolean is false. -->
         <attr name="updatesContinuously" format="boolean" />
+    </declare-styleable>
+
+    <declare-styleable name="AboutInfoItem">
+        <attr name="android:title" />
+        <attr name="android:value" />
     </declare-styleable>
 </resources>

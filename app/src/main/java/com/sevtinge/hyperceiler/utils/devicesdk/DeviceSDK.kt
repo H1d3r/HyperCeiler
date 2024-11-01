@@ -24,7 +24,7 @@ import android.graphics.*
 import com.github.kyuubiran.ezxhelper.*
 import com.sevtinge.hyperceiler.utils.PropUtils.*
 import com.sevtinge.hyperceiler.utils.shell.ShellUtils.*
-import moralnorm.internal.utils.*
+import fan.os.*
 import java.security.*
 import java.util.*
 
@@ -58,7 +58,7 @@ fun getCornerRadiusTop(): Int {
 }
 
 fun isTablet(): Boolean = Resources.getSystem().configuration.smallestScreenWidthDp >= 600
-fun isPadDevice(): Boolean = isTablet() || DeviceHelper.isFoldDevice()
+fun isPadDevice(): Boolean = isTablet() || DeviceHelper.isFoldable()
 fun isDarkMode(): Boolean =
     EzXHelper.appContext.resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK == Configuration.UI_MODE_NIGHT_YES
 fun colorFilter(colorInt: Int) = BlendModeColorFilter(colorInt, BlendMode.SRC_IN)
@@ -70,15 +70,16 @@ fun getDeviceToken(androidId : String): String {
 
     val originalText = "[$modelName]&&[$serial]&&[$androidId]&&[$cpuId]"
 
-    return hashString(originalText, "SHA-256")
+    return hashString(originalText, "SHA-1")
 }
 
 fun hashString(input: String, algorithm: String): String {
     val bytes = input.toByteArray()
     val digest = MessageDigest.getInstance(algorithm)
     val hashBytes = digest.digest(bytes)
-    return hashBytes.joinToString("") { "%02x".format(it) }
+    return hashBytes.joinToString("") { "%02x".format(it) }.uppercase(Locale.getDefault())
 }
+
 
 fun removeLeadingZeros(input: String): String {
     var result = input

@@ -16,12 +16,49 @@
   ~
   ~ Copyright (C) 2023-2024 HyperCeiler Contributions
   -->
-<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
     <SwitchPreference
         android:key="prefs_key_various_enable_super_function"
         android:layout="@layout/activity_about"
-        android:summary="@string/xposed_description" />
+        android:summary="@string/xposed_description"
+        app:isPreferenceVisible="false"/>
 
+    <PreferenceCategory>
+        <Preference
+            android:layout="@layout/preference_big_title"
+            android:key="prefs_key_about_device_name"
+            android:enabled="false"
+            android:title="HyperCeiler User's Device" />
+
+        <Preference
+            android:layout="@layout/preference_second_title"
+            android:key="prefs_key_about_device_info_device"
+            android:enabled="false"
+            android:title="HyperCeiler Device"
+            android:summary="@string/about_device_info_device"/>
+
+        <Preference
+            android:layout="@layout/preference_second_title"
+            android:key="prefs_key_about_device_info_android"
+            android:enabled="false"
+            android:title="15"
+            android:summary="@string/about_device_info_android"/>
+
+        <Preference
+            android:layout="@layout/preference_second_title"
+            android:key="prefs_key_about_device_info_os"
+            android:enabled="false"
+            android:title="OS2.0.1.0.UNBCNXM"
+            android:summary="@string/about_device_info_os" />
+
+        <Preference
+            android:layout="@layout/preference_padding"
+            android:enabled="false"
+            android:key="prefs_key_about_device_info_padding"
+            android:title="kkjasglkjhasglknsfdglksfggh321dfgj654df6h54dr"/>
+
+    </PreferenceCategory>
     <PreferenceCategory android:title="@string/about_developer_title">
         <Preference
             android:icon="@drawable/ic_sevtinge"
@@ -34,9 +71,10 @@
         </Preference>
 
         <Preference
-            android:fragment="com.sevtinge.hyperceiler.ui.fragment.base.about.AboutContributerFragment"
+            android:fragment="com.sevtinge.hyperceiler.ui.fragment.main.about.AboutContributerFragment"
             android:key="prefs_key_about_contributer"
             android:title="@string/about_contributer" />
+
     </PreferenceCategory>
     <PreferenceCategory android:title="@string/about_translator_title">
         <Preference
@@ -88,7 +126,7 @@
         </Preference>
 
         <Preference
-            android:fragment="com.sevtinge.hyperceiler.ui.fragment.base.about.AboutUseFragment"
+            android:fragment="com.sevtinge.hyperceiler.ui.fragment.main.about.AboutUseFragment"
             android:key="prefs_key_about_use"
             android:title="@string/about_use" />
 
@@ -103,7 +141,7 @@
         <Preference
             android:key="prefs_key_help"
             android:title="@string/help"
-            android:fragment="com.sevtinge.hyperceiler.ui.fragment.base.HelpFragment">
+            android:fragment="com.sevtinge.hyperceiler.ui.fragment.main.HelpFragment">
         </Preference>
 
         <Preference
@@ -121,15 +159,4 @@
         </Preference>
 
     </PreferenceCategory>
-
-    <PreferenceCategory>
-
-    <Preference
-        android:enabled="false"
-        android:key="prefs_key_tip"
-        android:layout="@layout/preference_text"
-        android:summary="© 2023-2024 Sevtinge &amp; HyperCeiler Contributions." />
-
-    </PreferenceCategory>
-
 </PreferenceScreen>

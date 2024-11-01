@@ -23,6 +23,9 @@
     <color name="textview_black">#FF000000</color>
     <color name="textview_white">#F1FFFFFF</color>
     <color name="textview_blue">#0D84FF</color>
+    <color name="textview_black_title">#000000</color>
+    <color name="textview_black_summary">#80000000</color>
+    <color name="textview_black_watermark">#01000000</color>
 
     <color name="navigation_divider">#1A000000</color>
     <color name="navigation_icon_dark">#FF000000</color>
@@ -47,4 +50,15 @@
     <color name="preference_recommend_item_link_pressed">#990d84ff</color>
 
     <color name="card_tile_disabled_color_legacy">#9E9E9E</color>
+
+
+    <color name="logo_color1">#cc4a4a4a</color>
+    <color name="logo_color2">#4f4f4f</color>
+    <color name="logo_color3">#1af200</color>
+
+    <color name="my_card_bg_color">#99ffffff</color>
+    <color name="my_card_shadow_color">#40000000</color>
+
+    <color name="update_text_border1">#29ffffff</color>
+    <color name="update_text_border2">#ccffffff</color>
 </resources>
