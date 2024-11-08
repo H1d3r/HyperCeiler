@@ -1,25 +1,28 @@
 /*
-  * This file is part of HyperCeiler.
+ * This file is part of HyperCeiler.
 
-  * HyperCeiler is free software: you can redistribute it and/or modify
-  * it under the terms of the GNU Affero General Public License as
-  * published by the Free Software Foundation, either version 3 of the
-  * License.
+ * HyperCeiler is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License as
+ * published by the Free Software Foundation, either version 3 of the
+ * License.
 
-  * This program is distributed in the hope that it will be useful,
-  * but WITHOUT ANY WARRANTY; without even the implied warranty of
-  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-  * GNU Affero General Public License for more details.
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Affero General Public License for more details.
 
-  * You should have received a copy of the GNU Affero General Public License
-  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Affero General Public License
+ * along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-  * Copyright (C) 2023-2024 HyperCeiler Contributions
-*/
+ * Copyright (C) 2023-2024 HyperCeiler Contributions
+ */
 package com.sevtinge.hyperceiler.module.hook.misound;
 
+import static com.sevtinge.hyperceiler.utils.devicesdk.SystemSDKKt.isMoreAndroidVersion;
+
 import android.app.Application;
-import android.bluetooth.BluetoothDevice;
+import android.bluetooth.BluetoothA2dp;
+import android.bluetooth.BluetoothLeAudio;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -78,7 +81,7 @@ public class BluetoothListener extends BaseHook {
                         @Override
                         protected void after(MethodHookParam param) {
                             miDolby = param.thisObject;
-                            // logE(TAG, "miDolby: " + miDolby);
+                            // logD(TAG, "miDolby: " + miDolby);
                         }
                     }
             );
@@ -115,7 +118,7 @@ public class BluetoothListener extends BaseHook {
                             @Override
                             protected void after(MethodHookParam param) {
                                 miAudio = XposedHelpers.getObjectField(param.thisObject, name);
-                                // logE(TAG, "miAudio: " + miAudio);
+                                // logD(TAG, "miAudio: " + miAudio);
                             }
                         }
                 );
@@ -194,14 +197,13 @@ public class BluetoothListener extends BaseHook {
                     protected void after(MethodHookParam param) {
                         Application application = (Application) param.thisObject;
                         IntentFilter intentFilter = new IntentFilter();
-                        intentFilter.addAction(BluetoothDevice.ACTION_ACL_CONNECTED);
-                        intentFilter.addAction(BluetoothDevice.ACTION_ACL_DISCONNECTED);
+                        intentFilter.addAction(BluetoothA2dp.ACTION_CONNECTION_STATE_CHANGED);
+                        intentFilter.addAction(BluetoothLeAudio.ACTION_LE_AUDIO_CONNECTION_STATE_CHANGED);
                         intentFilter.addAction(AudioManager.ACTION_HEADSET_PLUG);
                         application.registerReceiver(new Listener(), intentFilter);
                     }
                 }
         );
-        // settings get global effect_implementer
     }
 
     private static String effectImplementer(Context context) {
@@ -220,12 +222,25 @@ public class BluetoothListener extends BaseHook {
         return XposedHelpers.newInstance(MiSound, 1, 0);
     }
 
+    public static Object getSpatializer(Context context) {
+        try {
+            AudioManager audioManager = (AudioManager) context.getSystemService(Context.AUDIO_SERVICE);
+            if (audioManager == null) return null;
+            return AudioManager.class.getMethod("getSpatializer").invoke(audioManager);
+        } catch (Exception e) {
+            logE(TAG, "Failed to get Spatializer", e);
+            return null;
+        }
+    }
+
     private static boolean hasControl(Object o) {
         return (boolean) XposedHelpers.callMethod(o, "hasControl");
     }
 
     private static boolean isEnable(Object o) {
-        return (boolean) XposedHelpers.callMethod(o, "getEnabled");
+        if (o.getClass().getName().equals("android.media.Spatializer"))
+            return (boolean) XposedHelpers.callMethod(o, "isEnabled");
+        else return (boolean) XposedHelpers.callMethod(o, "getEnabled");
     }
 
     private static void setEnable(Object o, boolean value) {
@@ -252,24 +267,59 @@ public class BluetoothListener extends BaseHook {
     public static class Listener extends BroadcastReceiver {
         private static Object AudioEffect = null;
         private static Object MiSound = null;
+        private static Object Spatializer = null;
         private static boolean lastDolby;
         private static boolean lastMiui;
+        private static boolean lastSpatial;
+        private static boolean isInitialized = false;
+        private static boolean isLeAudioConnected = false;
 
         @Override
         public void onReceive(Context context, Intent intent) {
             String action = intent.getAction();
             if (action != null) {
+                logD(TAG, "action: " + action);
+                init(context);
                 switch (action) {
-                    case BluetoothDevice.ACTION_ACL_CONNECTED -> on(context);
-                    case BluetoothDevice.ACTION_ACL_DISCONNECTED -> over(context);
+                    case BluetoothA2dp.ACTION_CONNECTION_STATE_CHANGED -> {
+                        int state = intent.getIntExtra("android.bluetooth.profile.extra.STATE", 0);
+                        logD(TAG, "state: " + state);
+                        switch (state) {
+                            case 0 -> over(context);
+                            case 2 -> on(context);
+                        }
+                    }
+                    case BluetoothLeAudio.ACTION_LE_AUDIO_CONNECTION_STATE_CHANGED -> {
+                        int state = intent.getIntExtra("android.bluetooth.profile.extra.STATE", 0);
+                        logD(TAG, "state: " + state);
+                        if (isLeAudioConnected) {
+                            isLeAudioConnected = false;
+                        } else {
+                            switch (state) {
+                                case 0 -> over(context);
+                                case 2 -> on(context);
+                            }
+                            isLeAudioConnected = true;
+                        }
+                    }
                     case AudioManager.ACTION_HEADSET_PLUG -> {
-                        init();
                         if (intent.hasExtra("state")) {
                             int state = intent.getIntExtra("state", 0);
-                            if (state == 1) {
-                                on(context);
-                            } else if (state == 0) {
-                                over(context);
+                            logD(TAG, "state: " + state);
+                            switch (state) {
+                                case 0 -> {
+                                    if (isInitialized) {
+                                        over(context);
+                                    } else {
+                                        // 用于修复音质音效在第一次连接蓝牙耳机时发送错误广播的问题
+                                        AudioManager audioManager = (AudioManager) context.getSystemService(Context.AUDIO_SERVICE);
+                                        if (audioManager.isBluetoothA2dpOn()) {
+                                            on(context);
+                                        }
+                                        isInitialized = true;
+                                    }
+                                }
+                                case 1 -> on(context);
                             }
                         }
                     }
@@ -278,13 +328,11 @@ public class BluetoothListener extends BaseHook {
         }
 
         private void on(Context context) {
-            init();
+            init(context);
             lastDolby = setAudio(AudioEffect, miDolby);
             lastMiui = setAudio(MiSound, miAudio);
+            lastSpatial = isEnable(Spatializer);
             String implementer = effectImplementer(context);
-            // logE(TAG, "A: " + AudioEffect + " d: " + miDolby + " M: " + MiSound + " a: " + miAudio
-            //         + " co: " + hasControl(AudioEffect) + " co1: " + hasControl(MiSound) +
-            //         " laD: " + lastDolby + " laM: " + lastMiui + " im: " + implementer);
             if (implementer != null) {
                 if ("dolby".equals(implementer)) {
                     lastDolby = true;
@@ -294,25 +342,27 @@ public class BluetoothListener extends BaseHook {
                     lastMiui = true;
                 }
             }
-            refresh(context, false, false);
-        }
-
-        private void refresh(Context context, boolean dolby, boolean miui) {
-            Intent intent = new Intent();
-            intent.setAction("miui.intent.action.ACTION_AUDIO_EFFECT_REFRESH");
-            intent.putExtra("dolby_active", dolby);
-            intent.putExtra("misound_active", miui);
-            context.sendBroadcast(intent);
+            setEnable(Spatializer, false);
+            refresh(context, false, false, false);
         }
 
         private void over(Context context) {
-            init();
+            init(context);
             recoveryAudio(AudioEffect, miDolby, lastDolby);
             recoveryAudio(MiSound, miAudio, lastMiui);
-            refresh(context, lastDolby, lastMiui);
-            // logE(TAG, "A: " + AudioEffect + " d: " + miDolby + " M: " + MiSound + " a: " + miAudio
-            //         + " co: " + hasControl(AudioEffect) + " co1: " + hasControl(MiSound) +
-            //         " laD: " + lastDolby + " laM: " + lastMiui);
+            setEnable(Spatializer, lastSpatial);
+            refresh(context, lastDolby, lastMiui, lastSpatial);
+        }
+
+        private void refresh(Context context, boolean dolby, boolean miui, boolean spatial) {
+            Intent intent = new Intent();
+            intent.setAction(isMoreAndroidVersion(35) ? "miui.intent.action.ACTION_SYSTEM_UI_DOLBY_EFFECT_SWITCH" : "miui.intent.action.ACTION_AUDIO_EFFECT_REFRESH");
+            intent.setPackage("com.miui.misound");
+            intent.putExtra("dolby_active", dolby);
+            intent.putExtra("misound_active", miui);
+            intent.putExtra("spatial_active", spatial);
+            context.sendBroadcast(intent);
+            logD(TAG, " dolby: " + dolby + " miui: " + miui + " spatial: " + spatial);
         }
 
         private static boolean setAudio(Object audio, Object otherAudio) {
@@ -347,12 +397,15 @@ public class BluetoothListener extends BaseHook {
             }
         }
 
-        private void init() {
+        private void init(Context context) {
             if (AudioEffect == null) {
                 AudioEffect = getAudioEffect();
             }
             if (MiSound == null) {
                 MiSound = getMiSound();
+            }
+            if (Spatializer == null) {
+                Spatializer = getSpatializer(context);
             }
         }
     }

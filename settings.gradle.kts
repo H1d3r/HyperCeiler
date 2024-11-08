@@ -1,8 +1,5 @@
 @file:Suppress("UnstableApiUsage")
 
-include(":miuix")
-
-
 pluginManagement {
     repositories {
         //maven { url = uri("https://mirrors.tuna.tsinghua.edu.cn/maven/") }
@@ -26,6 +23,4 @@ dependencyResolutionManagement {
 }
 
 rootProject.name = "HyperCeiler"
-include(":app", ":hidden-api")
-include(":app", ":miuistub")
-include(":app", ":app:processor")
+include(":app", ":hidden-api", ":app:processor")

@@ -19,6 +19,7 @@
 package com.sevtinge.hyperceiler.module.hook.systemsettings;
 
 import static com.sevtinge.hyperceiler.module.base.tool.OtherTool.getModuleRes;
+import static com.sevtinge.hyperceiler.utils.devicesdk.SystemSDKKt.isMoreHyperOSVersion;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
@@ -30,7 +31,7 @@ import android.os.UserHandle;
 
 import com.sevtinge.hyperceiler.R;
 import com.sevtinge.hyperceiler.module.base.BaseHook;
-import com.sevtinge.hyperceiler.ui.MainActivity;
+import com.sevtinge.hyperceiler.ui.activity.HyperCeilerTabActivity;
 import com.sevtinge.hyperceiler.utils.api.ProjectApi;
 
 import java.util.ArrayList;
@@ -69,7 +70,7 @@ public class HyperCeilerSettings extends BaseHook {
 
                 Intent mIntent = new Intent();
                 mIntent.putExtra("isDisplayHomeAsUpEnabled", true);
-                mIntent.setClassName(ProjectApi.mAppModulePkg, MainActivity.class.getCanonicalName());
+                mIntent.setClassName(ProjectApi.mAppModulePkg, HyperCeilerTabActivity.class.getCanonicalName());
 
                 Object header = XposedHelpers.newInstance(mPreferenceHeader);
                 XposedHelpers.setLongField(header, "id", 666);
@@ -83,6 +84,7 @@ public class HyperCeilerSettings extends BaseHook {
                 bundle.putParcelableArrayList("header_user", users);
                 XposedHelpers.setObjectField(header, "extras", bundle);
 
+                int device = mContext.getResources().getIdentifier("my_device", "id", mContext.getPackageName());
                 int themes = mContext.getResources().getIdentifier("launcher_settings", "id", mContext.getPackageName());
                 int special = mContext.getResources().getIdentifier("other_special_feature_settings", "id", mContext.getPackageName());
                 int timer = mContext.getResources().getIdentifier("app_timer", "id", mContext.getPackageName());
@@ -92,8 +94,12 @@ public class HyperCeilerSettings extends BaseHook {
                 for (Object head : headers) {
                     position++;
                     long id = XposedHelpers.getLongField(head, "id");
-                    if (opt == 1 && id == -1) {
-                        headers.add(position - 1, header);
+                    if (opt == 1) {
+                        if (isMoreHyperOSVersion(2f)) {
+                            if (id == device) headers.add(position, header);
+                        } else {
+                            if (id == -1) headers.add(position - 1, header);
+                        }
                     } else if (opt == 2 && id == themes) {
                         headers.add(position, header);
                     } else if (opt == 3 && id == (RomUtils.getMiuiVersion() < 14 ? special : timer)) {

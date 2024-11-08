@@ -18,16 +18,28 @@
 */
 package com.sevtinge.hyperceiler.ui.fragment.app.home;
 
+import static com.sevtinge.hyperceiler.utils.devicesdk.MiDeviceAppUtilsKt.isPad;
+import static com.sevtinge.hyperceiler.utils.devicesdk.SystemSDKKt.isMoreHyperOSVersion;
+
 import android.view.View;
 
+import androidx.preference.SwitchPreference;
+
 import com.sevtinge.hyperceiler.R;
-import com.sevtinge.hyperceiler.ui.base.BaseSettingsActivity;
+import com.sevtinge.hyperceiler.ui.activity.base.BaseSettingsActivity;
 import com.sevtinge.hyperceiler.ui.fragment.base.SettingsPreferenceFragment;
+
+import fan.preference.SeekBarPreferenceCompat;
 
 public class HomeLayoutSettings extends SettingsPreferenceFragment {
 
+    SwitchPreference mIconLayout;
+    SwitchPreference mIconLayoutNew;
+    SwitchPreference mHotseatsMarginTopSwitchPref;
+    SeekBarPreferenceCompat mHotseatsMarginTopSeekPref;
+
     @Override
-    public int getContentResId() {
+    public int getPreferenceScreenResId() {
         return R.xml.home_layout;
     }
 
@@ -37,5 +49,25 @@ public class HomeLayoutSettings extends SettingsPreferenceFragment {
             getResources().getString(R.string.mihome),
             "com.miui.home"
         );
+    }
+
+    @Override
+    public void initPrefs() {
+        mIconLayout = findPreference("prefs_key_home_layout_unlock_grids");
+        mIconLayoutNew = findPreference("prefs_key_home_layout_unlock_grids_new");
+        mHotseatsMarginTopSwitchPref = findPreference("prefs_key_home_layout_hotseats_margin_top_enable");
+        mHotseatsMarginTopSeekPref = findPreference("prefs_key_home_layout_hotseats_margin_top");
+        if (isPad()) {
+            mIconLayout.setVisible(false);
+            mIconLayoutNew.setVisible(false);
+        } else if (isMoreHyperOSVersion(2f)) {
+            mIconLayout.setVisible(false);
+            mIconLayoutNew.setVisible(true);
+            mHotseatsMarginTopSwitchPref.setVisible(false);
+            mHotseatsMarginTopSeekPref.setVisible(false);
+        } else {
+            mIconLayout.setVisible(true);
+            mIconLayoutNew.setVisible(false);
+        }
     }
 }

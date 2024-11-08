@@ -18,8 +18,6 @@
  */
 package com.sevtinge.hyperceiler.module.app.Home.Phone;
 
-import static com.sevtinge.hyperceiler.utils.devicesdk.MiDeviceAppUtilsKt.isPad;
-
 import com.hchen.database.HookBase;
 import com.sevtinge.hyperceiler.module.base.BaseModule;
 import com.sevtinge.hyperceiler.module.hook.home.AnimDurationRatio;
@@ -69,11 +67,12 @@ import com.sevtinge.hyperceiler.module.hook.home.gesture.ShakeDevice;
 import com.sevtinge.hyperceiler.module.hook.home.layout.HotSeatsHeight;
 import com.sevtinge.hyperceiler.module.hook.home.layout.HotSeatsMarginBottom;
 import com.sevtinge.hyperceiler.module.hook.home.layout.HotSeatsMarginTop;
+import com.sevtinge.hyperceiler.module.hook.home.layout.IndicatorMarginBottom;
+import com.sevtinge.hyperceiler.module.hook.home.layout.LayoutRules;
 import com.sevtinge.hyperceiler.module.hook.home.layout.SearchBarMarginBottom;
+import com.sevtinge.hyperceiler.module.hook.home.layout.SearchBarMarginWidth;
 import com.sevtinge.hyperceiler.module.hook.home.layout.UnlockGrids;
 import com.sevtinge.hyperceiler.module.hook.home.layout.WorkspacePadding;
-import com.sevtinge.hyperceiler.module.hook.home.mipad.EnableHideGestureLine;
-import com.sevtinge.hyperceiler.module.hook.home.mipad.EnableMoreSetting;
 import com.sevtinge.hyperceiler.module.hook.home.navigation.BackGestureAreaHeight;
 import com.sevtinge.hyperceiler.module.hook.home.navigation.BackGestureAreaWidth;
 import com.sevtinge.hyperceiler.module.hook.home.navigation.HideNavigationBar;
@@ -89,7 +88,6 @@ import com.sevtinge.hyperceiler.module.hook.home.other.InfiniteScroll;
 import com.sevtinge.hyperceiler.module.hook.home.other.OverlapMode;
 import com.sevtinge.hyperceiler.module.hook.home.other.ShortcutItemCount;
 import com.sevtinge.hyperceiler.module.hook.home.other.ShowAllHideApp;
-import com.sevtinge.hyperceiler.module.hook.home.other.TasksShortcutMenu;
 import com.sevtinge.hyperceiler.module.hook.home.recent.AlwaysShowCleanUp;
 import com.sevtinge.hyperceiler.module.hook.home.recent.BackgroundBlur;
 import com.sevtinge.hyperceiler.module.hook.home.recent.BlurLevel;
@@ -99,8 +97,8 @@ import com.sevtinge.hyperceiler.module.hook.home.recent.DisableRecentViewWallpap
 import com.sevtinge.hyperceiler.module.hook.home.recent.FreeformCardBackgroundColor;
 import com.sevtinge.hyperceiler.module.hook.home.recent.HideCleanUp;
 import com.sevtinge.hyperceiler.module.hook.home.recent.HideFreeform;
+import com.sevtinge.hyperceiler.module.hook.home.recent.HideRecentCard;
 import com.sevtinge.hyperceiler.module.hook.home.recent.HideStatusBarWhenEnterRecent;
-import com.sevtinge.hyperceiler.module.hook.home.recent.MemInfoShow;
 import com.sevtinge.hyperceiler.module.hook.home.recent.RealMemory;
 import com.sevtinge.hyperceiler.module.hook.home.recent.RecentResource;
 import com.sevtinge.hyperceiler.module.hook.home.recent.RecentText;
@@ -115,7 +113,6 @@ import com.sevtinge.hyperceiler.module.hook.home.title.AnimParamCustom;
 import com.sevtinge.hyperceiler.module.hook.home.title.AppBlurAnim;
 import com.sevtinge.hyperceiler.module.hook.home.title.BigIconCorner;
 import com.sevtinge.hyperceiler.module.hook.home.title.DisableHideFile;
-import com.sevtinge.hyperceiler.module.hook.home.title.DisableHideTheme;
 import com.sevtinge.hyperceiler.module.hook.home.title.DownloadAnimation;
 import com.sevtinge.hyperceiler.module.hook.home.title.EnableIconMonetColor;
 import com.sevtinge.hyperceiler.module.hook.home.title.EnableIconMonoChrome;
@@ -137,11 +134,10 @@ import com.sevtinge.hyperceiler.module.hook.home.widget.AllowMoveAllWidgetToMinu
 import com.sevtinge.hyperceiler.module.hook.home.widget.AlwaysShowMiuiWidget;
 import com.sevtinge.hyperceiler.module.hook.home.widget.HideWidgetTitles;
 import com.sevtinge.hyperceiler.module.hook.home.widget.ResizableWidgets;
-import com.sevtinge.hyperceiler.module.hook.systemframework.mipad.SetGestureNeedFingerNum;
 
 import java.util.Objects;
 
-@HookBase(pkg = "com.miui.home", isPad = false, tarAndroid = 34)
+@HookBase(pkg = "com.miui.home", isPad = false, tarSdkVersion = 34)
 public class HomeU extends BaseModule {
 
     @Override
@@ -167,6 +163,11 @@ public class HomeU extends BaseModule {
         initHook(new BackGestureAreaWidth(), mPrefsMap.getInt("home_navigation_back_area_width", 100) != 100);
 
         // 布局
+        initHook(LayoutRules.INSTANCE, mPrefsMap.getBoolean("home_layout_unlock_grids_new") ||
+                mPrefsMap.getBoolean("home_layout_unlock_grids") ||
+                mPrefsMap.getBoolean("home_layout_workspace_padding_bottom_enable") ||
+                mPrefsMap.getBoolean("home_layout_workspace_padding_top_enable") ||
+                mPrefsMap.getBoolean("home_layout_workspace_padding_horizontal_enable"));
         initHook(new UnlockGrids(), mPrefsMap.getBoolean("home_layout_unlock_grids"));
         // initHook(new UnlockGridsNoWord(), mPrefsMap.getBoolean("home_layout_unlock_grids_no_word"));
         initHook(new WorkspacePadding(),
@@ -175,9 +176,11 @@ public class HomeU extends BaseModule {
                         mPrefsMap.getBoolean("home_layout_workspace_padding_horizontal_enable")
         );
 
+        initHook(new IndicatorMarginBottom(), mPrefsMap.getBoolean("home_layout_indicator_margin_bottom_enable"));
         initHook(new HotSeatsHeight(), mPrefsMap.getBoolean("home_layout_hotseats_height_enable"));
         initHook(new HotSeatsMarginTop(), mPrefsMap.getBoolean("home_layout_hotseats_margin_top_enable"));
         initHook(new HotSeatsMarginBottom(), mPrefsMap.getBoolean("home_layout_hotseats_margin_bottom_enable"));
+        initHook(new SearchBarMarginWidth(), mPrefsMap.getBoolean("home_layout_searchbar_width_enable"));
         initHook(new SearchBarMarginBottom(), (mPrefsMap.getInt("home_layout_searchbar_margin_bottom", 0) > 0) &&
                 mPrefsMap.getBoolean("home_layout_searchbar_margin_bottom_enable"));
 
@@ -228,6 +231,7 @@ public class HomeU extends BaseModule {
         initHook(AlwaysShowCleanUp.INSTANCE, mPrefsMap.getBoolean("always_show_clean_up"));
         initHook(new BackgroundBlur(), mPrefsMap.getBoolean("home_recent_blur"));
         initHook(new ShowLaunch(), mPrefsMap.getBoolean("home_recent_show_launch"));
+        initHook(HideRecentCard.INSTANCE, !mPrefsMap.getStringSet("home_recent_hide_card").isEmpty());
 
         // 图标
         initHook(BigIconCorner.INSTANCE, mPrefsMap.getBoolean("home_title_big_icon_corner"));

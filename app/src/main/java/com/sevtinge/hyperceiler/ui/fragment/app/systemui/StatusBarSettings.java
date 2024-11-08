@@ -18,20 +18,19 @@
 */
 package com.sevtinge.hyperceiler.ui.fragment.app.systemui;
 
-import static com.sevtinge.hyperceiler.utils.devicesdk.SystemSDKKt.isHyperOSVersion;
 import static com.sevtinge.hyperceiler.utils.devicesdk.SystemSDKKt.isMoreAndroidVersion;
 import static com.sevtinge.hyperceiler.utils.devicesdk.SystemSDKKt.isMoreHyperOSVersion;
 
 import android.os.Bundle;
 import android.view.View;
 
-import com.sevtinge.hyperceiler.R;
-import com.sevtinge.hyperceiler.prefs.RecommendPreference;
-import com.sevtinge.hyperceiler.ui.base.BaseSettingsActivity;
-import com.sevtinge.hyperceiler.ui.fragment.base.SettingsPreferenceFragment;
-
 import androidx.preference.Preference;
 import androidx.preference.PreferenceCategory;
+
+import com.sevtinge.hyperceiler.R;
+import com.sevtinge.hyperceiler.prefs.RecommendPreference;
+import com.sevtinge.hyperceiler.ui.activity.base.BaseSettingsActivity;
+import com.sevtinge.hyperceiler.ui.fragment.base.SettingsPreferenceFragment;
 
 public class StatusBarSettings extends SettingsPreferenceFragment {
 
@@ -43,7 +42,7 @@ public class StatusBarSettings extends SettingsPreferenceFragment {
     RecommendPreference mRecommend;
 
     @Override
-    public int getContentResId() {
+    public int getPreferenceScreenResId() {
         return R.xml.system_ui_status_bar;
     }
 
@@ -63,15 +62,15 @@ public class StatusBarSettings extends SettingsPreferenceFragment {
         mDeviceStatus = findPreference("prefs_key_system_ui_status_bar_device");
         mToastStatus = findPreference("prefs_key_system_ui_status_bar_toast");
         mStatusBarLayout = findPreference("pref_key_system_ui_statusbar_layout");
-        mDeviceStatus.setVisible(!isHyperOSVersion(1f) || !isMoreAndroidVersion(34));
-        mToastStatus.setVisible(isHyperOSVersion(1f));
+        mDeviceStatus.setVisible(!isMoreHyperOSVersion(1f) || !isMoreAndroidVersion(34));
+        mToastStatus.setVisible(isMoreHyperOSVersion(1f));
 
         if (isMoreHyperOSVersion(1f)) {
-            mIconManager.setFragment("com.sevtinge.hyperceiler.ui.fragment.systemui.statusbar.IconManageNewSettings");
-            mClockStatus.setFragment("com.sevtinge.hyperceiler.ui.fragment.systemui.statusbar.NewClockIndicatorSettings");
+            mIconManager.setFragment("com.sevtinge.hyperceiler.ui.fragment.app.systemui.statusbar.IconManageNewSettings");
+            mClockStatus.setFragment("com.sevtinge.hyperceiler.ui.fragment.app.systemui.statusbar.NewClockIndicatorSettings");
         } else {
-            mIconManager.setFragment("com.sevtinge.hyperceiler.ui.fragment.systemui.statusbar.IconManageSettings");
-            mClockStatus.setFragment("com.sevtinge.hyperceiler.ui.fragment.systemui.statusbar.ClockIndicatorSettings");
+            mIconManager.setFragment("com.sevtinge.hyperceiler.ui.fragment.app.systemui.statusbar.IconManageSettings");
+            mClockStatus.setFragment("com.sevtinge.hyperceiler.ui.fragment.app.systemui.statusbar.ClockIndicatorSettings");
         }
 
         mStatusBarLayout.setVisible(!isMoreHyperOSVersion(1f));

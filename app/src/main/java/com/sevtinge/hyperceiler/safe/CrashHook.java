@@ -18,6 +18,8 @@
 */
 package com.sevtinge.hyperceiler.safe;
 
+import static com.sevtinge.hyperceiler.utils.devicesdk.SystemSDKKt.isMoreAndroidVersion;
+
 import android.app.ActivityOptions;
 import android.app.ApplicationErrorReport;
 import android.content.Context;
@@ -86,7 +88,7 @@ public class CrashHook extends HookTool {
                         long timeMillis = (long) param.args[5];
                         int callingPid = (int) param.args[6];
                         int callingUid = (int) param.args[7];
-                        logE(TAG, "context: " + mContext + " pkg: " + mContext.getPackageName() + " proc: " + proc + " crash: " + crashInfo + " short: " + shortMsg
+                        logE("CrashHook", "context: " + mContext + " pkg: " + mContext.getPackageName() + " proc: " + proc + " crash: " + crashInfo + " short: " + shortMsg
                                 + " long: " + longMsg + " stack: " + stackTrace + " time: " + timeMillis + " pid: " + callingPid + " uid: " + callingUid);
                         recordCrash(mContext, proc, crashInfo, shortMsg, longMsg, stackTrace, timeMillis, callingPid, callingUid);
                     }
@@ -113,21 +115,44 @@ public class CrashHook extends HookTool {
                     }
             );
         } catch (Throwable e) {
-            findAndHookMethod("com.android.server.wm.BackgroundActivityStartController", classLoader, "checkBackgroundActivityStart",
-                    int.class, int.class, String.class, int.class, int.class,
-                    "com.android.server.wm.WindowProcessController", "com.android.server.am.PendingIntentRecord",
-                    "android.app.BackgroundStartPrivileges", Intent.class, ActivityOptions.class,
-                    new MethodHook() {
-                        @Override
-                        protected void before(MethodHookParam param) {
-                            String pkg = (String) param.args[2];
-                            if (pkg == null) return;
-                            if (ProjectApi.mAppModulePkg.equals(pkg)) {
-                                param.setResult(1);
+            if (isMoreAndroidVersion(35)) {
+                findAndHookMethod("com.android.server.wm.BackgroundActivityStartController", classLoader, "checkBackgroundActivityStart",
+                        int.class, int.class, String.class, int.class, int.class,
+                        "com.android.server.wm.WindowProcessController", "com.android.server.am.PendingIntentRecord",
+                        "android.app.BackgroundStartPrivileges", "com.android.server.wm.ActivityRecord", Intent.class, ActivityOptions.class,
+                        new MethodHook() {
+                            @Override
+                            protected void before(MethodHookParam param) {
+                                String pkg = (String) param.args[2];
+                                if (pkg == null) return;
+                                if (ProjectApi.mAppModulePkg.equals(pkg)) {
+                                    Object balAllowDefault = XposedHelpers.getStaticObjectField(
+                                            XposedHelpers.findClass("com.android.server.wm.BackgroundActivityStartController$BalVerdict",
+                                                    lpparam.classLoader),
+                                            "BAL_ALLOW_DEFAULT"
+                                    );
+                                    param.setResult(balAllowDefault);
+                                }
                             }
                         }
-                    }
-            );
+                );
+            } else {
+                findAndHookMethod("com.android.server.wm.BackgroundActivityStartController", classLoader, "checkBackgroundActivityStart",
+                        int.class, int.class, String.class, int.class, int.class,
+                        "com.android.server.wm.WindowProcessController", "com.android.server.am.PendingIntentRecord",
+                        "android.app.BackgroundStartPrivileges", Intent.class, ActivityOptions.class,
+                        new MethodHook() {
+                            @Override
+                            protected void before(MethodHookParam param) {
+                                String pkg = (String) param.args[2];
+                                if (pkg == null) return;
+                                if (ProjectApi.mAppModulePkg.equals(pkg)) {
+                                    param.setResult(1);
+                                }
+                            }
+                        }
+                );
+            }
         }
         hookAllMethods("com.android.server.wm.ActivityStarterImpl", classLoader,
                 "isAllowedStartActivity",

@@ -67,6 +67,7 @@ import com.sevtinge.hyperceiler.module.hook.systemframework.VolumeFirstPress;
 import com.sevtinge.hyperceiler.module.hook.systemframework.VolumeMediaSteps;
 import com.sevtinge.hyperceiler.module.hook.systemframework.VolumeSeparateControl;
 import com.sevtinge.hyperceiler.module.hook.systemframework.VolumeSteps;
+import com.sevtinge.hyperceiler.module.hook.systemframework.corepatch.BypassIsolationViolation;
 import com.sevtinge.hyperceiler.module.hook.systemframework.corepatch.BypassSignCheckForT;
 import com.sevtinge.hyperceiler.module.hook.systemframework.display.AllDarkMode;
 import com.sevtinge.hyperceiler.module.hook.systemframework.display.DisplayCutout;
@@ -87,7 +88,7 @@ import com.sevtinge.hyperceiler.module.hook.systemframework.network.N28Band;
 import com.sevtinge.hyperceiler.module.hook.systemframework.network.N5N8Band;
 import com.sevtinge.hyperceiler.module.hook.various.NoAccessDeviceLogsRequest;
 
-@HookBase(pkg = "android", isPad = false, tarAndroid = 35)
+@HookBase(pkg = "android", isPad = false, tarSdkVersion = 35)
 public class SystemFrameworkV extends BaseModule {
 
     @Override
@@ -158,6 +159,7 @@ public class SystemFrameworkV extends BaseModule {
 
         // 核心破解
         initHook(BypassSignCheckForT.INSTANCE, mPrefsMap.getBoolean("system_framework_core_patch_auth_creak") || mPrefsMap.getBoolean("system_framework_core_patch_disable_integrity"));
+        initHook(new BypassIsolationViolation(), mPrefsMap.getBoolean("system_framework_core_patch_bypass_isolation_violation"));
 
         // 网络
         initHook(DualNRSupport.INSTANCE, mPrefsMap.getBoolean("phone_double_5g_nr"));

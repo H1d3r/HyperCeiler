@@ -18,6 +18,8 @@
 */
 package com.sevtinge.hyperceiler.module.app;
 
+import static com.sevtinge.hyperceiler.utils.devicesdk.SystemSDKKt.isHyperOSVersion;
+
 import com.hchen.database.HookBase;
 import com.sevtinge.hyperceiler.module.base.BaseModule;
 import com.sevtinge.hyperceiler.module.hook.personalassistant.BlurPersonalAssistant;
@@ -27,7 +29,7 @@ import com.sevtinge.hyperceiler.module.hook.personalassistant.EnableFoldWidget;
 import com.sevtinge.hyperceiler.module.hook.personalassistant.SetTravelNotificationStatusBarInfoMaxWidth;
 import com.sevtinge.hyperceiler.module.hook.personalassistant.UnlockWidgetCountLimit;
 
-@HookBase(pkg = "com.miui.personalassistant", skip = true, isPad = false, tarAndroid = 0)
+@HookBase(pkg = "com.miui.personalassistant", skip = true, isPad = false, tarSdkVersion = 0)
 public class PersonalAssistant extends BaseModule {
 
     @Override
@@ -43,7 +45,7 @@ public class PersonalAssistant extends BaseModule {
             initHook(BlurPersonalAssistantBackGround.INSTANCE, true);
         }
 
-        initHook(new SetTravelNotificationStatusBarInfoMaxWidth(), mPrefsMap.getInt("personal_assistant_set_tv_notif_info_max_width", 60) != 60);
+        initHook(new SetTravelNotificationStatusBarInfoMaxWidth(), mPrefsMap.getInt("personal_assistant_set_tv_notif_info_max_width", 60) != 60 && isHyperOSVersion(1f));
     }
 
 }

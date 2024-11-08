@@ -67,7 +67,10 @@ import com.sevtinge.hyperceiler.module.hook.home.gesture.ShakeDevice;
 import com.sevtinge.hyperceiler.module.hook.home.layout.HotSeatsHeight;
 import com.sevtinge.hyperceiler.module.hook.home.layout.HotSeatsMarginBottom;
 import com.sevtinge.hyperceiler.module.hook.home.layout.HotSeatsMarginTop;
+import com.sevtinge.hyperceiler.module.hook.home.layout.IndicatorMarginBottom;
+import com.sevtinge.hyperceiler.module.hook.home.layout.LayoutRules;
 import com.sevtinge.hyperceiler.module.hook.home.layout.SearchBarMarginBottom;
+import com.sevtinge.hyperceiler.module.hook.home.layout.SearchBarMarginWidth;
 import com.sevtinge.hyperceiler.module.hook.home.layout.UnlockGrids;
 import com.sevtinge.hyperceiler.module.hook.home.layout.WorkspacePadding;
 import com.sevtinge.hyperceiler.module.hook.home.navigation.BackGestureAreaHeight;
@@ -94,6 +97,7 @@ import com.sevtinge.hyperceiler.module.hook.home.recent.DisableRecentViewWallpap
 import com.sevtinge.hyperceiler.module.hook.home.recent.FreeformCardBackgroundColor;
 import com.sevtinge.hyperceiler.module.hook.home.recent.HideCleanUp;
 import com.sevtinge.hyperceiler.module.hook.home.recent.HideFreeform;
+import com.sevtinge.hyperceiler.module.hook.home.recent.HideRecentCard;
 import com.sevtinge.hyperceiler.module.hook.home.recent.HideStatusBarWhenEnterRecent;
 import com.sevtinge.hyperceiler.module.hook.home.recent.RealMemory;
 import com.sevtinge.hyperceiler.module.hook.home.recent.RecentResource;
@@ -106,7 +110,6 @@ import com.sevtinge.hyperceiler.module.hook.home.recent.TaskViewHorizontal;
 import com.sevtinge.hyperceiler.module.hook.home.recent.TaskViewVertical;
 import com.sevtinge.hyperceiler.module.hook.home.recent.UnlockPin;
 import com.sevtinge.hyperceiler.module.hook.home.title.AnimParamCustom;
-import com.sevtinge.hyperceiler.module.hook.home.title.AppBlurAnim;
 import com.sevtinge.hyperceiler.module.hook.home.title.BigIconCorner;
 import com.sevtinge.hyperceiler.module.hook.home.title.DisableHideFile;
 import com.sevtinge.hyperceiler.module.hook.home.title.DownloadAnimation;
@@ -117,6 +120,7 @@ import com.sevtinge.hyperceiler.module.hook.home.title.FixAnimation;
 import com.sevtinge.hyperceiler.module.hook.home.title.HiddenAllTitle;
 import com.sevtinge.hyperceiler.module.hook.home.title.HideReportText;
 import com.sevtinge.hyperceiler.module.hook.home.title.IconMessageColorCustom;
+import com.sevtinge.hyperceiler.module.hook.home.title.IconSize;
 import com.sevtinge.hyperceiler.module.hook.home.title.IconTitleColor;
 import com.sevtinge.hyperceiler.module.hook.home.title.IconTitleCustomization;
 import com.sevtinge.hyperceiler.module.hook.home.title.LargeIconCornerRadius;
@@ -133,7 +137,7 @@ import com.sevtinge.hyperceiler.module.hook.home.widget.ResizableWidgets;
 
 import java.util.Objects;
 
-@HookBase(pkg = "com.miui.home", isPad = false, tarAndroid = 35)
+@HookBase(pkg = "com.miui.home", isPad = false, tarSdkVersion = 35)
 public class HomeV extends BaseModule {
 
     @Override
@@ -159,6 +163,11 @@ public class HomeV extends BaseModule {
         initHook(new BackGestureAreaWidth(), mPrefsMap.getInt("home_navigation_back_area_width", 100) != 100);
 
         // 布局
+        initHook(LayoutRules.INSTANCE, mPrefsMap.getBoolean("home_layout_unlock_grids_new") ||
+                mPrefsMap.getBoolean("home_layout_unlock_grids") ||
+                mPrefsMap.getBoolean("home_layout_workspace_padding_bottom_enable") ||
+                mPrefsMap.getBoolean("home_layout_workspace_padding_top_enable") ||
+                mPrefsMap.getBoolean("home_layout_workspace_padding_horizontal_enable"));
         initHook(new UnlockGrids(), mPrefsMap.getBoolean("home_layout_unlock_grids"));
         // initHook(new UnlockGridsNoWord(), mPrefsMap.getBoolean("home_layout_unlock_grids_no_word"));
         initHook(new WorkspacePadding(),
@@ -167,9 +176,11 @@ public class HomeV extends BaseModule {
                         mPrefsMap.getBoolean("home_layout_workspace_padding_horizontal_enable")
         );
 
+        initHook(new IndicatorMarginBottom(), mPrefsMap.getBoolean("home_layout_indicator_margin_bottom_enable"));
         initHook(new HotSeatsHeight(), mPrefsMap.getBoolean("home_layout_hotseats_height_enable"));
         initHook(new HotSeatsMarginTop(), mPrefsMap.getBoolean("home_layout_hotseats_margin_top_enable"));
         initHook(new HotSeatsMarginBottom(), mPrefsMap.getBoolean("home_layout_hotseats_margin_bottom_enable"));
+        initHook(new SearchBarMarginWidth(), mPrefsMap.getBoolean("home_layout_searchbar_width_enable"));
         initHook(new SearchBarMarginBottom(), (mPrefsMap.getInt("home_layout_searchbar_margin_bottom", 0) > 0) &&
                 mPrefsMap.getBoolean("home_layout_searchbar_margin_bottom_enable"));
 
@@ -199,7 +210,7 @@ public class HomeV extends BaseModule {
         initHook(new PinyinArrangement(), mPrefsMap.getBoolean("home_drawer_pinyin"));
 
         // 最近任务
-        initHook(BlurLevel.INSTANCE, mPrefsMap.getStringAsInt("home_recent_blur_level", 6) != 6 && !mPrefsMap.getBoolean("home_title_app_blur_enable"));
+        initHook(BlurLevel.INSTANCE, mPrefsMap.getStringAsInt("home_recent_blur_level", 6) != 6);
         initHook(DisableRecentViewWallpaperDarken.INSTANCE, mPrefsMap.getBoolean("home_recent_disable_wallpaper_dimming"));
         initHook(HideStatusBarWhenEnterRecent.INSTANCE, mPrefsMap.getBoolean("home_recent_hide_status_bar_in_task_view"));
         initHook(RemoveCardAnim.INSTANCE, mPrefsMap.getBoolean("home_recent_modify_animation"));
@@ -220,6 +231,7 @@ public class HomeV extends BaseModule {
         initHook(AlwaysShowCleanUp.INSTANCE, mPrefsMap.getBoolean("always_show_clean_up"));
         initHook(new BackgroundBlur(), mPrefsMap.getBoolean("home_recent_blur"));
         initHook(new ShowLaunch(), mPrefsMap.getBoolean("home_recent_show_launch"));
+        initHook(HideRecentCard.INSTANCE, !mPrefsMap.getStringSet("home_recent_hide_card").isEmpty());
 
         // 图标
         initHook(BigIconCorner.INSTANCE, mPrefsMap.getBoolean("home_title_big_icon_corner"));
@@ -228,8 +240,8 @@ public class HomeV extends BaseModule {
         initHook(DisableHideGoogle.INSTANCE, mPrefsMap.getBoolean("home_title_disable_hide_google"));
         initHook(new FakeNonDefaultIcon(), mPrefsMap.getBoolean("fake_non_default_icon"));
         initHook(new AnimParamCustom(), mPrefsMap.getBoolean("home_title_custom_anim_param_main"));
-        initHook(AppBlurAnim.INSTANCE, mPrefsMap.getBoolean("home_title_app_blur_enable"));
         // initHook(new IconScaleHook()/*, mPrefsMap.getInt("home_title_icon_scale", 100) != 100*/);
+        initHook(new IconSize(), mPrefsMap.getBoolean("home_title_icon_size_enable"));
 
         // 标题
         initHook(new TitleMarquee(), mPrefsMap.getBoolean("home_title_title_marquee"));
@@ -280,7 +292,7 @@ public class HomeV extends BaseModule {
 
         // 实验性功能
         initHook(BlurWhenShowShortcutMenu.INSTANCE, mPrefsMap.getBoolean("home_other_shortcut_background_blur"));
-        initHook(FolderBlur.INSTANCE, mPrefsMap.getBoolean("home_folder_blur") && !mPrefsMap.getBoolean("home_title_app_blur_enable"));
+        initHook(FolderBlur.INSTANCE, mPrefsMap.getBoolean("home_folder_blur"));
         initHook(new FoldDock(), mPrefsMap.getBoolean("home_other_fold_dock"));
         // initHook(new AllAppsBlur); // ??
         initHook(new FixAnimation(), mPrefsMap.getBoolean("home_title_fix_animation"));

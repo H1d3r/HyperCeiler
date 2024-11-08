@@ -1,6 +1,6 @@
 /*
   * This file is part of HyperCeiler.
-  
+
   * HyperCeiler is free software: you can redistribute it and/or modify
   * it under the terms of the GNU Affero General Public License as
   * published by the Free Software Foundation, either version 3 of the
@@ -20,8 +20,6 @@ package com.sevtinge.hyperceiler.ui.fragment.main;
 
 import static com.sevtinge.hyperceiler.utils.PropUtils.getProp;
 import static com.sevtinge.hyperceiler.utils.devicesdk.DeviceSDKKt.getDeviceToken;
-import static com.sevtinge.hyperceiler.utils.devicesdk.DisplayUtils.dp2px;
-import static com.sevtinge.hyperceiler.utils.devicesdk.DisplayUtils.sp2px;
 import static com.sevtinge.hyperceiler.utils.devicesdk.SystemSDKKt.getSystemVersionIncremental;
 import static com.sevtinge.hyperceiler.utils.devicesdk.SystemSDKKt.isMoreHyperOSVersion;
 
@@ -45,7 +43,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.sevtinge.hyperceiler.BuildConfig;
 import com.sevtinge.hyperceiler.R;
 import com.sevtinge.hyperceiler.expansionpacks.utils.ClickCountsUtils;
-import com.sevtinge.hyperceiler.ui.MainActivityContextHelper;
+import com.sevtinge.hyperceiler.ui.activity.MainActivityContextHelper;
 import com.sevtinge.hyperceiler.ui.fragment.base.SettingsPreferenceFragment;
 import com.sevtinge.hyperceiler.utils.ActionBarUtils;
 import com.sevtinge.hyperceiler.view.BgEffectPainter;
@@ -59,8 +57,7 @@ import fan.core.widget.NestedScrollView;
 import fan.preference.PreferenceFragment;
 import fan.springback.view.SpringBackLayout;
 
-public class AboutFragment extends SettingsPreferenceFragment
-        implements View.OnScrollChangeListener {
+public class AboutFragment extends SettingsPreferenceFragment implements View.OnScrollChangeListener {
 
     private int lIIlIll = 100 >>> 7;
     private final int lIIlIlI = 100 >>> 6;
@@ -84,7 +81,7 @@ public class AboutFragment extends SettingsPreferenceFragment
     private View mBgEffectView;
     private BgEffectPainter mBgEffectPainter;
     private float startTime = (float) System.nanoTime();
-    private Handler mHandler = new Handler(Looper.getMainLooper());
+    private final Handler mHandler = new Handler(Looper.getMainLooper());
     private FrameLayout contentView;
     Runnable runnableBgEffect = new Runnable() {
         @Override
@@ -97,6 +94,7 @@ public class AboutFragment extends SettingsPreferenceFragment
         }
     };
 
+    @NonNull
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         if (container != null) {
@@ -138,8 +136,8 @@ public class AboutFragment extends SettingsPreferenceFragment
     public void onResume() {
         super.onResume();
         initCardView();
-        /*ActionBar appCompatActionBar = getAppCompatActionBar();
-        if (appCompatActionBar != null) {
+        ActionBar appCompatActionBar = getAppCompatActionBar();
+        /*if (appCompatActionBar != null) {
             appCompatActionBar.getExpandTitle().setTitle("");
             appCompatActionBar.setExpandState(0);
             appCompatActionBar.setResizable(false);
@@ -166,7 +164,7 @@ public class AboutFragment extends SettingsPreferenceFragment
     }
 
     @Override
-    public int getContentResId() {
+    public int getPreferenceScreenResId() {
         return R.xml.prefs_about;
     }
 
@@ -292,5 +290,18 @@ public class AboutFragment extends SettingsPreferenceFragment
         } catch (Exception e) {
             // 未安装手Q或安装的版本不支持
         }
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        if (mHandler != null) mHandler.removeCallbacks(runnableBgEffect);
+        if (mRootView != null) unregisterCoordinateScrollView(mRootView);
+        mRootView = null;
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
     }
 }

@@ -28,6 +28,8 @@ import android.content.res.XmlResourceParser;
 import android.graphics.drawable.Drawable;
 
 import androidx.annotation.NonNull;
+import androidx.preference.Preference;
+import androidx.preference.SwitchPreference;
 
 import com.sevtinge.hyperceiler.BuildConfig;
 import com.sevtinge.hyperceiler.R;
@@ -39,9 +41,7 @@ import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
 
 import java.io.IOException;
-
-import androidx.preference.Preference;
-import androidx.preference.SwitchPreference;
+import java.util.Objects;
 
 public class SafeModeFragment extends SettingsPreferenceFragment implements Preference.OnPreferenceChangeListener {
 
@@ -54,7 +54,7 @@ public class SafeModeFragment extends SettingsPreferenceFragment implements Pref
     SwitchPreference mDemo;
 
     @Override
-    public int getContentResId() {
+    public int getPreferenceScreenResId() {
         return R.xml.prefs_settings_safe_mode;
     }
 
@@ -66,7 +66,7 @@ public class SafeModeFragment extends SettingsPreferenceFragment implements Pref
         mSecurityCenter = findPreference("prefs_key_security_center_safe_mode_enable");
         mDemo = findPreference("prefs_key_demo_safe_mode_enable");
         mSecurityCenter.setTitle(isMoreHyperOSVersion(1f) ? R.string.security_center_hyperos : R.string.security_center);
-        mDemo.setVisible(BuildConfig.BUILD_TYPE == "debug");
+        mDemo.setVisible(Objects.equals(BuildConfig.BUILD_TYPE, "debug"));
         mSystemUi.setChecked(mPkgList.contains("systemui"));
         mSettings.setChecked(mPkgList.contains("settings"));
         mHome.setChecked(mPkgList.contains("home"));
@@ -78,10 +78,10 @@ public class SafeModeFragment extends SettingsPreferenceFragment implements Pref
         mSystemUi.setOnPreferenceChangeListener(this);
         mSecurityCenter.setOnPreferenceChangeListener(this);
 
-        setPreferenceIcons();
+        setPreference();
     }
 
-    private void setPreferenceIcons() {
+    private void setPreference() {
         Resources resources = getResources();
         try (XmlResourceParser xml = resources.getXml(R.xml.prefs_settings_safe_mode)) {
             int event = xml.getEventType();
@@ -91,9 +91,11 @@ public class SafeModeFragment extends SettingsPreferenceFragment implements Pref
                     String summary = xml.getAttributeValue(ANDROID_NS, "summary");
                     if (key != null && summary != null) {
                         Drawable icon = getPackageIcon(summary); // 替换为获取图标的方法
+                        String name = getPackageName(summary);
                         SwitchPreference preferenceHeader = findPreference(key);
                         if (preferenceHeader != null) {
                             preferenceHeader.setIcon(icon);
+                            if (!summary.equals("android")) preferenceHeader.setTitle(name);
                         }
                     }
                 }
@@ -111,6 +113,15 @@ public class SafeModeFragment extends SettingsPreferenceFragment implements Pref
         } catch (PackageManager.NameNotFoundException e) {
             e.printStackTrace();
             return null;
+        }
+    }
+
+    private String getPackageName(String packageName) {
+        try {
+            return (String) requireContext().getPackageManager().getApplicationLabel(requireContext().getPackageManager().getApplicationInfo(packageName, 0));
+        } catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
+            return null; // 如果包名找不到则返回 null
         }
     }
 

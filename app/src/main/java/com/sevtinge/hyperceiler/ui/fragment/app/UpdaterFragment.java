@@ -23,7 +23,7 @@ import android.view.View;
 import androidx.annotation.NonNull;
 
 import com.sevtinge.hyperceiler.R;
-import com.sevtinge.hyperceiler.ui.base.BaseSettingsActivity;
+import com.sevtinge.hyperceiler.ui.activity.base.BaseSettingsActivity;
 import com.sevtinge.hyperceiler.ui.fragment.base.SettingsPreferenceFragment;
 import com.sevtinge.hyperceiler.utils.prefs.PrefsUtils;
 
@@ -38,7 +38,7 @@ public class UpdaterFragment extends SettingsPreferenceFragment
     EditTextPreference mBigVersion;
 
     @Override
-    public int getContentResId() {
+    public int getPreferenceScreenResId() {
         return R.xml.updater;
     }
 

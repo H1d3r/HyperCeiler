@@ -18,13 +18,10 @@
 */
 package com.sevtinge.hyperceiler.module.hook.home
 
-import com.sevtinge.hyperceiler.module.base.BaseHook
-import com.sevtinge.hyperceiler.utils.hookBeforeMethod
+import com.sevtinge.hyperceiler.module.base.tool.HookTool.MethodHook.*
 
-class UnlockHotseatIcon : BaseHook() {
+class UnlockHotseatIcon : HomeBaseHook() {
     override fun init() {
-        "com.miui.home.launcher.DeviceConfig".hookBeforeMethod("getHotseatMaxCount") {
-            it.result = 99
-        }
+        findAndHookMethod(DEVICE_CONFIG, "getHotseatMaxCount", returnConstant(99))
     }
 }

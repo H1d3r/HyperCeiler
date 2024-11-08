@@ -21,12 +21,12 @@ package com.sevtinge.hyperceiler.ui.fragment.app.systemui.statusbar;
 import android.view.View;
 
 import com.sevtinge.hyperceiler.R;
-import com.sevtinge.hyperceiler.ui.base.BaseSettingsActivity;
+import com.sevtinge.hyperceiler.ui.activity.base.BaseSettingsActivity;
 import com.sevtinge.hyperceiler.ui.fragment.base.SettingsPreferenceFragment;
 
 public class BatteryStyleSettings extends SettingsPreferenceFragment {
     @Override
-    public int getContentResId() { return R.xml.system_ui_status_bar_battery_styles; }
+    public int getPreferenceScreenResId() { return R.xml.system_ui_status_bar_battery_styles; }
 
     @Override
     public View.OnClickListener addRestartListener() {

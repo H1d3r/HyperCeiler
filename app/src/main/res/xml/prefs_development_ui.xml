@@ -18,58 +18,57 @@
   -->
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
+    <PreferenceCategory>
+        <Preference android:title="Preference" />
 
-    <ColorPickerPreference
-        android:defaultValue="-1"
-        android:persistent="false"
-        android:key="prefs_key_development_ui_test_color_picker"
-        android:title="ColorPickerPreferencer" />
+        <SwitchPreference
+            android:defaultValue="false"
+            android:title="SwitchPreference" />
 
-    <fan.preference.DropDownPreference
-        android:title="DropDownPreference"
-        android:defaultValue="0"
-        app:entries="@array/development_test"
-        app:entryValues="@array/development_test_value" />
+        <EditTextPreference
+            android:key="prefs_key_development_ui_test_edit_text"
+            android:title="EditTextPreference" />
 
-    <EditTextPreference
-        android:title="EditTextPreference"
-        android:key="prefs_key_development_ui_test_edit_text"/>
+        <DropDownPreference
+            android:defaultValue="0"
+            android:title="DropDownPreference"
+            app:entries="@array/development_test"
+            app:entryValues="@array/development_test_value" />
 
-    <Preference
-        android:title="Preference" />
-
-    <PreferenceCategory
-        android:title="PreferenceCategory" />
-
-    <com.sevtinge.hyperceiler.prefs.PreferenceHeader
-        android:icon="@drawable/ic_hyperceiler_settings_v140"
-        android:title="PreferenceHeader" />
-
-    <SeekBarPreference
-        android:title="SeekBarPreference"
-        android:defaultValue="50"
-        app:maxValue="100"
-        app:showSeekBarValue="true"
-        android:format="%d" />
-
-    <SeekBarPreferenceCompat
-        android:title="SeekBarPreferenceCompat"
-        android:defaultValue="50"
-        app:format="%s"
-        app:defaultValueText="@string/array_default"
-        app:maxValue="100"
-        app:minValue="0" />
-
-    <SwitchPreference
-        android:title="SwitchPreference"
-        android:defaultValue="false" />
-
-    <RadioSetPreferenceCategory>
-
-        <RadioButtonPreference
+        <ColorPickerPreference
+            android:defaultValue="-1"
+            android:key="prefs_key_development_ui_test_color_picker"
             android:persistent="false"
-            android:title="RadioButtonPreference" />
+            android:title="ColorPickerPreferencer" />
 
-    </RadioSetPreferenceCategory>
+    </PreferenceCategory>
+
+    <PreferenceCategory android:title="PreferenceCategory">
+        <RadioSetPreferenceCategory>
+            <RadioButtonPreference
+                android:persistent="false"
+                android:title="RadioButtonPreference" />
+
+        </RadioSetPreferenceCategory>
+
+        <com.sevtinge.hyperceiler.prefs.PreferenceHeader
+            android:icon="@drawable/ic_hyperceiler_settings_v140"
+            android:title="PreferenceHeader" />
+
+        <SeekBarPreferenceCompat
+            android:defaultValue="50"
+            android:format="%d"
+            android:title="SeekBarPreference"
+            app:maxValue="100"
+            app:showSeekBarValue="true" />
+
+        <SeekBarPreferenceCompat
+            android:defaultValue="50"
+            android:title="SeekBarPreferenceCompat"
+            app:defaultValueText="@string/array_default"
+            app:format="%s"
+            app:maxValue="100"
+            app:minValue="0" />
+    </PreferenceCategory>
 
 </PreferenceScreen>

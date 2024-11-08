@@ -24,9 +24,9 @@
     <string name="navigation_settings_title" translatable="false">@string/settings</string>
     <string name="navigation_about_title" translatable="false">@string/about</string>
 
-    <string name="version_update">有新版本</string>
+    <string name="version_update">New version found</string>
 
-    <string name="about_copy_right">© 2023-2024 Sevtinge &amp; HyperCeiler Contributions.</string>
+    <string name="about_copy_right">© 2023-2024 Sevtinge &amp; HyperCeiler Contributors.</string>
 
     <string name="empty_lable" translatable="false" />
     <string name="system_ui_status_bar_icon_nfc" translatable="false">NFC</string>
@@ -521,6 +521,8 @@
     <string name="system_framework_disable_verification_agent_desc">e.g. Google Play Protection</string>
     <string name="system_framework_use_android_package_installer">Use Android package installer</string>
     <string name="system_framework_use_android_package_installer_desc">Restore the broken PackageInstaller API</string>
+    <string name="system_framework_core_patch_bypass_isolation_violation">Bypass isolation violation</string>
+    <string name="system_framework_core_patch_bypass_isolation_violation_desc">Allow third-party apps to install system apps</string>
     <!--Browser-->
     <string name="browser">Browser</string>
     <string name="browser_debug_mode">Unlock developer options</string>
@@ -991,6 +993,7 @@
     <string name="system_ui_notification_title">Notification</string>
     <string name="system_ui_other_notification_fix">Disable notification whitelist</string>
     <string name="system_ui_plugin_enable_volume_blur">Enable volume bar blur</string>
+    <string name="system_ui_move_log_to_miui">Move statusbar_gestures.dat to MIUI dir</string>
     <string name="system_ui_plugin_enable_volume_blur_desc">Only for Android12+ MTK models. There may be high GPU load.</string>
     <!--Settings-->
     <string name="system_settings">Settings</string>
@@ -1188,13 +1191,18 @@
     <string name="home_gesture_multi_choose_app_none">None</string>
     <string name="home_layout">Layout</string>
     <string name="home_layout_home_title">Home screen</string>
+    <string name="home_layout_indicator_title">Indicator</string>
+    <string name="home_layout_indicator_margin_bottom_desc">Indicator distance from screen bottom margin</string>
     <string name="home_layout_hotseats_title">Dock</string>
     <string name="home_layout_searchbar_title">Search bar</string>
+    <string name="home_layout_searchbar_width">Height</string>
     <string name="home_layout_seek_points">Page indicator</string>
     <string name="home_layout_show_clock">Display time</string>
     <string name="home_layout_show_clock_desc">The page where the clock widget is located always displays the time</string>
     <string name="home_layout_unlock_grids">Unlock layout</string>
     <string name="home_layout_unlock_grids_desc">Unlock Home screen icon layout size limit</string>
+    <string name="home_layout_unlock_grids_new_x">Columns</string>
+    <string name="home_layout_unlock_grids_new_y">Rows</string>
     <string name="home_layout_unlock_grids_no_words">Unlock layout (no word mode)</string>
     <string name="home_layout_unlock_grids_no_words_desc">Unlock Home screen icon layout size limit</string>
     <string name="home_layout_workspace_padding_bottom_desc">Home screen distance from screen bottom margin</string>
@@ -1298,6 +1306,7 @@
     <string name="home_title_hide_report_text_desc">Hide report text in uninstall dialog</string>
     <string name="home_title_notif_color">Notification message background color custom</string>
     <string name="home_title_notif_color_picker">Custom color</string>
+    <string name="home_title_icon_size">Icon size</string>
 
     <string name="home_recent">Recents</string>
     <string name="home_recent_animation_speed">Animation speed</string>
@@ -1326,6 +1335,8 @@
     <string name="home_recent_show_launch">Show launcher as background</string>
     <string name="home_recent_show_launch_size">Launcher background size</string>
     <string name="home_recent_show_launch_alpha">Launcher background alpha</string>
+    <string name="home_recent_hide_card">Hide app cards in Recents</string>
+    <string name="home_recent_hide_card_desc">Hide the card of the selected app in Recents</string>
 
     <string name="home_widget">Widget</string>
     <string name="home_widget_all_widget_animation">Widget animation</string>
@@ -1493,7 +1504,7 @@
     <string name="screenshot_device_customize_desc">Please enter the device code, and the colored device should be filled with a suffix, for example:\n- Xiaomi 13, fill in the content is fuxi\n- Xiaomi 14 pink version, fill in the content is houji_PK</string>
     <!--System Service Plugin-->
     <string name="securityadd">System service plugin</string>
-    <string name="securityadd_disable_gb_ads">Disable Game Center Ads</string>
+    <string name="securityadd_disable_gb_ads">Disable Game center ads</string>
     <!--Security/Tablet security center-->
     <string name="security_center">Security</string>
     <string name="security_center_pad">Security</string>
@@ -1689,7 +1700,6 @@
     <string name="voiceassist_disable_watermark">Disable chat watermark</string>
     <!--Other-->
     <string name="various">Others</string>
-    <string name="notes">Notes</string>
     <string name="share_center">Xiaomi Smart Hub</string>
     <string name="new_task">New task</string>
     <string name="custom_hook">Custom</string>
@@ -1885,7 +1895,10 @@
     <string name="voicetrigger_accuracy_percent_caption">Set accuracy for Wake with voice detection</string>
     <string name="voicetrigger_accuracy_percent_description">Higher values are more difficult to detect. The default value is 70%, for the keyword XATX it\'s 0%. After setting, you need to restart the target app and re-enroll your activation word.</string>
 
+    <string name="notes">Notes</string>
+    <string name="notes_disable_ai_watermark">Disable AI watermark</string>
+
     <string name="about_device_info_device">Device</string>
-    <string name="about_device_info_android">Android Version</string>
-    <string name="about_device_info_os">OS Version</string>
+    <string name="about_device_info_android">Android version</string>
+    <string name="about_device_info_os">OS version</string>
 </resources>

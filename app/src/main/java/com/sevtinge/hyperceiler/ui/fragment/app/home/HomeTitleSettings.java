@@ -19,8 +19,8 @@
 package com.sevtinge.hyperceiler.ui.fragment.app.home;
 
 import static com.sevtinge.hyperceiler.utils.devicesdk.MiDeviceAppUtilsKt.isPad;
+import static com.sevtinge.hyperceiler.utils.devicesdk.SystemSDKKt.isHyperOSVersion;
 import static com.sevtinge.hyperceiler.utils.devicesdk.SystemSDKKt.isMoreAndroidVersion;
-import static com.sevtinge.hyperceiler.utils.devicesdk.SystemSDKKt.isMoreHyperOSVersion;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -28,8 +28,8 @@ import android.view.View;
 
 import com.sevtinge.hyperceiler.R;
 import com.sevtinge.hyperceiler.prefs.RecommendPreference;
-import com.sevtinge.hyperceiler.ui.SubPickerActivity;
-import com.sevtinge.hyperceiler.ui.base.BaseSettingsActivity;
+import com.sevtinge.hyperceiler.ui.activity.SubPickerActivity;
+import com.sevtinge.hyperceiler.ui.activity.base.BaseSettingsActivity;
 import com.sevtinge.hyperceiler.ui.fragment.base.SettingsPreferenceFragment;
 import com.sevtinge.hyperceiler.ui.fragment.sub.AppPicker;
 
@@ -42,12 +42,13 @@ public class HomeTitleSettings extends SettingsPreferenceFragment {
     SwitchPreference mDisableMonoChrome;
     SwitchPreference mDisableMonetColor;
     SwitchPreference mDisableHideTheme;
+    SwitchPreference mIconSize;
     Preference mIconTitleCustomization;
     RecommendPreference mRecommend;
     PreferenceCategory mAppBlur;
 
     @Override
-    public int getContentResId() {
+    public int getPreferenceScreenResId() {
         return R.xml.home_title;
     }
 
@@ -64,6 +65,7 @@ public class HomeTitleSettings extends SettingsPreferenceFragment {
         mIconTitleCustomization = findPreference("prefs_key_home_title_title_icontitlecustomization");
         mDisableMonoChrome = findPreference("prefs_key_home_other_icon_mono_chrome");
         mAppBlur = findPreference("prefs_key_home_title_app_blur_hyper");
+        mIconSize = findPreference("prefs_key_home_title_icon_size_enable");
 
         mDisableMonoChrome.setVisible(isMoreAndroidVersion(33));
         mDisableMonoChrome.setOnPreferenceChangeListener((preference, o) -> true);
@@ -72,7 +74,8 @@ public class HomeTitleSettings extends SettingsPreferenceFragment {
         mDisableMonetColor.setOnPreferenceChangeListener((preference, o) -> true);
         mDisableHideTheme = findPreference("prefs_key_home_title_disable_hide_theme");
         mDisableHideTheme.setVisible(isPad());
-        mAppBlur.setVisible(isMoreHyperOSVersion(1f));
+        mAppBlur.setVisible(isHyperOSVersion(1f));
+        mIconSize.setVisible(isHyperOSVersion(2f));
 
         mIconTitleCustomization.setOnPreferenceClickListener(preference -> {
             Intent intent = new Intent(getActivity(), SubPickerActivity.class);

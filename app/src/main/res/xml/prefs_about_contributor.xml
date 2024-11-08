@@ -17,8 +17,18 @@
   ~ Copyright (C) 2023-2024 HyperCeiler Contributions
   -->
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
-    <Preference android:summary="@string/about_contributer_desc" />
+
+    <Preference
+        android:summary="@string/about_contributer_desc"/>
+
     <PreferenceCategory>
+        <Preference
+            android:summary="GitHub@Adlyq"
+            android:title="Adlyq">
+            <intent
+                android:action="android.intent.action.VIEW"
+                android:data="https://github.com/Adlyq" />
+        </Preference>
         <Preference
             android:summary="GitHub@CC0126"
             android:title="CC0126">
@@ -228,6 +238,13 @@
             <intent
                 android:action="android.intent.action.VIEW"
                 android:data="http://www.coolapk.com/u/5816741" />
+        </Preference>
+        <Preference
+            android:summary="GitHub@Voemp"
+            android:title="Voemp">
+            <intent
+                android:action="android.intent.action.VIEW"
+                android:data="https://github.com/Voemp" />
         </Preference>
         <Preference
             android:summary="GitHub@hosizoraru"

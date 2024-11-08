@@ -25,7 +25,7 @@
     <color name="textview_blue">#0D84FF</color>
     <color name="textview_black_title">#000000</color>
     <color name="textview_black_summary">#80000000</color>
-    <color name="textview_black_watermark">#01000000</color>
+    <color name="textview_black_watermark">#03000000</color>
 
     <color name="navigation_divider">#1A000000</color>
     <color name="navigation_icon_dark">#FF000000</color>
@@ -43,7 +43,7 @@
     <color name="color_on_surface_variant">#FAFCFCFC</color>
     <color name="ic_launcher_background">#FC5B8D</color>
 
-    <color name="preference_recommend_region_color">#fff0f0f0</color>
+    <color name="preference_recommend_region_color">@color/miuix_color_white_solid_100</color>
     <color name="preference_recommend_title_color">#66000000</color>
 
     <color name="preference_recommend_item_link">#ff0d84ff</color>
@@ -55,6 +55,9 @@
     <color name="logo_color1">#cc4a4a4a</color>
     <color name="logo_color2">#4f4f4f</color>
     <color name="logo_color3">#1af200</color>
+
+    <color name="logo_overlay_shade_color">#55000000</color>
+    <color name="logo_overlay_color">#FF000000</color>
 
     <color name="my_card_bg_color">#99ffffff</color>
     <color name="my_card_shadow_color">#40000000</color>

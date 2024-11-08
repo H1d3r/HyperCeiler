@@ -25,7 +25,7 @@ import android.view.View;
 import androidx.annotation.NonNull;
 
 import com.sevtinge.hyperceiler.R;
-import com.sevtinge.hyperceiler.ui.base.BaseSettingsActivity;
+import com.sevtinge.hyperceiler.ui.activity.base.BaseSettingsActivity;
 import com.sevtinge.hyperceiler.ui.fragment.base.SettingsPreferenceFragment;
 import com.sevtinge.hyperceiler.utils.prefs.PrefsUtils;
 
@@ -42,7 +42,7 @@ public class HomeDockSettings extends SettingsPreferenceFragment implements Pref
     ColorPickerPreference mDockBackgroundColor;
 
     @Override
-    public int getContentResId() {
+    public int getPreferenceScreenResId() {
         return R.xml.home_dock;
     }
 

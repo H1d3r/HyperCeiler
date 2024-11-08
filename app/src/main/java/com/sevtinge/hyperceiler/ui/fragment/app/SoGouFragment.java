@@ -21,7 +21,7 @@ package com.sevtinge.hyperceiler.ui.fragment.app;
 import android.view.View;
 
 import com.sevtinge.hyperceiler.R;
-import com.sevtinge.hyperceiler.ui.base.BaseSettingsActivity;
+import com.sevtinge.hyperceiler.ui.activity.base.BaseSettingsActivity;
 import com.sevtinge.hyperceiler.ui.fragment.base.SettingsPreferenceFragment;
 
 public class SoGouFragment extends SettingsPreferenceFragment {
@@ -31,7 +31,7 @@ public class SoGouFragment extends SettingsPreferenceFragment {
     };
 
     @Override
-    public int getContentResId() {
+    public int getPreferenceScreenResId() {
         return R.xml.sogou_xiaomi;
     }
 

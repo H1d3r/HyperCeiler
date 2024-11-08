@@ -8,8 +8,8 @@ import java.time.format.*
 import java.util.*
 
 plugins {
-    alias(libs.plugins.androidApplication)
-    alias(libs.plugins.kotlinAndroid)
+    alias(libs.plugins.android.application)
+    alias(libs.plugins.kotlin.android)
     alias(libs.plugins.lsparanoid)
     // alias(libs.plugins.lspluginResopt)
 }
@@ -222,11 +222,11 @@ android {
 
     java {
         toolchain {
-            languageVersion = JavaLanguageVersion.of(22)
+            languageVersion = JavaLanguageVersion.of(21)
         }
     }
 
-    kotlin.jvmToolchain(22)
+    kotlin.jvmToolchain(21)
 
     // https://stackoverflow.com/a/77745844
     tasks.withType<PackageAndroidArtifact> {
@@ -236,9 +236,9 @@ android {
 
 dependencies {
     compileOnly(project(":hidden-api"))
-    compileOnly(project(":miuistub"))
+    // compileOnly(project(":miuistub"))
     compileOnly(libs.xposed.api)
-    compileOnly(libs.androidx.preference)
+    // compileOnly(libs.androidx.preference)
 
     implementation(libs.dexkit)
     implementation(libs.ezxhelper)

@@ -26,7 +26,7 @@ import android.view.View;
 import androidx.annotation.NonNull;
 
 import com.sevtinge.hyperceiler.R;
-import com.sevtinge.hyperceiler.ui.base.BaseSettingsActivity;
+import com.sevtinge.hyperceiler.ui.activity.base.BaseSettingsActivity;
 import com.sevtinge.hyperceiler.ui.fragment.base.SettingsPreferenceFragment;
 import com.sevtinge.hyperceiler.utils.prefs.PrefsUtils;
 
@@ -48,7 +48,7 @@ public class NetworkSpeedIndicatorSettings extends SettingsPreferenceFragment
     DropDownPreference mNetworkIcon;
 
     @Override
-    public int getContentResId() {
+    public int getPreferenceScreenResId() {
         return R.xml.system_ui_status_bar_network_speed_indicator;
     }
 

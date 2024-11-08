@@ -18,13 +18,13 @@
 */
 package com.sevtinge.hyperceiler.ui.fragment.app;
 
-import static com.hchen.hooktool.utils.SystemSDK.isPad;
+import static com.sevtinge.hyperceiler.utils.devicesdk.MiDeviceAppUtilsKt.isPad;
 import static com.sevtinge.hyperceiler.utils.devicesdk.SystemSDKKt.isHyperOSVersion;
 
 import android.view.View;
 
 import com.sevtinge.hyperceiler.R;
-import com.sevtinge.hyperceiler.ui.base.BaseSettingsActivity;
+import com.sevtinge.hyperceiler.ui.activity.base.BaseSettingsActivity;
 import com.sevtinge.hyperceiler.ui.fragment.base.SettingsPreferenceFragment;
 
 import androidx.preference.Preference;
@@ -34,7 +34,7 @@ public class SecurityCenterFragment extends SettingsPreferenceFragment {
     Preference mPrivacy;
 
     @Override
-    public int getContentResId() {
+    public int getPreferenceScreenResId() {
         return R.xml.security_center;
     }
 

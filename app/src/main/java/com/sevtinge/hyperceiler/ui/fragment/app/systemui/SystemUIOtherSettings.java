@@ -30,7 +30,7 @@ import android.view.View;
 import androidx.annotation.NonNull;
 
 import com.sevtinge.hyperceiler.R;
-import com.sevtinge.hyperceiler.ui.base.BaseSettingsActivity;
+import com.sevtinge.hyperceiler.ui.activity.base.BaseSettingsActivity;
 import com.sevtinge.hyperceiler.ui.fragment.base.SettingsPreferenceFragment;
 
 import fan.preference.DropDownPreference;
@@ -51,9 +51,12 @@ public class SystemUIOtherSettings extends SettingsPreferenceFragment {
     SwitchPreference mDisableBluetoothRestrict; // 禁用蓝牙临时关闭
     SwitchPreference mPctUseBlur;
     SwitchPreference mShowPct;
+    SwitchPreference mFuckSG;
+    SwitchPreference mTimer;
+    SwitchPreference mSuperVolume;
 
     @Override
-    public int getContentResId() {
+    public int getPreferenceScreenResId() {
         return R.xml.system_ui_other;
     }
 
@@ -78,6 +81,9 @@ public class SystemUIOtherSettings extends SettingsPreferenceFragment {
         mPower = findPreference("prefs_key_system_ui_disable_power");
         mPctUseBlur = findPreference("prefs_key_system_showpct_use_blur");
         mShowPct = findPreference("prefs_key_system_showpct_title");
+        mFuckSG = findPreference("prefs_key_system_ui_move_log_to_miui");
+        mTimer = findPreference("prefs_key_system_ui_volume_timer");
+        mSuperVolume = findPreference("prefs_key_system_ui_unlock_super_volume");
 
         mChargeAnimationTitle.setVisible(!isMoreHyperOSVersion(1f));
         mDisableBluetoothRestrict.setVisible(isMiuiVersion(14f) && isMoreAndroidVersion(31));
@@ -87,6 +93,9 @@ public class SystemUIOtherSettings extends SettingsPreferenceFragment {
         mBottomBar.setVisible(isMoreHyperOSVersion(1f) && isMoreAndroidVersion(34));
         mPctUseBlur.setVisible(isMoreHyperOSVersion(1f));
         mShowPct.setVisible(!isMoreHyperOSVersion(1f));
+        mFuckSG.setVisible(isMoreHyperOSVersion(2f));
+        mTimer.setVisible(!isMoreAndroidVersion(35));
+        mSuperVolume.setVisible(!isMoreAndroidVersion(35));
 
         mVolume.setOnPreferenceChangeListener(
                 (preference, o) -> {

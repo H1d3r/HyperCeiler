@@ -31,8 +31,8 @@ import androidx.annotation.NonNull;
 
 import com.sevtinge.hyperceiler.R;
 import com.sevtinge.hyperceiler.prefs.RecommendPreference;
-import com.sevtinge.hyperceiler.ui.SubPickerActivity;
-import com.sevtinge.hyperceiler.ui.base.BaseSettingsActivity;
+import com.sevtinge.hyperceiler.ui.activity.SubPickerActivity;
+import com.sevtinge.hyperceiler.ui.activity.base.BaseSettingsActivity;
 import com.sevtinge.hyperceiler.ui.fragment.base.SettingsPreferenceFragment;
 import com.sevtinge.hyperceiler.ui.fragment.sub.AppPicker;
 import com.sevtinge.hyperceiler.utils.KillApp;
@@ -68,6 +68,7 @@ public class ControlCenterSettings extends SettingsPreferenceFragment implements
     SeekBarPreferenceCompat mProgressModeCornerRadius;
     ColorPickerPreference mSliderColor;
     ColorPickerPreference mProgressBarColor;
+    SwitchPreference mRedirectNotice;
 
     SwitchPreference mTaplus;
     SwitchPreference mNotifrowmenu;
@@ -75,7 +76,7 @@ public class ControlCenterSettings extends SettingsPreferenceFragment implements
     Handler handler;
 
     @Override
-    public int getContentResId() {
+    public int getPreferenceScreenResId() {
         return R.xml.system_ui_control_center;
     }
 
@@ -109,6 +110,7 @@ public class ControlCenterSettings extends SettingsPreferenceFragment implements
         mProgressModeCornerRadius = findPreference("prefs_key_system_ui_control_center_media_control_progress_corner_radius");
         mSliderColor = findPreference("prefs_key_system_ui_control_center_media_control_seekbar_thumb_color");
         mProgressBarColor = findPreference("prefs_key_system_ui_control_center_media_control_seekbar_color");
+        mRedirectNotice = findPreference("prefs_key_system_ui_control_center_redirect_notice");
         handler = new Handler();
 
         mExpandNotification.setOnPreferenceClickListener(
@@ -151,6 +153,7 @@ public class ControlCenterSettings extends SettingsPreferenceFragment implements
             mThemeBlur.setVisible(false);
             mRoundedRectRadius.setVisible(false);
         }
+        mRedirectNotice.setVisible(!isMoreHyperOSVersion(2f));
         mFiveG.setVisible(TelephonyManager.getDefault().isFiveGCapable());
         mProgressModeThickness.setVisible(Integer.parseInt(PrefsUtils.mSharedPreferences.getString("prefs_key_system_ui_control_center_media_control_progress_mode", "0")) == 2);
         mProgressModeCornerRadius.setVisible(Integer.parseInt(PrefsUtils.mSharedPreferences.getString("prefs_key_system_ui_control_center_media_control_progress_mode", "0")) == 2);

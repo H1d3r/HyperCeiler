@@ -21,7 +21,7 @@ package com.sevtinge.hyperceiler.ui.fragment.app.systemui.statusbar;
 import android.view.View;
 
 import com.sevtinge.hyperceiler.R;
-import com.sevtinge.hyperceiler.ui.base.BaseSettingsActivity;
+import com.sevtinge.hyperceiler.ui.activity.base.BaseSettingsActivity;
 import com.sevtinge.hyperceiler.ui.fragment.base.SettingsPreferenceFragment;
 import com.sevtinge.hyperceiler.utils.api.miuiStringToast.MiuiStringToast;
 
@@ -32,7 +32,7 @@ public class StrongToastSettings extends SettingsPreferenceFragment {
     Preference mLongToast;
 
     @Override
-    public int getContentResId() { return R.xml.system_ui_status_bar_strong_toast; }
+    public int getPreferenceScreenResId() { return R.xml.system_ui_status_bar_strong_toast; }
 
     @Override
     public void initPrefs() {

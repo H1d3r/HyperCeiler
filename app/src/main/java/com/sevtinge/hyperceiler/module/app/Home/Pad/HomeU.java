@@ -18,8 +18,6 @@
  */
 package com.sevtinge.hyperceiler.module.app.Home.Pad;
 
-import static com.sevtinge.hyperceiler.utils.devicesdk.MiDeviceAppUtilsKt.isPad;
-
 import com.hchen.database.HookBase;
 import com.sevtinge.hyperceiler.module.base.BaseModule;
 import com.sevtinge.hyperceiler.module.hook.home.AnimDurationRatio;
@@ -69,7 +67,9 @@ import com.sevtinge.hyperceiler.module.hook.home.gesture.ShakeDevice;
 import com.sevtinge.hyperceiler.module.hook.home.layout.HotSeatsHeight;
 import com.sevtinge.hyperceiler.module.hook.home.layout.HotSeatsMarginBottom;
 import com.sevtinge.hyperceiler.module.hook.home.layout.HotSeatsMarginTop;
+import com.sevtinge.hyperceiler.module.hook.home.layout.IndicatorMarginBottom;
 import com.sevtinge.hyperceiler.module.hook.home.layout.SearchBarMarginBottom;
+import com.sevtinge.hyperceiler.module.hook.home.layout.SearchBarMarginWidth;
 import com.sevtinge.hyperceiler.module.hook.home.layout.UnlockGrids;
 import com.sevtinge.hyperceiler.module.hook.home.layout.WorkspacePadding;
 import com.sevtinge.hyperceiler.module.hook.home.mipad.EnableHideGestureLine;
@@ -99,6 +99,7 @@ import com.sevtinge.hyperceiler.module.hook.home.recent.DisableRecentViewWallpap
 import com.sevtinge.hyperceiler.module.hook.home.recent.FreeformCardBackgroundColor;
 import com.sevtinge.hyperceiler.module.hook.home.recent.HideCleanUp;
 import com.sevtinge.hyperceiler.module.hook.home.recent.HideFreeform;
+import com.sevtinge.hyperceiler.module.hook.home.recent.HideRecentCard;
 import com.sevtinge.hyperceiler.module.hook.home.recent.HideStatusBarWhenEnterRecent;
 import com.sevtinge.hyperceiler.module.hook.home.recent.MemInfoShow;
 import com.sevtinge.hyperceiler.module.hook.home.recent.RealMemory;
@@ -141,7 +142,7 @@ import com.sevtinge.hyperceiler.module.hook.systemframework.mipad.SetGestureNeed
 
 import java.util.Objects;
 
-@HookBase(pkg = "com.miui.home", isPad = true, tarAndroid = 34)
+@HookBase(pkg = "com.miui.home", isPad = true, tarSdkVersion = 34)
 public class HomeU extends BaseModule {
 
     @Override
@@ -175,9 +176,11 @@ public class HomeU extends BaseModule {
                         mPrefsMap.getBoolean("home_layout_workspace_padding_horizontal_enable")
         );
 
+        initHook(new IndicatorMarginBottom(), mPrefsMap.getBoolean("home_layout_indicator_margin_bottom_enable"));
         initHook(new HotSeatsHeight(), mPrefsMap.getBoolean("home_layout_hotseats_height_enable"));
         initHook(new HotSeatsMarginTop(), mPrefsMap.getBoolean("home_layout_hotseats_margin_top_enable"));
         initHook(new HotSeatsMarginBottom(), mPrefsMap.getBoolean("home_layout_hotseats_margin_bottom_enable"));
+        initHook(new SearchBarMarginWidth(), mPrefsMap.getBoolean("home_layout_searchbar_width_enable"));
         initHook(new SearchBarMarginBottom(), (mPrefsMap.getInt("home_layout_searchbar_margin_bottom", 0) > 0) &&
                 mPrefsMap.getBoolean("home_layout_searchbar_margin_bottom_enable"));
 
@@ -229,6 +232,7 @@ public class HomeU extends BaseModule {
         initHook(AlwaysShowCleanUp.INSTANCE, mPrefsMap.getBoolean("always_show_clean_up"));
         initHook(new BackgroundBlur(), mPrefsMap.getBoolean("home_recent_blur"));
         initHook(new ShowLaunch(), mPrefsMap.getBoolean("home_recent_show_launch"));
+        initHook(HideRecentCard.INSTANCE, !mPrefsMap.getStringSet("home_recent_hide_card").isEmpty());
 
         // 图标
         initHook(BigIconCorner.INSTANCE, mPrefsMap.getBoolean("home_title_big_icon_corner"));

@@ -21,7 +21,7 @@ package com.sevtinge.hyperceiler.ui.fragment.app;
 import android.view.View;
 
 import com.sevtinge.hyperceiler.R;
-import com.sevtinge.hyperceiler.ui.base.BaseSettingsActivity;
+import com.sevtinge.hyperceiler.ui.activity.base.BaseSettingsActivity;
 import com.sevtinge.hyperceiler.ui.fragment.base.SettingsPreferenceFragment;
 import com.sevtinge.hyperceiler.utils.prefs.PrefsUtils;
 
@@ -36,7 +36,7 @@ public class GetAppsFragment extends SettingsPreferenceFragment {
     EditTextPreference mManufacturer;
 
     @Override
-    public int getContentResId() {
+    public int getPreferenceScreenResId() {
         return R.xml.getapps;
     }
 
