@@ -22,23 +22,18 @@ import android.view.View;
 
 import com.sevtinge.hyperceiler.R;
 import com.sevtinge.hyperceiler.ui.activity.base.BaseSettingsActivity;
-import com.sevtinge.hyperceiler.ui.fragment.base.SettingsPreferenceFragment;
+import com.sevtinge.hyperceiler.ui.fragment.dashboard.DashboardFragment;
 import com.sevtinge.hyperceiler.utils.devicesdk.TelephonyManager;
 
 import androidx.preference.Preference;
 
-public class SystemFrameworkFragment extends SettingsPreferenceFragment {
+public class SystemFrameworkFragment extends DashboardFragment {
 
     Preference mNetwork;
 
     @Override
     public int getPreferenceScreenResId() {
         return R.xml.framework;
-    }
-
-    @Override
-    public View.OnClickListener addRestartListener() {
-        return view -> ((BaseSettingsActivity)getActivity()).showRestartSystemDialog();
     }
 
     @Override
