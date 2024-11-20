@@ -18,14 +18,12 @@
  */
 package com.sevtinge.hyperceiler.utils;
 
-import static com.sevtinge.hyperceiler.utils.Helpers.getModuleRes;
 import static com.sevtinge.hyperceiler.utils.devicesdk.SystemSDKKt.isMoreAndroidVersion;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
-import android.os.Build;
 import android.util.ArrayMap;
 import android.view.View;
 import android.widget.Switch;
@@ -35,14 +33,12 @@ import androidx.annotation.CallSuper;
 import com.sevtinge.hyperceiler.R;
 import com.sevtinge.hyperceiler.module.base.BaseHook;
 import com.sevtinge.hyperceiler.module.base.tool.ResourcesTool;
-import com.sevtinge.hyperceiler.utils.devicesdk.SystemSDKKt;
 
 import de.robv.android.xposed.XC_MethodHook.MethodHookParam;
 import de.robv.android.xposed.XposedHelpers;
 
 public abstract class TileUtils extends BaseHook {
-    private final String mQSFactoryClsName = isMoreAndroidVersion(Build.VERSION_CODES.TIRAMISU) ? "com.android.systemui.qs.tileimpl.MiuiQSFactory" :
-        "com.android.systemui.qs.tileimpl.QSFactoryImpl";
+    private final String mQSFactoryClsName = "com.android.systemui.qs.tileimpl.MiuiQSFactory" ;
     private final boolean[] isListened = {false};
     private final String[] mTileProvider = new String[4];
     private Class<?> mResourceIcon;
@@ -68,7 +64,7 @@ public abstract class TileUtils extends BaseHook {
         SystemUiHook();
         customTileProvider();
         showStateMessage(myTile);
-        if (SystemSDKKt.isMoreAndroidVersion(34)) {
+        if (isMoreAndroidVersion(34)) {
             tileAllName14(mQSFactory);
         } else {
             tileAllName(mQSFactory);
@@ -137,65 +133,82 @@ public abstract class TileUtils extends BaseHook {
         } catch (NoSuchMethodException e) {
             logE(TAG, "com.android.systemui", "Don't Have getLongClickIntent: " + e);
         }
-        try {
-            myTile.getDeclaredMethod("handleLongClick", View.class);
-            findAndHookMethod(myTile, "handleLongClick", View.class, new MethodHook() {
-                @Override
-                protected void before(MethodHookParam param) {
-                    String tileName = (String) XposedHelpers.getAdditionalInstanceField(param.thisObject, "customName");
-                    Intent intent = null;
-                    if (tileName != null) {
-                        if (tileName.equals(customName())) {
-                            intent = tileHandleLongClick(param, tileName);
-                        }
-                    } else if (needOverride()) {
+
+        Class<?> expandableClz = findClassIfExists("com.android.systemui.animation.Expandable");
+
+        MethodHook handleLongClickHook = new MethodHook() {
+            @Override
+            protected void before(MethodHookParam param) {
+                String tileName = (String) XposedHelpers.getAdditionalInstanceField(param.thisObject, "customName");
+                Intent intent = null;
+                if (tileName != null) {
+                    if (tileName.equals(customName())) {
                         intent = tileHandleLongClick(param, tileName);
                     }
-                    if (intent != null) {
-                        Context context = (Context) XposedHelpers.getObjectField(param.thisObject, "mContext");
-                        Object o = XposedHelpers.callStaticMethod(findClassIfExists("com.android.systemui.controlcenter.utils.ControlCenterUtils"), "getSettingsSplitIntent", context, intent);
-                        XposedHelpers.callMethod(XposedHelpers.getObjectField(param.thisObject, "mActivityStarter"), "postStartActivityDismissingKeyguard", o, 0, null);
-                        param.setResult(null);
-                    }
+                } else if (needOverride()) {
+                    intent = tileHandleLongClick(param, tileName);
                 }
-            });
-        } catch (NoSuchMethodException t) {
-            logE(TAG, "com.android.systemui", "Don't Have handleLongClick: " + t);
-        }
+                if (intent != null) {
+                    Context context = (Context) XposedHelpers.getObjectField(param.thisObject, "mContext");
+                    Object o = XposedHelpers.callStaticMethod(findClassIfExists("com.android.systemui.controlcenter.utils.ControlCenterUtils"), "getSettingsSplitIntent", context, intent);
+                    XposedHelpers.callMethod(XposedHelpers.getObjectField(param.thisObject, "mActivityStarter"), "postStartActivityDismissingKeyguard", o, 0, null);
+                    param.setResult(null);
+                }
+            }
+        };
         try {
-            getDeclaredMethod(myTile, "handleClick", View.class);
-            // myTile.getDeclaredMethod("handleClick", View.class);
-            findAndHookMethod(myTile, "handleClick", View.class, new MethodHook() {
-                @Override
-                protected void before(MethodHookParam param) {
-                    String tileName = (String) XposedHelpers.getAdditionalInstanceField(param.thisObject, "customName");
-                    if (tileName != null) {
-                        if (tileName.equals(customName())) {
-                            try {
-                                tileClick(param, tileName);
-                                param.setResult(null);
-                            } catch (Throwable e) {
-                                logE(TAG, "com.android.systemui", "handleClick have Throwable: " + e);
-                                param.setResult(null);
-                            }
-                        }
-                    } else {
-                        if (needOverride())
-                            tileClick(param, tileName);
-                    }
-                }
+            if (isMoreAndroidVersion(35)) {
+                myTile.getDeclaredMethod("handleLongClick", expandableClz);
+                findAndHookMethod(myTile, "handleLongClick", expandableClz, handleLongClickHook);
+            } else {
+                myTile.getDeclaredMethod("handleLongClick", View.class);
+                findAndHookMethod(myTile, "handleLongClick", View.class, handleLongClickHook);
+            }
+        } catch (NoSuchMethodException e) {
+            logE(TAG, "com.android.systemui", "Don't Have handleLongClick: " + e);
+        }
 
-                @Override
-                protected void after(MethodHookParam param) {
-                    if (needAfter()) {
-                        String tileName = (String) XposedHelpers.getAdditionalInstanceField(param.thisObject, "customName");
-                        tileClickAfter(param, tileName);
+        MethodHook handleClickHook = new MethodHook() {
+            @Override
+            protected void before(MethodHookParam param) {
+                String tileName = (String) XposedHelpers.getAdditionalInstanceField(param.thisObject, "customName");
+                if (tileName != null) {
+                    if (tileName.equals(customName())) {
+                        try {
+                            tileClick(param, tileName);
+                            param.setResult(null);
+                        } catch (Throwable e) {
+                            logE(TAG, "com.android.systemui", "handleClick have Throwable: " + e);
+                            param.setResult(null);
+                        }
                     }
+                } else {
+                    if (needOverride())
+                        tileClick(param, tileName);
                 }
-            });
+            }
+
+            @Override
+            protected void after(MethodHookParam param) {
+                if (needAfter()) {
+                    String tileName = (String) XposedHelpers.getAdditionalInstanceField(param.thisObject, "customName");
+                    tileClickAfter(param, tileName);
+                }
+            }
+        };
+        try {
+            if (isMoreAndroidVersion(35)) {
+                getDeclaredMethod(myTile, "handleClick", expandableClz);
+                findAndHookMethod(myTile, "handleClick", expandableClz, handleClickHook);
+            } else {
+                getDeclaredMethod(myTile, "handleClick", View.class);
+                // myTile.getDeclaredMethod("handleClick", View.class);
+                findAndHookMethod(myTile, "handleClick", View.class, handleClickHook);
+            }
         } catch (NoSuchMethodException e) {
             logE(TAG, "com.android.systemui", "Don't Have handleClick: " + e);
         }
+
         hookAllMethods(myTile, "handleUpdateState", new MethodHook() {
             @Override
             protected void before(MethodHookParam param) {
@@ -237,12 +250,12 @@ public abstract class TileUtils extends BaseHook {
     //     return null;
     // }
 
-    /*需要Hook的磁贴Class*/
+    /*需要 Hook 的磁贴 Class*/
     public Class<?> customClass() {
         return null;
     }
 
-    /*需要Hook执行的Class方法*/
+    /*需要 Hook 执行的 Class 方法*/
     private void customTileProvider() {
         mTileProvider[0] = setTileProvider();
         mTileProvider[1] = "createTileInternal";
@@ -265,25 +278,25 @@ public abstract class TileUtils extends BaseHook {
     }
 
     /*在这里为你的自定义磁贴打上标题
-    需要传入资源Id*/
+    需要传入资源 Id*/
     public int customRes() {
         return -1;
     }
 
     /* 是否要覆写原有磁贴方法,
      * 当无自定义名称时默认覆写而不走判断名称的逻辑
-     * 可以覆写为指定boolean但不建议*/
+     * 可以覆写为指定 boolean 但不建议*/
     public boolean needOverride() {
         return "".equals(customName());
     }
 
-    /*是否需要在after时进行逻辑修改而不是before*/
+    /*是否需要在 after 时进行逻辑修改而不是 before*/
     public boolean needAfter() {
         return false;
     }
 
     /*
-     * 在第一次Hook时把新的快捷方式加载进快捷方式列表中。
+     * 在第一次 Hook 时把新的快捷方式加载进快捷方式列表中。
      * */
     private void SystemUiHook() {
         String custom = customName();
@@ -299,9 +312,9 @@ public abstract class TileUtils extends BaseHook {
                     protected void after(MethodHookParam param) {
                         if (!isListened[0]) {
                             isListened[0] = true;
-                            // 获取Context
+                            // 获取 Context
                             Context mContext = (Context) XposedHelpers.callMethod(param.thisObject, "getApplicationContext");
-                            // 获取miui_quick_settings_tiles_stock字符串的值
+                            // 获取 miui_quick_settings_tiles_stock 字符串的值
                             @SuppressLint("DiscouragedApi") int stockTilesResId = mContext.getResources().getIdentifier("miui_quick_settings_tiles_stock", "string", lpparam.packageName);
                             String stockTiles = mContext.getString(stockTilesResId) + "," + custom; // 追加自定义的磁贴
                             // 将拼接后的字符串分别替换下面原有的字符串。
@@ -318,7 +331,7 @@ public abstract class TileUtils extends BaseHook {
     }
 
     /*
-     * 判断是否是自定义磁贴，如果是则在自定义磁贴前加上Key，用于定位磁贴。
+     * 判断是否是自定义磁贴，如果是则在自定义磁贴前加上 Key，用于定位磁贴。
      */
     private void tileAllName(Class<?> QSFactory) {
         if (!needOverride()) {
@@ -354,7 +367,7 @@ public abstract class TileUtils extends BaseHook {
         });
     }
 
-    /*安卓14磁贴逻辑被修改，此是解决方法*/
+    /*Android 14 磁贴逻辑被修改，此是解决方法*/
     private void tileAllName14(Class<?> QSFactory) {
         if (!needOverride()) {
             try {
@@ -377,6 +390,10 @@ public abstract class TileUtils extends BaseHook {
                                         Object mHandler = XposedHelpers.getObjectField(tile, "mHandler");
                                         XposedHelpers.callMethod(mHandler, "sendEmptyMessage", 12);
                                         XposedHelpers.callMethod(mHandler, "sendEmptyMessage", 11);
+                                        if (isMoreAndroidVersion(35)) {
+                                            XposedHelpers.callMethod(tile, "setTileSpec", tileName);
+                                        }
+
                                         param.setResult(tile);
                                     }
                                 } catch (NoSuchFieldException e) {
@@ -485,7 +502,8 @@ public abstract class TileUtils extends BaseHook {
     }
 
     /*这是另一个长按动作代码
-     * 可能不是很严谨，仅在上面长按动作失效时使用*/
+     * 可能不是很严谨，仅在上面长按动作失效时使用
+     * 在 HyperOS2 已无此方法，请改用 tileLongClickIntent 方法*/
     public Intent tileHandleLongClick(MethodHookParam param, String tileName) {
         return null;
     }

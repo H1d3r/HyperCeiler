@@ -18,6 +18,8 @@
  */
 package com.sevtinge.hyperceiler.module.hook.systemui.controlcenter;
 
+import static com.sevtinge.hyperceiler.utils.devicesdk.SystemSDKKt.isMoreHyperOSVersion;
+
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
@@ -83,7 +85,18 @@ public class GmsTile extends TileUtils {
     }
 
     @Override
+    public void tileLongClickIntent(MethodHookParam param, String tileName) {
+        if(!isMoreHyperOSVersion(2f)) return;
+        // 长按跳转谷歌基础服务页面
+        Intent intent = new Intent(Intent.ACTION_MAIN);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_RESET_TASK_IF_NEEDED);
+        intent.setComponent(new ComponentName("com.miui.securitycenter", "com.miui.googlebase.ui.GmsCoreSettings"));
+        param.setResult(intent);
+    }
+
+    @Override
     public Intent tileHandleLongClick(MethodHookParam param, String tileName) {
+        if(isMoreHyperOSVersion(2f)) return null;
         // 长按跳转谷歌基础服务页面
         Intent intent = new Intent(Intent.ACTION_MAIN);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_RESET_TASK_IF_NEEDED);
@@ -101,7 +114,7 @@ public class GmsTile extends TileUtils {
                 try {
                     packageManager.getPackageInfo(GmsAppsSystem, PackageManager.GET_ACTIVITIES);
                     packageManager.setApplicationEnabledSetting(GmsAppsSystem, PackageManager.COMPONENT_ENABLED_STATE_ENABLED, 0);
-                    logI(TAG, "com.android.systemui", "To Enabled Gms App:" + GmsAppsSystem);
+                    logD(TAG, "com.android.systemui", "To Enabled Gms App:" + GmsAppsSystem);
                 } catch (PackageManager.NameNotFoundException e) {
                     logE(TAG, "com.android.systemui", "Don't have Gms app :" + GmsAppsSystem);
                 }
@@ -112,7 +125,7 @@ public class GmsTile extends TileUtils {
                 try {
                     packageManager.getPackageInfo(GmsAppsSystem, PackageManager.GET_ACTIVITIES);
                     packageManager.setApplicationEnabledSetting(GmsAppsSystem, PackageManager.COMPONENT_ENABLED_STATE_DISABLED, 0);
-                    logI(TAG, "com.android.systemui", "To Disabled Gms App:" + GmsAppsSystem);
+                    logD(TAG, "com.android.systemui", "To Disabled Gms App:" + GmsAppsSystem);
                 } catch (PackageManager.NameNotFoundException e) {
                     logE(TAG, "com.android.systemui", "Don't have Gms app :" + GmsAppsSystem);
                 }

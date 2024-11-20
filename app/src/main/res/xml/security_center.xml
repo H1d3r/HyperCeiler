@@ -21,9 +21,7 @@
     app:myLocation="@string/security_center"
     app:myLocationHyper="@string/security_center_hyperos"
     app:myLocationPad="@string/security_center_pad">
-
     <PreferenceCategory>
-
         <Preference
             android:fragment="com.sevtinge.hyperceiler.ui.fragment.app.securitycenter.ApplicationsSettings"
             android:title="@string/security_center_app_title" />

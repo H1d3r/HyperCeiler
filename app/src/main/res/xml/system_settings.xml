@@ -18,7 +18,8 @@
   -->
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    app:myLocation="@string/system_settings">
+    app:myLocation="@string/system_settings"
+    app:quick_restart="com.android.settings">
     <PreferenceCategory>
         <SwitchPreference
             android:defaultValue="false"
@@ -94,6 +95,15 @@
             android:defaultValue="false"
             android:key="prefs_key_system_settings_more_vpn_types"
             android:title="@string/system_settings_more_vpn_types" />
+
+    </PreferenceCategory>
+
+    <PreferenceCategory android:title="@string/system_settings_xiaomihyperai">
+        <SwitchPreference
+            android:defaultValue="false"
+            android:key="prefs_key_system_settings_unlock_xiaomihyperai_entrance"
+            android:summary="@string/system_settings_unlock_xiaomihyperai_entrance_desc"
+            android:title="@string/system_settings_unlock_xiaomihyperai_entrance" />
 
     </PreferenceCategory>
 

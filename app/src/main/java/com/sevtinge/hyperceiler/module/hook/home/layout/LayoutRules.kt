@@ -41,11 +41,7 @@ object LayoutRules : HomeBaseHook() {
     private var currentCellWidth = 0
     private var currentCellHeight = 0
 
-    override fun init() {
-        if (!isNewHome) {
-            return
-        }
-
+    override fun initForNewHome() {
         isUnlockGridsHook = mPrefsMap.getBoolean("home_layout_unlock_grids_new") ||
                 mPrefsMap.getBoolean("home_layout_unlock_grids")
         isSetWSPaddingTopHook = mPrefsMap.getBoolean("home_layout_workspace_padding_top_enable")
@@ -128,9 +124,9 @@ object LayoutRules : HomeBaseHook() {
             val mWorkspaceCellSideDefault = rules.getIntField("mWorkspaceCellSideDefault")
             val mCellSize = rules.getIntField("mCellSize")
             val mCellCountY = rules.getIntField("mCellCountY")
-            val mWorkspaceTopPadding = rules.callMethod("getWorkspacePaddingTop") as Int
+            val mWorkspaceTopPadding = rules.callMethodAs<Int>("getWorkspacePaddingTop")
             val mWorkspaceCellPaddingBottom = rules.getObjectFieldAs<Any>("mWorkspaceCellPaddingBottom")
-                .callMethod("getValue") as Int
+                .callMethodAs<Int>("getValue")
 
             val sWorkspacePaddingTop = if (isSetWSPaddingTopHook) {
                 DisplayUtils.dp2px(

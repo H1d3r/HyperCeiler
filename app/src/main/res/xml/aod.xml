@@ -19,7 +19,8 @@
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     app:myLocation="@string/aod"
-    app:myLocationHyper="@string/aod_hyperos">
+    app:myLocationHyper="@string/aod_hyperos"
+    app:quick_restart="com.miui.aod">
 
     <PreferenceCategory>
 

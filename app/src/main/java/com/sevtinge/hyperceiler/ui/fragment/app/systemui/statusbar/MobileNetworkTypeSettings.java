@@ -18,26 +18,26 @@
 */
 package com.sevtinge.hyperceiler.ui.fragment.app.systemui.statusbar;
 
-import android.view.View;
+import static com.sevtinge.hyperceiler.utils.devicesdk.SystemSDKKt.isMoreHyperOSVersion;
 
 import androidx.annotation.NonNull;
-
-import com.sevtinge.hyperceiler.R;
-import com.sevtinge.hyperceiler.ui.activity.base.BaseSettingsActivity;
-import com.sevtinge.hyperceiler.ui.fragment.base.SettingsPreferenceFragment;
-import com.sevtinge.hyperceiler.utils.prefs.PrefsUtils;
-
-import fan.preference.DropDownPreference;
 import androidx.preference.Preference;
 import androidx.preference.PreferenceCategory;
 import androidx.preference.SwitchPreference;
 
-public class MobileNetworkTypeSettings extends SettingsPreferenceFragment
+import com.sevtinge.hyperceiler.R;
+import com.sevtinge.hyperceiler.ui.fragment.dashboard.DashboardFragment;
+import com.sevtinge.hyperceiler.utils.prefs.PrefsUtils;
+
+import fan.preference.DropDownPreference;
+
+public class MobileNetworkTypeSettings extends DashboardFragment
     implements Preference.OnPreferenceChangeListener {
 
     DropDownPreference mMobileMode;
     PreferenceCategory mMobileTypeGroup;
     SwitchPreference mMobileType;
+    SwitchPreference mMobileIndicator;
 
     @Override
     public int getPreferenceScreenResId() {
@@ -48,11 +48,13 @@ public class MobileNetworkTypeSettings extends SettingsPreferenceFragment
     public void initPrefs() {
         int mobileMode = Integer.parseInt(PrefsUtils.getSharedStringPrefs(getContext(), "prefs_key_system_ui_status_bar_icon_show_mobile_network_type", "0"));
         mMobileMode = findPreference("prefs_key_system_ui_status_bar_icon_show_mobile_network_type");
+        mMobileIndicator = findPreference("prefs_key_system_ui_status_bar_mobile_indicator");
         mMobileType = findPreference("prefs_key_system_ui_statusbar_mobile_type_enable");
         mMobileTypeGroup = findPreference("prefs_key_system_ui_statusbar_mobile_type_group");
 
         setMobileMode(mobileMode);
         mMobileMode.setOnPreferenceChangeListener(this);
+        mMobileIndicator.setVisible(!isMoreHyperOSVersion(2f));
     }
 
     @Override

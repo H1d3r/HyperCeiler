@@ -56,7 +56,7 @@ import com.sevtinge.hyperceiler.module.hook.home.folder.FolderAutoClose;
 import com.sevtinge.hyperceiler.module.hook.home.folder.FolderBlur;
 import com.sevtinge.hyperceiler.module.hook.home.folder.FolderColumns;
 import com.sevtinge.hyperceiler.module.hook.home.folder.FolderShade;
-import com.sevtinge.hyperceiler.module.hook.home.folder.FolderVerticalPadding;
+import com.sevtinge.hyperceiler.module.hook.home.folder.FolderVerticalSpacing;
 import com.sevtinge.hyperceiler.module.hook.home.folder.SmallFolderIconBlur;
 import com.sevtinge.hyperceiler.module.hook.home.folder.UnlockBlurSupported;
 import com.sevtinge.hyperceiler.module.hook.home.gesture.CornerSlide;
@@ -126,7 +126,6 @@ import com.sevtinge.hyperceiler.module.hook.home.title.IconTitleCustomization;
 import com.sevtinge.hyperceiler.module.hook.home.title.LargeIconCornerRadius;
 import com.sevtinge.hyperceiler.module.hook.home.title.NewInstallIndicator;
 import com.sevtinge.hyperceiler.module.hook.home.title.PerfectIcon;
-import com.sevtinge.hyperceiler.module.hook.home.title.RecommendAppsSwitch;
 import com.sevtinge.hyperceiler.module.hook.home.title.TitleFontSize;
 import com.sevtinge.hyperceiler.module.hook.home.title.TitleMarquee;
 import com.sevtinge.hyperceiler.module.hook.home.widget.AllWidgetAnimation;
@@ -188,11 +187,12 @@ public class HomeV extends BaseModule {
         // 文件夹
         initHook(FolderAutoClose.INSTANCE, mPrefsMap.getBoolean("home_folder_auto_close"));
         initHook(new FolderShade(), mPrefsMap.getStringAsInt("home_folder_shade", 1) > 0);
-        initHook(FolderColumns.INSTANCE, mPrefsMap.getInt("home_folder_columns", 3) != 3 ||
-                mPrefsMap.getBoolean("home_folder_width"));
+        initHook(FolderColumns.INSTANCE, mPrefsMap.getStringAsInt("home_folder_title_pos", 0) != 0 ||
+                mPrefsMap.getBoolean("home_folder_width") ||
+                mPrefsMap.getInt("home_folder_columns", 3) != 3);
         initHook(new FolderAnimation(), mPrefsMap.getBoolean("home_folder_animation"));
         initHook(new SmallFolderIconBlur(), mPrefsMap.getBoolean("home_small_folder_icon_bg"));
-        initHook(FolderVerticalPadding.INSTANCE, mPrefsMap.getInt("home_folder_vertical_padding", 0) != 0);
+        initHook(FolderVerticalSpacing.INSTANCE, mPrefsMap.getBoolean("home_folder_vertical_spacing_enable"));
 
         initHook(new BigFolderIcon(), false);
         initHook(new BigFolderIconBlur2x1(), mPrefsMap.getBoolean("home_big_folder_icon_bg_2x1"));
@@ -200,7 +200,7 @@ public class HomeV extends BaseModule {
         initHook(new BigFolderIconBlur(), mPrefsMap.getBoolean("home_big_folder_icon_bg"));
         initHook(new BigFolderItemMaxCount(), mPrefsMap.getBoolean("home_big_folder_item_max_count"));
         initHook(new UnlockBlurSupported(), mPrefsMap.getBoolean("home_folder_unlock_blur_supported"));
-        initHook(new RecommendAppsSwitch(), mPrefsMap.getBoolean("home_folder_recommend_apps_switch"));
+        // initHook(new RecommendAppsSwitch(), mPrefsMap.getBoolean("home_folder_recommend_apps_switch"));
 
         // 抽屉
         initHook(AppDrawer.INSTANCE, mPrefsMap.getBoolean("home_drawer_all") ||
@@ -210,7 +210,6 @@ public class HomeV extends BaseModule {
         initHook(new PinyinArrangement(), mPrefsMap.getBoolean("home_drawer_pinyin"));
 
         // 最近任务
-        initHook(BlurLevel.INSTANCE, mPrefsMap.getStringAsInt("home_recent_blur_level", 6) != 6);
         initHook(DisableRecentViewWallpaperDarken.INSTANCE, mPrefsMap.getBoolean("home_recent_disable_wallpaper_dimming"));
         initHook(HideStatusBarWhenEnterRecent.INSTANCE, mPrefsMap.getBoolean("home_recent_hide_status_bar_in_task_view"));
         initHook(RemoveCardAnim.INSTANCE, mPrefsMap.getBoolean("home_recent_modify_animation"));
@@ -248,7 +247,7 @@ public class HomeV extends BaseModule {
         initHook(new NewInstallIndicator(), mPrefsMap.getBoolean("home_title_title_new_install"));
         initHook(new IconTitleCustomization(), mPrefsMap.getBoolean("home_title_title_icontitlecustomization_onoff"));
         initHook(new HiddenAllTitle(), mPrefsMap.getBoolean("home_drawer_font_hidden"));
-        initHook(new TitleFontSize(), mPrefsMap.getInt("home_title_font_size", 12) != 12);
+        initHook(new TitleFontSize());
         initHook(IconTitleColor.INSTANCE, true);
         initHook(new UnlockHotseatIcon(), mPrefsMap.getBoolean("home_dock_unlock_hotseat"));
         initHook(new IconMessageColorCustom(), mPrefsMap.getBoolean("home_title_notif_color"));

@@ -18,22 +18,18 @@
 */
 package com.sevtinge.hyperceiler.ui.fragment.app.systemui.statusbar;
 
-import android.view.View;
-
 import androidx.annotation.NonNull;
+import androidx.preference.Preference;
+import androidx.preference.PreferenceCategory;
 
 import com.sevtinge.hyperceiler.R;
-import com.sevtinge.hyperceiler.ui.activity.base.BaseSettingsActivity;
-import com.sevtinge.hyperceiler.ui.fragment.base.SettingsPreferenceFragment;
+import com.sevtinge.hyperceiler.ui.fragment.dashboard.DashboardFragment;
 import com.sevtinge.hyperceiler.utils.prefs.PrefsUtils;
 
 import fan.preference.DropDownPreference;
 import fan.preference.SeekBarPreferenceCompat;
 
-import androidx.preference.Preference;
-import androidx.preference.PreferenceCategory;
-
-public class ClockIndicatorSettings extends SettingsPreferenceFragment
+public class ClockIndicatorSettings extends DashboardFragment
     implements Preference.OnPreferenceChangeListener {
 
     DropDownPreference mClockModePreference;
@@ -44,14 +40,6 @@ public class ClockIndicatorSettings extends SettingsPreferenceFragment
     @Override
     public int getPreferenceScreenResId() {
         return R.xml.system_ui_status_bar_clock_indicator;
-    }
-
-    @Override
-    public View.OnClickListener addRestartListener() {
-        return view -> ((BaseSettingsActivity)getActivity()).showRestartDialog(
-            getResources().getString(R.string.system_ui),
-            "com.android.systemui"
-        );
     }
 
     @Override

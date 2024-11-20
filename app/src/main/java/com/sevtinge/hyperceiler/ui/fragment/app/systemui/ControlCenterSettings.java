@@ -18,6 +18,7 @@
  */
 package com.sevtinge.hyperceiler.ui.fragment.app.systemui;
 
+import static com.sevtinge.hyperceiler.utils.devicesdk.SystemSDKKt.isMoreAndroidVersion;
 import static com.sevtinge.hyperceiler.utils.devicesdk.SystemSDKKt.isMoreHyperOSVersion;
 
 import android.content.Intent;
@@ -28,12 +29,15 @@ import android.view.View;
 import android.widget.SeekBar;
 
 import androidx.annotation.NonNull;
+import androidx.preference.Preference;
+import androidx.preference.PreferenceCategory;
+import androidx.preference.SwitchPreference;
 
 import com.sevtinge.hyperceiler.R;
 import com.sevtinge.hyperceiler.prefs.RecommendPreference;
 import com.sevtinge.hyperceiler.ui.activity.SubPickerActivity;
 import com.sevtinge.hyperceiler.ui.activity.base.BaseSettingsActivity;
-import com.sevtinge.hyperceiler.ui.fragment.base.SettingsPreferenceFragment;
+import com.sevtinge.hyperceiler.ui.fragment.dashboard.DashboardFragment;
 import com.sevtinge.hyperceiler.ui.fragment.sub.AppPicker;
 import com.sevtinge.hyperceiler.utils.KillApp;
 import com.sevtinge.hyperceiler.utils.ThreadPoolManager;
@@ -43,12 +47,9 @@ import com.sevtinge.hyperceiler.utils.prefs.PrefsUtils;
 
 import fan.preference.ColorPickerPreference;
 import fan.preference.DropDownPreference;
-import androidx.preference.Preference;
-import androidx.preference.PreferenceCategory;
 import fan.preference.SeekBarPreferenceCompat;
-import androidx.preference.SwitchPreference;
 
-public class ControlCenterSettings extends SettingsPreferenceFragment implements Preference.OnPreferenceChangeListener {
+public class ControlCenterSettings extends DashboardFragment implements Preference.OnPreferenceChangeListener {
 
     Preference mExpandNotification;
     PreferenceCategory mMusic;
@@ -69,6 +70,8 @@ public class ControlCenterSettings extends SettingsPreferenceFragment implements
     ColorPickerPreference mSliderColor;
     ColorPickerPreference mProgressBarColor;
     SwitchPreference mRedirectNotice;
+    SwitchPreference mShadeHeaderBlur;
+    DropDownPreference mPluginLoadMode;
 
     SwitchPreference mTaplus;
     SwitchPreference mNotifrowmenu;
@@ -111,6 +114,8 @@ public class ControlCenterSettings extends SettingsPreferenceFragment implements
         mSliderColor = findPreference("prefs_key_system_ui_control_center_media_control_seekbar_thumb_color");
         mProgressBarColor = findPreference("prefs_key_system_ui_control_center_media_control_seekbar_color");
         mRedirectNotice = findPreference("prefs_key_system_ui_control_center_redirect_notice");
+        mShadeHeaderBlur = findPreference("prefs_key_system_ui_shade_header_gradient_blur");
+        mPluginLoadMode = findPreference("prefs_key_system_ui_plugin_tiles_load_way");
         handler = new Handler();
 
         mExpandNotification.setOnPreferenceClickListener(
@@ -130,6 +135,7 @@ public class ControlCenterSettings extends SettingsPreferenceFragment implements
                 }
         );
 
+        mPluginLoadMode.setVisible(isMoreHyperOSVersion(2f));
         if (isMoreHyperOSVersion(1f)) {
             mNewCCGrid.setVisible(false);
             mCard.setVisible(false);
@@ -153,7 +159,8 @@ public class ControlCenterSettings extends SettingsPreferenceFragment implements
             mThemeBlur.setVisible(false);
             mRoundedRectRadius.setVisible(false);
         }
-        mRedirectNotice.setVisible(!isMoreHyperOSVersion(2f));
+        mRedirectNotice.setVisible(!isMoreAndroidVersion(35));
+        mShadeHeaderBlur.setVisible(isMoreHyperOSVersion(2f) && isMoreAndroidVersion(35));
         mFiveG.setVisible(TelephonyManager.getDefault().isFiveGCapable());
         mProgressModeThickness.setVisible(Integer.parseInt(PrefsUtils.mSharedPreferences.getString("prefs_key_system_ui_control_center_media_control_progress_mode", "0")) == 2);
         mProgressModeCornerRadius.setVisible(Integer.parseInt(PrefsUtils.mSharedPreferences.getString("prefs_key_system_ui_control_center_media_control_progress_mode", "0")) == 2);

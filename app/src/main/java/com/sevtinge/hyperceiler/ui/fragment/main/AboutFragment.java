@@ -42,12 +42,14 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.sevtinge.hyperceiler.BuildConfig;
 import com.sevtinge.hyperceiler.R;
-import com.sevtinge.hyperceiler.expansionpacks.utils.ClickCountsUtils;
+import com.sevtinge.hyperceiler.expansion.utils.ClickCountsUtils;
 import com.sevtinge.hyperceiler.ui.activity.MainActivityContextHelper;
 import com.sevtinge.hyperceiler.ui.fragment.base.SettingsPreferenceFragment;
+import com.sevtinge.hyperceiler.ui.fragment.dashboard.DashboardFragment;
 import com.sevtinge.hyperceiler.utils.ActionBarUtils;
 import com.sevtinge.hyperceiler.view.BgEffectPainter;
 import com.sevtinge.hyperceiler.widget.VersionCard;
+import com.sevtinge.hyperceiler.ui.fragment.main.ContentFragment.IFragmentChange;
 
 import java.lang.reflect.Field;
 
@@ -57,7 +59,8 @@ import fan.core.widget.NestedScrollView;
 import fan.preference.PreferenceFragment;
 import fan.springback.view.SpringBackLayout;
 
-public class AboutFragment extends SettingsPreferenceFragment implements View.OnScrollChangeListener {
+public class AboutFragment extends DashboardFragment
+        implements View.OnScrollChangeListener, IFragmentChange {
 
     private int lIIlIll = 100 >>> 7;
     private final int lIIlIlI = 100 >>> 6;
@@ -166,16 +169,6 @@ public class AboutFragment extends SettingsPreferenceFragment implements View.On
     @Override
     public int getPreferenceScreenResId() {
         return R.xml.prefs_about;
-    }
-
-    private void setOverlayMode() {
-        try {
-            Field declaredField = PreferenceFragment.class.getDeclaredField("mIsOverlayMode");
-            declaredField.setAccessible(true);
-            declaredField.set(this, Boolean.FALSE);
-        } catch (Exception e) {
-            Log.e("AboutFragment", "declaredField", e);
-        }
     }
 
     private void setShaderBackground() {
@@ -303,5 +296,15 @@ public class AboutFragment extends SettingsPreferenceFragment implements View.On
     @Override
     public void onDestroy() {
         super.onDestroy();
+    }
+
+    @Override
+    public void onEnter() {
+
+    }
+
+    @Override
+    public void onLeave() {
+
     }
 }

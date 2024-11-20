@@ -41,7 +41,7 @@ import com.sevtinge.hyperceiler.module.hook.systemframework.DisableMiuiWatermark
 import com.sevtinge.hyperceiler.module.hook.systemframework.DisablePinVerifyPer72h;
 import com.sevtinge.hyperceiler.module.hook.systemframework.DisableVerifyCanBeDisabled;
 import com.sevtinge.hyperceiler.module.hook.systemframework.FlagSecure;
-import com.sevtinge.hyperceiler.module.hook.systemframework.FreeFormCount;
+import com.sevtinge.hyperceiler.module.hook.systemframework.freeform.FreeFormCount;
 import com.sevtinge.hyperceiler.module.hook.systemframework.FreeformBubble;
 import com.sevtinge.hyperceiler.module.hook.systemframework.HookEntry;
 import com.sevtinge.hyperceiler.module.hook.systemframework.LinkTurboToast;
@@ -84,7 +84,7 @@ import com.sevtinge.hyperceiler.module.hook.systemframework.network.N28Band;
 import com.sevtinge.hyperceiler.module.hook.systemframework.network.N5N8Band;
 import com.sevtinge.hyperceiler.module.hook.various.NoAccessDeviceLogsRequest;
 
-@HookBase(pkg = "android", isPad = false, tarSdkVersion = 33)
+@HookBase(pkg = "android", isPad = true, tarSdkVersion = 33)
 public class SystemFrameworkT extends BaseModule {
 
     @Override

@@ -52,13 +52,11 @@ import com.sevtinge.hyperceiler.module.hook.systemui.controlcenter.DisableDevice
 import com.sevtinge.hyperceiler.module.hook.systemui.controlcenter.ExpandNotification;
 import com.sevtinge.hyperceiler.module.hook.systemui.controlcenter.FiveGTile;
 import com.sevtinge.hyperceiler.module.hook.systemui.controlcenter.FixTilesList;
-import com.sevtinge.hyperceiler.module.hook.systemui.controlcenter.FlashLight;
 import com.sevtinge.hyperceiler.module.hook.systemui.controlcenter.GmsTile;
 import com.sevtinge.hyperceiler.module.hook.systemui.controlcenter.HideDelimiter;
 import com.sevtinge.hyperceiler.module.hook.systemui.controlcenter.MediaButton;
 import com.sevtinge.hyperceiler.module.hook.systemui.controlcenter.MediaControlPanelBackgroundMix;
 import com.sevtinge.hyperceiler.module.hook.systemui.controlcenter.MediaControlPanelTimeViewTextSize;
-import com.sevtinge.hyperceiler.module.hook.systemui.controlcenter.MediaControlSeekbarCustom;
 import com.sevtinge.hyperceiler.module.hook.systemui.controlcenter.MediaSeekBarColor;
 import com.sevtinge.hyperceiler.module.hook.systemui.controlcenter.MuteVisibleNotifications;
 import com.sevtinge.hyperceiler.module.hook.systemui.controlcenter.NotificationImportanceHyperOSFix;
@@ -73,10 +71,11 @@ import com.sevtinge.hyperceiler.module.hook.systemui.controlcenter.QSGrid;
 import com.sevtinge.hyperceiler.module.hook.systemui.controlcenter.QSGridLabels;
 import com.sevtinge.hyperceiler.module.hook.systemui.controlcenter.ReduceBrightColorsTile;
 import com.sevtinge.hyperceiler.module.hook.systemui.controlcenter.RemoveNotifNumLimit;
+import com.sevtinge.hyperceiler.module.hook.systemui.controlcenter.ShadeHeaderGradientBlur;
 import com.sevtinge.hyperceiler.module.hook.systemui.controlcenter.SunlightMode;
 import com.sevtinge.hyperceiler.module.hook.systemui.controlcenter.SwitchCCAndNotification;
 import com.sevtinge.hyperceiler.module.hook.systemui.controlcenter.TaplusTile;
-import com.sevtinge.hyperceiler.module.hook.systemui.lockscreen.AddBlurEffectToLockScreen;
+import com.sevtinge.hyperceiler.module.hook.systemui.controlcenter.os2.NewFlashLight;
 import com.sevtinge.hyperceiler.module.hook.systemui.lockscreen.AllowThirdLockScreenUseFace;
 import com.sevtinge.hyperceiler.module.hook.systemui.lockscreen.BlurButton;
 import com.sevtinge.hyperceiler.module.hook.systemui.lockscreen.ChargingCVP;
@@ -116,6 +115,7 @@ import com.sevtinge.hyperceiler.module.hook.systemui.statusbar.icon.all.IconsFro
 import com.sevtinge.hyperceiler.module.hook.systemui.statusbar.icon.all.StatusBarIcon;
 import com.sevtinge.hyperceiler.module.hook.systemui.statusbar.icon.all.StatusBarIconPositionAdjust;
 import com.sevtinge.hyperceiler.module.hook.systemui.statusbar.icon.all.WifiNetworkIndicator;
+import com.sevtinge.hyperceiler.module.hook.systemui.statusbar.icon.v.FocusNotifLyric;
 import com.sevtinge.hyperceiler.module.hook.systemui.statusbar.layout.StatusBarLayout;
 import com.sevtinge.hyperceiler.module.hook.systemui.statusbar.model.DualRowSignalHook;
 import com.sevtinge.hyperceiler.module.hook.systemui.statusbar.model.MobileNetwork;
@@ -155,7 +155,6 @@ public class SystemUiV extends BaseModule {
         initHook(new MediaSeekBarColor(), mPrefsMap.getInt("system_ui_control_center_media_control_seekbar_color", -1) != -1
                 || mPrefsMap.getInt("system_ui_control_center_media_control_seekbar_thumb_color", -1) != -1);
         initHook(new SquigglyProgress(), mPrefsMap.getStringAsInt("system_ui_control_center_media_control_progress_mode", 0) == 1);
-        initHook(new MediaControlSeekbarCustom(), mPrefsMap.getStringAsInt("system_ui_control_center_media_control_progress_mode", 0) == 2);
         initHook(new MediaControlPanelTimeViewTextSize(), mPrefsMap.getInt("system_ui_control_center_media_control_time_view_text_size", 13) != 13);
         initHook(new BluetoothIcon(), mPrefsMap.getStringAsInt("system_ui_status_bar_icon_bluetooth", 0) != 0 && !isMoreHyperOSVersion(1f));
         initHook(new WifiStandard(), mPrefsMap.getStringAsInt("system_ui_status_bar_icon_wifi_standard", 0) > 0);
@@ -204,7 +203,6 @@ public class SystemUiV extends BaseModule {
 
         // 时钟指示器
         initHook(StatusBarClockNew.INSTANCE, mPrefsMap.getBoolean("system_ui_statusbar_clock_all_status_enable"));
-        initHook(new DisableAnim(), mPrefsMap.getBoolean("system_ui_disable_clock_anim"));
         initHook(new FixColor(), mPrefsMap.getBoolean("system_ui_statusbar_clock_fix_color"));
 
         // 硬件指示器
@@ -212,6 +210,9 @@ public class SystemUiV extends BaseModule {
                 mPrefsMap.getBoolean("system_ui_statusbar_temp_enable"));
 
         // initHook(new DisplayHardwareDetailForHyper(), true);
+
+        // 焦点歌词
+        initHook(FocusNotifLyric.INSTANCE, mPrefsMap.getBoolean("system_ui_statusbar_music_switch"));
 
         // 灵动舞台
         initHook(HideStrongToast.INSTANCE, mPrefsMap.getBoolean("system_ui_status_bar_hide_smart_strong_toast"));
@@ -247,6 +248,7 @@ public class SystemUiV extends BaseModule {
 
         // 控制中心
         // initHook(new SmartHome(), false);
+        initHook(new ShadeHeaderGradientBlur(), mPrefsMap.getBoolean("system_ui_shade_header_gradient_blur"));
         initHook(new QSColor(), mPrefsMap.getBoolean("system_ui_control_center_qs_open_color") || mPrefsMap.getBoolean("system_ui_control_center_qs_big_open_color"));
         initHook(new UnimportantNotification(), mPrefsMap.getBoolean("system_ui_control_center_unimportant_notification"));
         initHook(new BlurEnable(), mPrefsMap.getBoolean("system_ui_control_center_statusbar_blur"));
@@ -257,7 +259,7 @@ public class SystemUiV extends BaseModule {
         initHook(new TaplusTile(), mPrefsMap.getBoolean("security_center_taplus"));
         initHook(new ReduceBrightColorsTile(), mPrefsMap.getBoolean("security_center_reduce_bright_colors_tile"));
         initHook(new FiveGTile(), mPrefsMap.getStringAsInt("system_control_center_5g_new_tile", 0) != 0);
-        initHook(new FlashLight(), mPrefsMap.getStringAsInt("security_flash_light_switch", 0) != 0);
+        initHook(NewFlashLight.INSTANCE, mPrefsMap.getStringAsInt("security_flash_light_switch", 0) != 0);
         initHook(new SunlightMode(), mPrefsMap.getStringAsInt("system_control_center_sunshine_new_mode", 0) != 0);
         initHook(new QSGridLabels(), mPrefsMap.getInt("system_control_center_old_qs_row", 1) > 1 ||
                 mPrefsMap.getBoolean("system_control_center_qs_tile_label"));
@@ -319,8 +321,6 @@ public class SystemUiV extends BaseModule {
         initHook(AllowThirdLockScreenUseFace.INSTANCE, mPrefsMap.getBoolean("system_ui_lock_screen_allow_third_face"));
         initHook(new DisableUnlockByBleToast(), mPrefsMap.getBoolean("system_ui_lock_screen_disable_unlock_by_ble_toast"));
         initHook(new LinkageAnimCustomer(), mPrefsMap.getBoolean("system_ui_lock_screen_linkage_anim"));
-
-        initHook(AddBlurEffectToLockScreen.INSTANCE, mPrefsMap.getBoolean("system_ui_lock_screen_blur_button"));
         initHook(AddBlurEffectToNotificationView.INSTANCE, mPrefsMap.getBoolean("n_enable"));
         initHook(BlurButton.INSTANCE, mPrefsMap.getBoolean("system_ui_lock_screen_blur_button"));
 

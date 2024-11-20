@@ -362,6 +362,7 @@
     <string name="control_center_5g_off">关闭</string>
     <string name="control_center_5g_v1">样式一</string>
     <string name="control_center_5g_v2">样式二</string>
+    <string name="control_center_5g_v3">内置移动网络磁贴</string>
 
     <string name="no_blur">无模糊</string>
     <string name="miui_blur">高级材质</string>
@@ -382,8 +383,9 @@
 
     <string name="tiles_gms">Google Play 服务</string>
     <string name="tiles_taplus">传送门</string>
-    <string name="tiles_5g">5G</string>
+    <string name="tiles_5g">5G 网络</string>
     <string name="tiles_sunshine_mode">阳光模式</string>
+    <string name="dashboard_5g">使用 5G 网络</string>
 
     <!--系统框架-->
     <string name="system_framework">系统框架</string>
@@ -530,6 +532,8 @@
     <string name="system_framework_use_android_package_installer_desc">恢复被破坏的 PackageInstaller API</string>
     <string name="system_framework_core_patch_bypass_isolation_violation">禁用隔离应用检查</string>
     <string name="system_framework_core_patch_bypass_isolation_violation_desc">允许第三方应用安装系统应用</string>
+    <string name="system_framework_core_patch_allow_update_system_app">允许安装系统应用</string>
+    <string name="system_framework_core_patch_allow_update_system_app_desc">允许在被禁用更新系统应用时安装系统应用</string>
     <!--浏览器-->
     <string name="browser">浏览器</string>
     <string name="browser_debug_mode">解锁开发者选项</string>
@@ -695,6 +699,7 @@
     <string name="system_ui_statusbar_clock_title">时钟指示器</string>
     <string name="system_ui_statusbar_device_title">硬件指示器</string>
     <string name="system_ui_statusbar_strong_toast_title">灵动舞台</string>
+    <string name="system_ui_statusbar_music_title">焦点歌词</string>
     <string name="system_ui_statusbar_layout_title">布局</string>
     <string name="system_ui_statusbar_layout_compatibility_mode_title">兼容模式</string>
     <string name="system_ui_statusbar_layout_compatibility_mode_desc">对所有异形屏强制开启完整屏布局</string>
@@ -882,6 +887,15 @@
     <string name="system_ui_status_bar_strong_toast_test_short_text_0">测试</string>
     <string name="system_ui_status_bar_strong_toast_test_long_text_1">这是一条长文本，它将以滚动形式输出</string>
 
+    <string name="system_ui_statusbar_music_tip">使用前注意事项：\n- 开启此功能后，请勾选并重启系统界面及对应音乐作用域\n- 此功能需要搭配 \"酒域-歌词获取\" 模块使用\n- 请确保对应音乐 App 的通知类别下有启用 \"焦点通知歌词\" 的通知和应用的焦点通知</string>
+    <string name="system_ui_statusbar_music_notification">焦点通知歌词</string>
+    <string name="system_ui_statusbar_music_cusiom_title">显示设置</string>
+    <string name="system_ui_statusbar_music_hide_clock_title">隐藏状态栏时钟</string>
+    <string name="system_ui_statusbar_music_hide_clock_desc">显示焦点歌词时隐藏状态栏时钟，并调整下拉通知中心的动画</string>
+    <string name="system_ui_statusbar_music_speed_title">歌词滚动速率</string>
+    <string name="system_ui_statusbar_music_width_title">歌词末尾垫宽</string>
+    <string name="system_ui_statusbar_music_width_desc">让滚动歌词尽可能滚动完整</string>
+
     <string name="system_ui_controlcenter_title">通知与控制中心</string>
     <string name="system_ui_controlcenter_card_title">卡片</string>
     <string name="system_ui_controlcenter_media_card_title">媒体通知卡片</string>
@@ -952,6 +966,7 @@
     <string name="system_ui_control_center_statusbar_blur">强制背景模糊</string>
     <string name="system_ui_control_center_rounded_rect_radius">圆角大小</string>
     <string name="system_ui_control_center_fix_tiles_list">补全磁贴列表</string>
+    <string name="system_ui_shade_header_gradient_blur">通知与控制中心头部渐变模糊</string>
     <string name="system_ui_control_center_switch_cc_and_notification_title">对调控制中心与通知抽屉</string>
     <string name="system_ui_control_center_hide_operator">运营商名称自定义</string>
     <string name="system_ui_control_center_hide_delimiter">隐藏分隔线</string>
@@ -1015,6 +1030,12 @@
     <string name="system_ui_other_notification_fix">禁用通知白名单</string>
     <string name="system_ui_plugin_enable_volume_blur">音量条模糊</string>
     <string name="system_ui_plugin_enable_volume_blur_desc">仅供 Android 12 及以上的 MTK 机型使用，可能存在 GPU 负载较高的情况</string>
+
+    <string name="system_ui_plugin_tiles_load_way">磁贴 hook 加载方式</string>
+    <string name="system_ui_plugin_tiles_load_way_desc">全局加载可能会导致不必要的卡顿；请根据实际可用性选择加载方式</string>
+    <string name="system_ui_plugin_tiles_load_way_global">全局</string>
+    <string name="system_ui_plugin_tiles_load_way_default">默认</string>
+    <string name="system_ui_plugin_tiles_load_way_compatibility">兼容</string>
     <!--设置-->
     <string name="system_settings">设置</string>
     <string name="system_settings_international_build">国际版本设置页面</string>
@@ -1048,6 +1069,10 @@
     <string name="system_settings_new_nfc_page">新版 NFC 页面</string>
     <string name="system_settings_new_nfc_page_desc">此功能会导致不支持的机型默认付款应用无法选中小米钱包</string>
     <string name="system_settings_more_vpn_types">显示更多 VPN 类型</string>
+
+    <string name="system_settings_xiaomihyperai">小米澎湃 AI</string>
+    <string name="system_settings_unlock_xiaomihyperai_entrance">解锁小米澎湃 AI 入口</string>
+    <string name="system_settings_unlock_xiaomihyperai_entrance_desc">开启后在设置中展示小米澎湃 AI 入口\n设备 AI 功能支持由小米决定</string>
 
     <string name="system_settings_lab_title">特色功能</string>
     <string name="system_settings_area_screenshot">解锁区域截屏</string>
@@ -1276,8 +1301,10 @@
     <string name="home_folder_shade_level_title">色彩强度</string>
     <string name="home_folder_cols_title">文件夹排列数量</string>
     <string name="home_folder_cols_format">%d 列</string>
-    <string name="home_folder_vertical_padding_title">文件夹水平间距</string>
-    <string name="home_folder_width_title">使用整个文件夹的宽度</string>
+    <string name="home_folder_horizontal_padding_desc">文件夹距离屏幕左右两边边距</string>
+    <string name="home_folder_vertical_spacing_desc">文件夹各行之间的间距</string>
+    <string name="home_folder_title_pos">标题位置</string>
+    <string name="home_folder_width_title">占满屏幕宽度</string>
     <string name="home_folder_space_title">减少边距</string>
     <string name="home_folder_blur_title">背景模糊</string>
     <string name="home_folder_recommend_apps_switch">隐藏 \"今日推荐\" 开关</string>
@@ -1319,7 +1346,8 @@
     <string name="home_title_title_icontitlecustomization">自定义应用标题</string>
     <string name="home_title_drawer_font_hidden_more">抽屉内应用标题也会被隐藏，如需保留抽屉内应用标题，请使用 \"文本大小\" 进行调整</string>
     <string name="home_title_title_new_install_more">安装新应用时不显示应用标题旁边的指示标</string>
-    <string name="home_title_font_size">文本大小</string>
+    <string name="home_title_font_size">文本大小 (桌面)</string>
+    <string name="home_drawer_title_font_size">文本大小 (抽屉)</string>
     <string name="home_title_title_color">文本颜色</string>
     <string name="home_title_animation_speed">动画速度</string>
     <string name="home_title_big_icon_corner">中等图标圆角跟随</string>
@@ -1451,6 +1479,10 @@
     <string name="home_recent_simple_blur">简单模糊</string>
     <string name="home_recent_none_blur">无模糊</string>
     <string name="home_recent_none_blur_simple_anim">无模糊 (精简动画)</string>
+    <!--LPA-->
+    <string name="lpa">LPA</string>
+    <string name="lpa_custom_imei">自定义 IMEI</string>
+    <string name="lpa_custom_imei_desc">请确认正确填写了 IMEI ，错误的 IMEI 可能会造成 eSIM 不可用或异常，由此产生的后果概不负责</string>
     <!--小米相册-编辑-->
     <string name="mediaeditor">小米相册-编辑</string>
     <string name="mediaeditor_foundation">基础</string>
@@ -1464,6 +1496,7 @@
     <string name="mediaeditor_unlock_leica_filter_title">解锁 Leica 滤镜</string>
     <string name="mediaeditor_unlock_leica_filter_desc">仅支持部分版本</string>
     <string name="mediaeditor_filter_manager">解锁大师滤镜</string>
+    <string name="mediaeditor_unlock_aigc">解锁 AIGC</string>
     <!--小米互传-->
     <string name="mishare">小米互传</string>
     <string name="mishare_disable_mishare_auto_off">禁用自动关闭小米互传</string>
@@ -1718,6 +1751,7 @@
     <string name="sogou_xiaomi_clipboard">解除剪贴板数量限制</string>
     <!--小爱视觉-->
     <string name="scanner">小爱视觉</string>
+    <string name="scanner_hyper">AI 扫描</string>
     <string name="scanner_card">解锁扫名片</string>
     <string name="scanner_translation">解锁翻译</string>
     <string name="scanner_ocr">解锁识文字</string>
@@ -1727,6 +1761,7 @@
     <string name="scanner_doc_ppt">解锁扫文件</string>
     <!--小爱同学-->
     <string name="voiceassist">小爱同学</string>
+    <string name="voiceassist_hyper">超级小爱</string>
     <string name="voiceassist_disable_watermark">禁用对话界面水印</string>
     <!--通话管理-->
     <string name="telecom">通话管理</string>
@@ -1937,5 +1972,7 @@
     <string name="system_ui_move_log_to_miui">将 statusbar_gestures.dat 移动到 MIUI 目录</string>
     <string name="home_recent_hide_card">隐藏后台卡片</string>
     <string name="home_recent_hide_card_desc">隐藏最近任务中所选应用的后台卡片</string>
+    <string name="misound_spatial">断开耳机强制打开沉浸声</string>
+    <string name="add_clipboard_clear">添加清空剪贴板按钮</string>
 
 </resources>

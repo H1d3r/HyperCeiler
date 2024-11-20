@@ -17,9 +17,7 @@
   ~ Copyright (C) 2023-2024 HyperCeiler Contributions
   -->
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
-
     <PreferenceCategory>
-
     <Preference
         android:fragment="com.sevtinge.hyperceiler.ui.fragment.app.systemui.LockScreenSettings"
         android:title="@string/system_ui_lockscreen_title" />
