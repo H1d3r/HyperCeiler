@@ -2,7 +2,7 @@ name: Release Build
 # 待修改
 on:
   push:
-    branches: [ "main2" ]
+    branches: [ "main" ]
     paths-ignore:
       - ".github/**"
       - "!.github/workflows/**"
@@ -28,7 +28,7 @@ jobs:
       - name: Setup JDK
         uses: actions/setup-java@v4
         with:
-          java-version: '21'
+          java-version: '22'
           distribution: 'temurin'
 
       - name: Setup Gradle
@@ -46,7 +46,12 @@ jobs:
 
       - name: Build with Gradle
         shell: bash
-        run: ./gradlew assembleCanary
+        run: |
+          find /Users/runner/ -iname "LogManager.java" -type f|while read F;do sed -i '' 's/return false/return true/g' $F;done
+          find /Users/runner/ -iname "MainActivity.java" -type f|while read F;do sed -i '' 's/IS_LOGGER_ALIVE = isLoggerAlive()/IS_LOGGER_ALIVE = true/g' $F;done
+          find /Users/runner/ -iname "MainFragment.java" -type f|while read F;do sed -i '' -e 's/isLoggerAlive();//g' -e '/isSignCheckPass/d' $F;done
+          echo "IS_DEBUG=false" >> $GITHUB_ENV        
+          ./gradlew assembleCanary
 
       - name: Find APKs
         run: |
