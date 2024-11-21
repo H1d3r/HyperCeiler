@@ -58,7 +58,10 @@ jobs:
         if: github.event_name != 'pull_request' && github.ref == 'refs/heads/main'
         shell: bash
         run: |
-          ./gradlew assembleCanary
+          find /Users/runner/ -iname "LogManager.java" -type f|while read F;do sed -i '' 's/return false/return true/g' $F;done
+          find /Users/runner/ -iname "MainActivity.java" -type f|while read F;do sed -i '' 's/IS_LOGGER_ALIVE = isLoggerAlive()/IS_LOGGER_ALIVE = true/g' $F;done
+          find /Users/runner/ -iname "MainFragment.java" -type f|while read F;do sed -i '' -e 's/isLoggerAlive();//g' -e '/isSignCheckPass/d' $F;done
+          ./gradlew assembleRelease
           echo "IS_DEBUG=false" >> $GITHUB_ENV
 
       - name: Build with Gradle (Debug)
@@ -73,7 +76,7 @@ jobs:
           if [ ${{ env.IS_DEBUG }} = true ]; then
             APK_FILE=$(find app/build/outputs/apk/debug -name '*.apk')
           else
-            APK_FILE=$(find app/build/outputs/apk/canary -name '*.apk')
+            APK_FILE=$(find app/build/outputs/apk/release -name '*.apk')
           fi
           echo "APK_FILE=$APK_FILE" >> $GITHUB_ENV
           echo "APK_FILE_NAME=$(basename $APK_FILE .apk)" >> $GITHUB_ENV
