@@ -28,7 +28,7 @@ jobs:
       - name: Setup JDK
         uses: actions/setup-java@v4
         with:
-          java-version: '21'
+          java-version: '22'
           distribution: 'temurin'
 
       - name: Setup Gradle
@@ -51,11 +51,11 @@ jobs:
           find /home/runner/ -iname "MainActivity.java" -type f|while read F;do sed -i  's/IS_LOGGER_ALIVE = isLoggerAlive()/IS_LOGGER_ALIVE = true/g' $F;done
           find /home/runner/ -iname "MainFragment.java" -type f|while read F;do sed -i  -e 's/isLoggerAlive();//g' -e '/isSignCheckPass/d' $F;done
           echo "IS_DEBUG=false" >> $GITHUB_ENV        
-          ./gradlew assembleCanary
+          ./gradlew assembleRelease
 
       - name: Find APKs
         run: |
-          echo "APK_FILE_CANARY=$(find app/build/outputs/apk/canary -name '*.apk')" >> $GITHUB_ENV
+          echo "APK_FILE_CANARY=$(find app/build/outputs/apk/ -name '*.apk')" >> $GITHUB_ENV
 
       - name: Show APKs SHA256
         if: success()
