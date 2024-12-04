@@ -2,7 +2,7 @@ name: Release Build
 # 待修改
 on:
   push:
-    branches: [ "main2" ]
+    branches: [ "main" ]
     paths-ignore:
       - ".github/**"
       - "!.github/workflows/**"
@@ -46,11 +46,11 @@ jobs:
 
       - name: Build with Gradle
         shell: bash
-        run: ./gradlew assembleCanary
+        run: ./gradlew assembleRelease
 
       - name: Find APKs
         run: |
-          echo "APK_FILE_CANARY=$(find app/build/outputs/apk/canary -name '*.apk')" >> $GITHUB_ENV
+          echo "APK_FILE_CANARY=$(find app/build/outputs/apk/release -name '*.apk')" >> $GITHUB_ENV
 
       - name: Show APKs SHA256
         if: success()
