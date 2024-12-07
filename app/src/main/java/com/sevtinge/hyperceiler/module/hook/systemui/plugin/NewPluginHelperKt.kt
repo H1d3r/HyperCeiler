@@ -31,18 +31,18 @@ import com.sevtinge.hyperceiler.utils.api.*
 import java.lang.ref.*
 
 // https://github.com/buffcow/Hyper5GSwitch/blob/master/app/src/main/kotlin/cn/buffcow/hyper5g/hooker/PluginLoader.kt
-object NewPluginHelper : BaseHook() {
+object NewPluginHelperKt : BaseHook() {
     override fun init() {
         loadClass("com.android.systemui.shared.plugins.PluginInstance\$PluginFactory")
             .methodFinder().filterByName("createPluginContext")
             .first().createAfterHook {
-               runCatching {
-                   val wrapper = it.result as ContextWrapper
-                   onPluginLoaded(PluginFactory(it.thisObject).also { it.pluginCtxRef = WeakReference(wrapper) })
-               }.onFailure {
-                   logE(TAG, lpparam.packageName, "Failed to create plugin context.")
-                   return@createAfterHook
-               }
+                runCatching {
+                    val wrapper = it.result as ContextWrapper
+                    onPluginLoaded(PluginFactory(it.thisObject).also { it.pluginCtxRef = WeakReference(wrapper) })
+                }.onFailure {
+                    logE(TAG, lpparam.packageName, "Failed to create plugin context.")
+                    return@createAfterHook
+                }
             }
     }
 

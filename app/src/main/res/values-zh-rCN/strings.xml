@@ -639,6 +639,8 @@
     <!--小米社区-->
     <string name="community">小米社区</string>
     <string name="community_device_modify">机型伪装</string>
+    <string name="community_fuck_detection">禁止检测</string>
+    <string name="community_fuck_detection_desc">禁止在反馈时检测 HyperCeiler 并上传。请确保问题不是由自身引起，而是确实的系统问题，再进行反馈，以免带来不必要的麻烦</string>
     <!--文件管理-->
     <string name="fileexplorer">文件管理</string>
     <string name="file_explorer_can_selectable">文件夹名称允许长按选择操作</string>
@@ -656,6 +658,7 @@
     <string name="mms_disable_fraud_risk_tip_desc">禁止展示 \"疑似诈骗 注意风险\" 提示</string>
     <string name="mms_disable_overseas_risk_tip">禁用境外短信风险提示</string>
     <string name="mms_disable_overseas_risk_tip_desc">禁止展示 \"境外短信 注意风险\" 提示</string>
+    <string name="mms_im_old_device">禁止识别为新设备</string>
     <!--电话服务-->
     <string name="phone">电话服务</string>
     <string name="phone_smart_dual_sim">解锁智能双卡切换</string>
@@ -1127,7 +1130,7 @@
 
     <string name="system_settings_permission_title">权限</string>
     <string name="system_settings_more_notification_settings">显示更多通知设置项</string>
-    <string name="system_settings_more_notification_settings_summary">需重启 \"系统界面\" 与 \"设置\" 共两个作用域方可生效</string>
+    <string name="system_settings_restart_systemui_desc">需重启 \"系统界面\" 与 \"设置\" 共两个作用域方可生效</string>
     <string name="system_settings_permission_show_app_up">显示在其他应用上层权限直达</string>
     <string name="system_settings_permission_show_app_up_desc">恢复旧版行为，直接跳转对应应用 \"显示在其他应用上层\" 的权限开关</string>
     <string name="system_settings_permission_unknown_origin_app">安装未知应用权限直达</string>
@@ -1189,6 +1192,9 @@
     <!--笔记-->
     <string name="notes">笔记</string>
     <string name="notes_disable_ai_watermark">禁用水印</string>
+    <!--录音机-->
+    <string name="sound_recorder">录音机</string>
+    <string name="sound_recorder_disable_ai_watermark">禁用水印</string>
     <!--万象息屏-->
     <string name="aod">万象息屏</string>
     <string name="aod_hyperos">息屏与锁屏编辑</string>

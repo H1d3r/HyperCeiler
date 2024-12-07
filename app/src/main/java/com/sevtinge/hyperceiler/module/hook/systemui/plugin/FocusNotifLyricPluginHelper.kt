@@ -16,20 +16,20 @@
  *
  * Copyright (C) 2023-2024 HyperCeiler Contributions
  */
+package com.sevtinge.hyperceiler.module.hook.systemui.plugin
 
-package com.sevtinge.hyperceiler.module.app;
+import com.sevtinge.hyperceiler.module.base.*
+import com.sevtinge.hyperceiler.module.hook.systemui.statusbar.icon.v.*
+import de.robv.android.xposed.*
 
-import com.hchen.database.HookBase;
-import com.sevtinge.hyperceiler.module.base.BaseModule;
-import com.sevtinge.hyperceiler.module.hook.community.DeviceModify;
-import com.sevtinge.hyperceiler.module.hook.community.FuckDetection;
-
-@HookBase(targetPackage = "com.xiaomi.vipaccount", isPad = false)
-public class Community extends BaseModule {
-
-    @Override
-    public void handleLoadPackage() {
-        initHook(new DeviceModify(), mPrefsMap.getBoolean("community_device_modify"));
-        initHook(new FuckDetection(), mPrefsMap.getBoolean("community_fuck_detection"));
+object FocusNotifLyricPluginHelper : BaseHook() {
+    override fun init() {
+        hookAllConstructors("com.android.systemui.shared.plugins.PluginActionManager\$PluginContextWrapper", object : MethodHook(){
+            override fun after(param: MethodHookParam) {
+                val thisObj = param.thisObject
+                val pathClassLoader = XposedHelpers.getObjectField(thisObj,"mClassLoader") as ClassLoader
+                FocusNotifLyric.initLoader(pathClassLoader)
+            }
+        })
     }
 }

@@ -18,19 +18,31 @@
  */
 package com.sevtinge.hyperceiler.module.hook.systemui.controlcenter;
 
+import static com.sevtinge.hyperceiler.utils.log.XposedLogUtils.logD;
 import static com.sevtinge.hyperceiler.utils.prefs.PrefsUtils.mPrefsMap;
 
 import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.GradientDrawable;
+import android.view.View;
 
 import com.sevtinge.hyperceiler.module.base.tool.HookTool;
+
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Set;
 
 import de.robv.android.xposed.XC_MethodHook;
 import de.robv.android.xposed.XposedHelpers;
 
 public class CCGridForHyperOS {
     private static final float radius = (float) mPrefsMap.getInt("system_ui_control_center_rounded_rect_radius", 72);
+
+    private static Drawable warningD = null;
+    private static Drawable enabledD = null;
+    private static Drawable restrictedD = null;
+    private static Drawable disabledD = null;
+    private static Drawable unavailableD = null;
 
     public static void initCCGridForHyperOS(ClassLoader classLoader) {
         Class<?> clazz = XposedHelpers.findClass("miui.systemui.controlcenter.qs.tileview.QSTileItemIconView", classLoader);
@@ -47,7 +59,10 @@ public class CCGridForHyperOS {
                 new HookTool.MethodHook() {
                     @Override
                     protected void before(MethodHookParam param) {
-                        XposedHelpers.callMethod(param.thisObject, "updateResources");
+                        if ((boolean) param.args[1] && (boolean) param.args[2] || warningD == null || enabledD == null || restrictedD == null || disabledD == null || unavailableD == null) {
+                            getPluginResources((Context) XposedHelpers.getObjectField(param.thisObject, "pluginContext"));
+                            // XposedHelpers.callMethod(param.thisObject, "updateResources");       // 为什么能跑起来？
+                        }
                     }
                 }
         );
@@ -57,17 +72,7 @@ public class CCGridForHyperOS {
                 new HookTool.MethodHook() {
                     @Override
                     protected void before(MethodHookParam param) {
-                        Context pluginContext = (Context) XposedHelpers.getObjectField(param.thisObject, "pluginContext");
-                        int warning = pluginContext.getResources().getIdentifier("qs_background_warning", "drawable", "miui.systemui.plugin");
-                        int enabled = pluginContext.getResources().getIdentifier("qs_background_enabled", "drawable", "miui.systemui.plugin");
-                        int restricted = pluginContext.getResources().getIdentifier("qs_background_restricted", "drawable", "miui.systemui.plugin");
-                        int disabled = pluginContext.getResources().getIdentifier("qs_background_disabled", "drawable", "miui.systemui.plugin");
-                        int unavailable = pluginContext.getResources().getIdentifier("qs_background_unavailable", "drawable", "miui.systemui.plugin");
-                        Drawable warningD = pluginContext.getTheme().getDrawable(warning);
-                        Drawable enabledD = pluginContext.getTheme().getDrawable(enabled);
-                        Drawable restrictedD = pluginContext.getTheme().getDrawable(restricted);
-                        Drawable disabledD = pluginContext.getTheme().getDrawable(disabled);
-                        Drawable unavailableD = pluginContext.getTheme().getDrawable(unavailable);
+                        if (warningD == null || enabledD == null || restrictedD == null || disabledD == null || unavailableD == null) getPluginResources((Context) XposedHelpers.getObjectField(param.thisObject, "pluginContext"));
                         if (warningD != null) {
                             GradientDrawable warningG = (GradientDrawable) warningD;
                             warningG.setCornerRadius(radius);
@@ -101,5 +106,18 @@ public class CCGridForHyperOS {
                     }
                 }
         );
+    }
+
+    private static void getPluginResources(Context pluginContext) {
+        int warning = pluginContext.getResources().getIdentifier("qs_background_warning", "drawable", "miui.systemui.plugin");
+        int enabled = pluginContext.getResources().getIdentifier("qs_background_enabled", "drawable", "miui.systemui.plugin");
+        int restricted = pluginContext.getResources().getIdentifier("qs_background_restricted", "drawable", "miui.systemui.plugin");
+        int disabled = pluginContext.getResources().getIdentifier("qs_background_disabled", "drawable", "miui.systemui.plugin");
+        int unavailable = pluginContext.getResources().getIdentifier("qs_background_unavailable", "drawable", "miui.systemui.plugin");
+        warningD = pluginContext.getTheme().getDrawable(warning);
+        enabledD = pluginContext.getTheme().getDrawable(enabled);
+        restrictedD = pluginContext.getTheme().getDrawable(restricted);
+        disabledD = pluginContext.getTheme().getDrawable(disabled);
+        unavailableD = pluginContext.getTheme().getDrawable(unavailable);
     }
 }

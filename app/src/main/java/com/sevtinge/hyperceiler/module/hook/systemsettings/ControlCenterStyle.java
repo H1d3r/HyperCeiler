@@ -17,19 +17,20 @@
  * Copyright (C) 2023-2024 HyperCeiler Contributions
  */
 
-package com.sevtinge.hyperceiler.module.app;
+package com.sevtinge.hyperceiler.module.hook.systemsettings;
 
-import com.hchen.database.HookBase;
-import com.sevtinge.hyperceiler.module.base.BaseModule;
-import com.sevtinge.hyperceiler.module.hook.community.DeviceModify;
-import com.sevtinge.hyperceiler.module.hook.community.FuckDetection;
+import android.content.Context;
 
-@HookBase(targetPackage = "com.xiaomi.vipaccount", isPad = false)
-public class Community extends BaseModule {
+import com.sevtinge.hyperceiler.module.base.BaseHook;
 
+public class ControlCenterStyle extends BaseHook {
     @Override
-    public void handleLoadPackage() {
-        initHook(new DeviceModify(), mPrefsMap.getBoolean("community_device_modify"));
-        initHook(new FuckDetection(), mPrefsMap.getBoolean("community_fuck_detection"));
+    public void init() throws NoSuchMethodException {
+        findAndHookMethod("com.android.settings.utils.StatusBarUtils", "isForceUseControlPanel", Context.class, new MethodHook(){
+            @Override
+            protected void before(MethodHookParam param) throws Throwable {
+                param.setResult(false);
+            }
+        });
     }
 }
