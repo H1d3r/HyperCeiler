@@ -700,6 +700,8 @@
     <string name="system_ui_lock_screen_force_system_fonts">时钟强制使用系统字体</string>
     <string name="system_ui_lock_screen_double_lock">双击锁屏</string>
     <string name="system_ui_lock_screen_double_lock_desc">双击空白位置锁屏</string>
+    <string name="system_ui_lock_screen_unlock_notification_restrict">解除通知限制</string>
+    <string name="system_ui_lock_screen_unlock_notification_restrict_desc">让所有通知均可以在锁屏页显示</string>
     <string name="system_ui_lock_screen_not_disturb_mode_title">隐藏勿扰模式通知</string>
     <string name="system_ui_lock_screen_unlock_tip_title">隐藏屏幕底部解锁提示</string>
     <string name="system_ui_lock_screen_hide_status_bar">锁屏时隐藏状态栏</string>
@@ -1072,14 +1074,10 @@
     <string name="system_ui_qs_label">快捷开关标签</string>
     <string name="system_ui_notification_title">通知</string>
     <string name="system_ui_other_notification_fix">禁用通知白名单</string>
+    <string name="system_ui_other_default_plugin_theme">解除高级材质模糊限制</string>
+    <string name="system_ui_other_default_plugin_theme_desc">解除系统界面组件对第三方主题默认禁用的高级材质模糊</string>
     <string name="system_ui_plugin_enable_volume_blur">音量条模糊</string>
     <string name="system_ui_plugin_enable_volume_blur_desc">仅供 Android 12 及以上的 MTK 机型使用，可能存在 GPU 负载较高的情况</string>
-
-    <string name="system_ui_plugin_tiles_load_way">磁贴 hook 加载方式</string>
-    <string name="system_ui_plugin_tiles_load_way_desc">全局加载可能会导致不必要的卡顿；请根据实际可用性选择加载方式</string>
-    <string name="system_ui_plugin_tiles_load_way_global">全局</string>
-    <string name="system_ui_plugin_tiles_load_way_default">默认</string>
-    <string name="system_ui_plugin_tiles_load_way_compatibility">兼容</string>
     <!--设置-->
     <string name="system_settings">设置</string>
     <string name="system_settings_international_build">国际版本设置页面</string>
@@ -1518,6 +1516,7 @@
     <string name="home_other_mi_pad_enable_more_setting_title">解锁桌面设置更多选项</string>
     <string name="home_other_mi_pad_enable_more_setting_desc">解锁后的功能不一定可用，部分功能需要系统底层支持</string>
     <string name="home_other_disable_prestart">禁用应用预加载</string>
+    <string name="home_other_opt_app_launch_delay">优化应用启动延迟</string>
 
     <string name="home_recent_blur_level">模糊等级</string>
     <string name="home_recent_complete_blur_plus">完整模糊补充 (实验性)</string>

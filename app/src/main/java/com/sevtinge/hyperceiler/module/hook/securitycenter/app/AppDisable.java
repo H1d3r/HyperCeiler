@@ -19,8 +19,6 @@
 package com.sevtinge.hyperceiler.module.hook.securitycenter.app;
 
 import static com.sevtinge.hyperceiler.module.base.tool.OtherTool.getModuleRes;
-import static com.sevtinge.hyperceiler.module.base.tool.OtherTool.getPackageVersionCode;
-import static com.sevtinge.hyperceiler.utils.Helpers.getPackageVersionName;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
@@ -34,9 +32,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
 
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentActivity;
-
 import com.sevtinge.hyperceiler.R;
 import com.sevtinge.hyperceiler.module.base.BaseHook;
 import com.sevtinge.hyperceiler.module.base.dexkit.DexKit;
@@ -48,8 +43,8 @@ import org.luckypray.dexkit.DexKitBridge;
 import org.luckypray.dexkit.query.FindMethod;
 import org.luckypray.dexkit.query.matchers.MethodMatcher;
 import org.luckypray.dexkit.result.MethodData;
+import org.luckypray.dexkit.result.base.BaseData;
 
-import java.lang.reflect.AnnotatedElement;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
@@ -128,14 +123,14 @@ public class AppDisable extends BaseHook {
                 }
         );
 
-        Method method = (Method) DexKit.getDexKitBridge("MethodOnOptionsItemSelected", new IDexKit() {
+        Method method = DexKit.findMember("MethodOnOptionsItemSelected", new IDexKit() {
             @Override
-            public AnnotatedElement dexkit(DexKitBridge bridge) throws ReflectiveOperationException {
+            public BaseData dexkit(DexKitBridge bridge) throws ReflectiveOperationException {
                 MethodData methodData = bridge.findMethod(FindMethod.create()
                         .matcher(MethodMatcher.create()
                                 .usingStrings("application/vnd.android.package-archive")
                         )).singleOrNull();
-                return methodData.getMethodInstance(lpparam.classLoader);
+                return methodData;
             }
         });
 

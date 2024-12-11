@@ -20,14 +20,12 @@ package com.sevtinge.hyperceiler.module.hook.various
 
 import com.github.kyuubiran.ezxhelper.*
 import com.github.kyuubiran.ezxhelper.ClassUtils.loadClass
-import com.github.kyuubiran.ezxhelper.EzXHelper.safeClassLoader
 import com.github.kyuubiran.ezxhelper.HookFactory.`-Static`.createHook
 import com.github.kyuubiran.ezxhelper.HookFactory.`-Static`.createHooks
 import com.github.kyuubiran.ezxhelper.finders.MethodFinder.`-Static`.methodFinder
 import com.sevtinge.hyperceiler.module.base.*
 import com.sevtinge.hyperceiler.module.base.dexkit.*
-import com.sevtinge.hyperceiler.module.base.dexkit.DexKitTool.addUsingStringsEquals
-import com.sevtinge.hyperceiler.module.base.dexkit.DexKitTool.toMethod
+import java.lang.reflect.*
 
 object UnlockSuperClipboard : BaseHook() {
     // by StarVoyager
@@ -93,26 +91,26 @@ object UnlockSuperClipboard : BaseHook() {
     }
 
     private fun dexKitSuperClipboard(switch: Boolean) {
-        val ro by lazy {
-            DexKit.getDexKitBridge("dexKitSuperClipboardRo") {
+        val ro by lazy<Method> {
+            DexKit.findMember("dexKitSuperClipboardRo") {
                 it.findMethod {
                     matcher {
-                        addUsingStringsEquals("ro.miui.support_super_clipboard")
+                        usingEqStrings("ro.miui.support_super_clipboard")
                         returnType = "boolean"
                     }
-                }.singleOrNull()?.getMethodInstance(safeClassLoader)
-            }.toMethod()
+                }.singleOrNull()
+            }
         }
 
-        val sys by lazy {
-            DexKit.getDexKitBridge("dexKitSuperClipboardSys") {
+        val sys by lazy<Method> {
+            DexKit.findMember("dexKitSuperClipboardSys") {
                 it.findMethod {
                     matcher {
-                        addUsingStringsEquals("persist.sys.support_super_clipboard")
+                        usingEqStrings("persist.sys.support_super_clipboard")
                         returnType = "boolean"
                     }
-                }.singleOrNull()?.getMethodInstance(safeClassLoader)
-            }.toMethod()
+                }.singleOrNull()
+            }
         }
 
         setOf(ro, sys).toSet().createHooks {

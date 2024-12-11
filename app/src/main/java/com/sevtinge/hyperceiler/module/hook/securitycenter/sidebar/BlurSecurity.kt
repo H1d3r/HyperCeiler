@@ -24,13 +24,10 @@ import android.graphics.drawable.*
 import android.util.*
 import android.view.*
 import android.widget.*
-import com.github.kyuubiran.ezxhelper.*
-import com.github.kyuubiran.ezxhelper.EzXHelper.safeClassLoader
 import com.github.kyuubiran.ezxhelper.HookFactory.`-Static`.createAfterHook
 import com.github.kyuubiran.ezxhelper.HookFactory.`-Static`.createHook
 import com.sevtinge.hyperceiler.module.base.*
 import com.sevtinge.hyperceiler.module.base.dexkit.*
-import com.sevtinge.hyperceiler.module.base.dexkit.DexKitTool.toMethod
 import com.sevtinge.hyperceiler.utils.*
 import com.sevtinge.hyperceiler.utils.blur.BlurUtils.*
 import com.sevtinge.hyperceiler.utils.blur.MiBlurUtilsKt.addMiBackgroundBlendColor
@@ -39,6 +36,7 @@ import com.sevtinge.hyperceiler.utils.blur.MiBlurUtilsKt.setMiBackgroundBlurRadi
 import com.sevtinge.hyperceiler.utils.blur.MiBlurUtilsKt.setMiViewBlurMode
 import com.sevtinge.hyperceiler.utils.color.*
 import de.robv.android.xposed.*
+import java.lang.reflect.*
 
 object BlurSecurity : BaseHook() {
     private val blurRadius by lazy {
@@ -76,14 +74,14 @@ object BlurSecurity : BaseHook() {
     // keepList 列表内元素及其子元素不会反色
     private val keepColorList = arrayOf("rv_information")
 
-    private val lottieAnimation by lazy {
-        DexKit.getDexKitBridge("BlurSecurity1") {
+    private val lottieAnimation by lazy<Method> {
+        DexKit.findMember("BlurSecurity1") {
             it.findMethod {
                 matcher {
                     addUsingString("game_turbo_box_mode_change")
                 }
-            }.single().getMethodInstance(ClassLoaderProvider.safeClassLoader)
-        }.toMethod()
+            }.single()
+        }
     }
 
     override fun init() {
@@ -255,14 +253,14 @@ object BlurSecurity : BaseHook() {
                 "seekbar_text_speed"
             )
 
-            val gameManagerMethod = DexKit.getDexKitBridge("BlurSecurity2") {
+            val gameManagerMethod = DexKit.findMember<Method>("BlurSecurity2") {
                 it.findMethod {
                     searchPackages = listOf("com.miui.gamebooster.windowmanager.newbox")
                     matcher {
                         usingStrings = listOf("addView error")
                     }
-                }.single().getMethodInstance(safeClassLoader)
-            }.toMethod()
+                }.single()
+            }
 
             gameManagerMethod.createAfterHook {
                 val view = it.args[0] as View

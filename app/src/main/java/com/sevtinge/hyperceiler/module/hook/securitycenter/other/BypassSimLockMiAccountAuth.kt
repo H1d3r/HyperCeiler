@@ -21,12 +21,12 @@ package com.sevtinge.hyperceiler.module.hook.securitycenter.other
 import com.github.kyuubiran.ezxhelper.HookFactory.`-Static`.createHook
 import com.sevtinge.hyperceiler.module.base.*
 import com.sevtinge.hyperceiler.module.base.dexkit.*
-import com.sevtinge.hyperceiler.module.base.dexkit.DexKitTool.toElementList
 import org.luckypray.dexkit.query.enums.*
+import java.lang.reflect.*
 
 object BypassSimLockMiAccountAuth : BaseHook() {
-    private val findMethod by lazy {
-        DexKit.getDexKitBridgeList("BypassSimLockMiAccountAuth") {
+    private val findMethod by lazy<List<Method>> {
+        DexKit.findMemberList("BypassSimLockMiAccountAuth") {
             it.findMethod {
                 matcher {
                     declaredClass {
@@ -39,8 +39,8 @@ object BypassSimLockMiAccountAuth : BaseHook() {
                     paramTypes("android.content.Context")
                     returnType = "boolean"
                 }
-            }.toElementList()
-        }.toMethodList()
+            }
+        }
     }
 
     override fun init() {

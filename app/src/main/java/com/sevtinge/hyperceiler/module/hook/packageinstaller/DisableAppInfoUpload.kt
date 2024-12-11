@@ -23,8 +23,6 @@ import com.github.kyuubiran.ezxhelper.HookFactory.`-Static`.createHook
 import com.sevtinge.hyperceiler.*
 import com.sevtinge.hyperceiler.module.base.*
 import com.sevtinge.hyperceiler.module.base.dexkit.*
-import com.sevtinge.hyperceiler.module.base.dexkit.DexKitTool.toElementList
-import com.sevtinge.hyperceiler.module.base.dexkit.DexKitTool.toMethod
 import org.luckypray.dexkit.query.matchers.base.*
 import java.lang.reflect.*
 import java.util.stream.*
@@ -45,7 +43,7 @@ object DisableAppInfoUpload : BaseHook() {
         /**
          * methods invoke api '/avl/upload/'
          */
-        val avlUploadInvokerList = DexKit.getDexKitBridgeList("avlUploadInvokerList") {
+        val avlUploadInvokerList = DexKit.findMemberList<Method>("avlUploadInvokerList") {
             it.findMethod {
                 matcher {
                     paramCount(4)
@@ -59,8 +57,8 @@ object DisableAppInfoUpload : BaseHook() {
                     returnType(Void::class.javaPrimitiveType as Class<*>)
                     modifiers(AccessFlagsMatcher.create(Modifier.STATIC))
                 }
-            }.toElementList()
-        }.toMethodList()
+            }
+        }
 
         if (avlUploadInvokerList.isEmpty()) {
             throw IllegalStateException("cannot find MethodData invoking '/avl/upload/'")
@@ -78,7 +76,7 @@ object DisableAppInfoUpload : BaseHook() {
         /**
          * methods invoke api '/v4/game/interceptcheck/'
          */
-        val interceptCheckInvokerList = DexKit.getDexKitBridgeList("interceptCheckInvokerList") {
+        val interceptCheckInvokerList = DexKit.findMemberList<Method>("interceptCheckInvokerList") {
             it.findMethod {
                 matcher {
                     paramCount(6)
@@ -93,8 +91,8 @@ object DisableAppInfoUpload : BaseHook() {
                     returnType(Object::class.java)
                     usingStrings("device_type", "packageName", "installationMode", "apk_bit")
                 }
-            }.toElementList()
-        }.toMethodList()
+            }
+        }
 
         if (interceptCheckInvokerList.isEmpty()) {
             throw IllegalStateException("cannot find MethodData invoking 'interceptcheck'")
@@ -112,7 +110,7 @@ object DisableAppInfoUpload : BaseHook() {
         /**
          * methods invoke api '/info/layout'
          */
-        val infoLayoutInvokerList = DexKit.getDexKitBridgeList("interceptCheckInvokerList") {
+        val infoLayoutInvokerList = DexKit.findMemberList<Method>("interceptCheckInvokerList") {
             it.findMethod {
                 matcher {
                     paramCount(7)
@@ -126,8 +124,8 @@ object DisableAppInfoUpload : BaseHook() {
                         null
                     )
                 }
-            }.toElementList()
-        }.toMethodList()
+            }
+        }
 
         if (infoLayoutInvokerList.isEmpty()) {
             throw IllegalStateException("cannot find MethodData invoking '/info/layout'")
@@ -153,7 +151,7 @@ object DisableAppInfoUpload : BaseHook() {
             TAG, lpparam.packageName,
             "'${prefix}' find methods: " + list.stream().map {
                 "${it.javaClass.name}#${
-                    it.toMethod().name
+                    it.name
                 }"
             }.collect(Collectors.joining(" | "))
         )

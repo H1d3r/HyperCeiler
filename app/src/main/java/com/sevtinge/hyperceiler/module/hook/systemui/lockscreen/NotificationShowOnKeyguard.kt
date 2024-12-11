@@ -16,24 +16,17 @@
 
   * Copyright (C) 2023-2024 HyperCeiler Contributions
 */
-package com.sevtinge.hyperceiler.module.hook.securitycenter.other
+package com.sevtinge.hyperceiler.module.hook.systemui.lockscreen
 
+import com.github.kyuubiran.ezxhelper.ClassUtils.loadClass
 import com.github.kyuubiran.ezxhelper.HookFactory.`-Static`.createHook
+import com.github.kyuubiran.ezxhelper.finders.MethodFinder.`-Static`.methodFinder
 import com.sevtinge.hyperceiler.module.base.*
-import com.sevtinge.hyperceiler.module.base.dexkit.*
-import java.lang.reflect.*
 
-object DisableRootCheck : BaseHook() {
+object NotificationShowOnKeyguard : BaseHook() {
     override fun init() {
-        DexKit.findMember<Method>("DisableRootCheck") {
-            it.findMethod {
-                matcher {
-                    usingEqStrings("key_check_item_root")
-                    returnType = "boolean"
-                }
-            }.single()
-        }.createHook {
-            returnConstant(false)
+        loadClass("com.android.systemui.statusbar.notification.ExpandedNotification").methodFinder().filterByName("canShowOnKeyguard").first().createHook {
+            returnConstant(true)
         }
     }
 }

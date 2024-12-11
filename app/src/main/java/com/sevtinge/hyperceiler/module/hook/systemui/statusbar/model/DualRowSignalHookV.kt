@@ -1,18 +1,37 @@
+/*
+  * This file is part of HyperCeiler.
+
+  * HyperCeiler is free software: you can redistribute it and/or modify
+  * it under the terms of the GNU Affero General Public License as
+  * published by the Free Software Foundation, either version 3 of the
+  * License.
+
+  * This program is distributed in the hope that it will be useful,
+  * but WITHOUT ANY WARRANTY; without even the implied warranty of
+  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  * GNU Affero General Public License for more details.
+
+  * You should have received a copy of the GNU Affero General Public License
+  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
+
+  * Copyright (C) 2023-2024 HyperCeiler Contributions
+*/
 package com.sevtinge.hyperceiler.module.hook.systemui.statusbar.model
 
 import android.content.*
+import android.content.res.*
 import android.view.*
 import android.widget.*
 import com.github.kyuubiran.ezxhelper.ClassUtils.loadClass
+import com.github.kyuubiran.ezxhelper.ClassUtils.loadClassOrNull
 import com.github.kyuubiran.ezxhelper.HookFactory.`-Static`.createHook
 import com.github.kyuubiran.ezxhelper.finders.MethodFinder.`-Static`.methodFinder
-import com.github.kyuubiran.ezxhelper.interfaces.*
 import com.github.kyuubiran.ezxhelper.misc.ViewUtils.findViewByIdName
 import com.github.kyuubiran.ezxhelper.misc.ViewUtils.getIdByName
 import com.sevtinge.hyperceiler.module.base.*
+import com.sevtinge.hyperceiler.module.base.dexkit.*
 import com.sevtinge.hyperceiler.module.base.tool.OtherTool.*
 import com.sevtinge.hyperceiler.module.hook.systemui.*
-import com.sevtinge.hyperceiler.module.hook.systemui.statusbar.model.DualRowSignalHookV.MobileInfo.ID_SUB_NO_DATA_SIM
 import com.sevtinge.hyperceiler.module.hook.systemui.statusbar.model.public.MobileClass.miuiMobileIconBinder
 import com.sevtinge.hyperceiler.module.hook.systemui.statusbar.model.public.MobileClass.mobileSignalController
 import com.sevtinge.hyperceiler.module.hook.systemui.statusbar.model.public.MobileClass.modernStatusBarMobileView
@@ -23,6 +42,9 @@ import com.sevtinge.hyperceiler.utils.StateFlowHelper.setStateFlowValue
 import com.sevtinge.hyperceiler.utils.api.*
 import com.sevtinge.hyperceiler.utils.devicesdk.*
 import de.robv.android.xposed.*
+import org.luckypray.dexkit.query.enums.*
+import java.lang.reflect.*
+import java.util.function.*
 
 
 class DualRowSignalHookV : BaseHook() {
@@ -48,6 +70,18 @@ class DualRowSignalHookV : BaseHook() {
 
     private val mobileInfo = MobileInfo
     private val dualSignalResMap = HashMap<String, Int>()
+
+    private val setImageResWithTintLight by lazy {
+        DexKit.findMember("SetImageResWithTintLight") { bridge ->
+            bridge.findMethod {
+                matcher {
+                    declaredClass(miuiMobileIconBinder)
+                    modifiers = Modifier.STATIC
+                    name("setImageResWithTintLight", StringMatchType.Contains)
+                }
+            }.singleOrNull()
+        } as Method
+    }
 
     override fun init() {
         if (!showMobileType) {
@@ -180,6 +214,8 @@ class DualRowSignalHookV : BaseHook() {
         var hasStopUseOneSim = false
         var reuseCache: Map<*, *>? = null
 
+        val miuiIconManagerFactory =
+            loadClassOrNull("com.android.systemui.statusbar.phone.MiuiIconManagerFactory")
         mobileSignalController.methodFinder()
             .filterByName("notifyListeners")
             .single()
@@ -218,10 +254,9 @@ class DualRowSignalHookV : BaseHook() {
                     }
 
                     if (reuseCache == null) {
-                        val miuiIconManagerFactoryClz = findClassIfExists(
-                            "com.android.systemui.statusbar.phone.MiuiIconManagerFactory"
-                        ) ?: return@after
-                        if (Dependency.mDependencies?.contains(miuiIconManagerFactoryClz) == true) {
+                        if (miuiIconManagerFactory != null &&
+                            Dependency.mDependencies?.contains(miuiIconManagerFactory) == true
+                        ) {
                             reuseCache = Dependency.mMiuiLegacyDependency
                                 ?.getObjectField("mMiuiIconManagerFactory")
                                 ?.callMethod("get")
@@ -258,119 +293,137 @@ class DualRowSignalHookV : BaseHook() {
             }
     }
 
+    /**
+     * 涉及到状态栏组件反色的方法
+     *
+     * 最初版本(版本未知):
+     *   -> access$setImageResWithTintLight
+     *   -> access$resetImageWithTintLight
+     *   -> access$setTintColor
+     *     14系列没有此方法导致移动网络类型单独显示不能正常反色
+     *
+     * K60U(OS2.0.0.31) / 2024-12-06:
+     *   -> setImageResWithTintLight
+     *   -> access$resetImageWithTintLight
+     *   -> setTintColor
+     *
+     * 13系列 / 2024-12-06:
+     *   -> access$setImageResWithTintLight
+     *   access$resetImageWithTintLight 和 access$setTintColor 改成了 lambda 内联
+     *
+     * 14系列 / 2024-12-07:
+     *   同上
+     */
     private fun setDualSignalIcon() {
-        val setImageCallback = IMethodHookCallback { param ->
-            val isSetMethod = "access\$setImageResWithTintLight" == param.method.name
-            if (isSetMethod) {
+        setImageResWithTintLight.createHook {
+            before { param ->
                 val icon = param.args[0] as ImageView
-
                 if (icon.id == getIdByName("mobile_signal")) {
-                    val signalGroup = icon.parent as FrameLayout
+                    val pair = param.args[2]
 
-                    val subId = XposedHelpers.getAdditionalInstanceField(icon, "subId")
-
-                    if (mobileInfo.subId != ID_SUB_NO_DATA_SIM) {
-                        val isUseTint: Boolean
-                        val isLight: Boolean
-
-                        val pair = param.args[2]
-                        isUseTint = pair.callMethodAs("getFirst")
-                        isLight = pair.callMethodAs("getSecond")
-
-                        if (subId == null || subId != mobileInfo.subId) {
-                            param.result = null
-                            return@IMethodHookCallback
-                        }
-
-                        val (mobileSignalIconId, mobileRoamIconId) = getDualSignalIconPairResId(
-                            isUseTint, isLight
+                    setIconImageWithTintLightColor(
+                        icon, Triple(
+                            pair.callMethodAs("getFirst"),
+                            pair.callMethodAs("getSecond"),
+                            null
                         )
-                        if (mobileSignalIconId != null && mobileRoamIconId != null) {
-                            icon.post {
-                                icon.setImageResource(mobileSignalIconId)
-                                signalGroup.findViewWithTag<ImageView?>("mobile_signal2")?.let {
-                                    it.setImageResource(mobileRoamIconId)
-                                    it.imageTintList = icon.imageTintList
-                                }
-                            }
-                        }
-                    }
-
+                    )
                     param.result = null
-                } else if (icon.tag == "mobile_signal2") {
-                    param.result = null
-                } else {
-                    // 指示器等
-                }
-            } else {
-                for (icon in param.thisObject.getObjectField("\$tintViewList") as List<*>) {
-                    if (icon is ImageView) {
-
-                        if (icon.id == getIdByName("mobile_signal")) {
-
-                            val signalGroup = icon.parent as FrameLayout
-
-                            val subId = XposedHelpers.getAdditionalInstanceField(icon, "subId")
-                            val triple = param.thisObject.getObjectField("L\$0")
-
-                            if (mobileInfo.subId != ID_SUB_NO_DATA_SIM) {
-
-                                val isUseTint: Boolean = triple!!.callMethodAs("getFirst")
-                                val isLight: Boolean = triple!!.callMethodAs("getSecond")
-
-                                if (subId == null || subId != mobileInfo.subId) {
-                                    param.result = null
-                                    return@IMethodHookCallback
-                                }
-
-                                val (mobileSignalIconId, mobileRoamIconId) = getDualSignalIconPairResId(
-                                    isUseTint, isLight
-                                )
-                                if (mobileSignalIconId != null && mobileRoamIconId != null) {
-                                    icon.post {
-                                        icon.setImageResource(mobileSignalIconId)
-                                        signalGroup.findViewWithTag<ImageView?>("mobile_signal2")?.let {
-                                            it.setImageResource(mobileRoamIconId)
-                                            it.imageTintList = icon.imageTintList
-                                        }
-                                    }
-                                }
-                            }
-
-                            param.result = null
-                        } else if (icon.tag == "mobile_signal2") {
-                            param.result = null
-                        } else {
-                            // 指示器等
-                        }
-                    }
-
                 }
             }
         }
 
-        try {
+        val resetImageWithTintLight = miuiMobileIconBinder.methodFinder()
+            .filterByName("access\$resetImageWithTintLight")
+            .singleOrNull()
+        if (resetImageWithTintLight != null) {
+            resetImageWithTintLight.createHook {
+                before { param ->
+                    val icon = param.args[0] as ImageView
+                    if (icon.id == getIdByName("mobile_signal")) {
+                        setIconImageWithTintLightColor(
+                            icon, Triple(
+                                param.args[1] as Boolean,
+                                param.args[2] as Boolean,
+                                null
+                            )
+                        )
+                        param.result = null
+                    }
+                }
+            }
+        } else {
+            val javaAdapterKt = loadClass("com.android.systemui.util.kotlin.JavaAdapterKt")
             miuiMobileIconBinder.methodFinder()
-                .filterByName("access\$resetImageWithTintLight")
+                .filterByName("bind")
                 .single()
                 .createHook {
-                    before(setImageCallback)
-                }
-        } catch (_: Exception) {
-            loadClass("com.android.systemui.statusbar.pipeline.mobile.ui.binder.MiuiMobileIconBinder\$bind\$1\$1\$5\$1").methodFinder()
-                .filterByName("invokeSuspend")
-                .single()
-                .createHook {
-                    before(setImageCallback)
+                    after { param ->
+                        val viewBinding = param.result
+
+                        val tintLightColorFlow = try {
+                            viewBinding.getObjectField("\$tintLightColorFlow")
+                        } catch (e: Exception) {
+                            logE(TAG, lpparam.packageName, e)
+                            null
+                        } ?: return@after
+                        val container = param.args[0] as View
+                        val mobileSignal = container.findViewByIdName("mobile_signal") as ImageView
+
+                        javaAdapterKt.callStaticMethod(
+                            "collectFlow",
+                            container,
+                            tintLightColorFlow,
+                            Consumer<Any> {
+                                setIconImageWithTintLightColor(
+                                    mobileSignal, Triple(
+                                        it.callMethodAs("getFirst"),
+                                        it.callMethodAs("getSecond"),
+                                        it.callMethodAs("getThird")
+                                    )
+                                )
+                            }
+                        )
+                    }
                 }
         }
+    }
 
-        miuiMobileIconBinder.methodFinder()
-            .filterByName("access\$setImageResWithTintLight")
-            .single()
-            .createHook {
-                before(setImageCallback)
+    private fun setIconImageWithTintLightColor(
+        mobileSignal: ImageView,
+        tintLightColor: Triple<Boolean, Boolean, Int?>
+    ) {
+        val subId = XposedHelpers.getAdditionalInstanceField(mobileSignal, "subId")
+        if (subId == null || subId != mobileInfo.subId) {
+            return
+        }
+
+        val signalGroup = mobileSignal.parent as FrameLayout
+        val mobileSignal2 = signalGroup.findViewWithTag<ImageView?>("mobile_signal2")
+        val isUseTint = tintLightColor.first
+        val isLight = tintLightColor.second
+        val color = tintLightColor.third
+
+        val (mobileSignalIconId, mobileSignal2IconId) = getDualSignalIconPairResId(
+            isUseTint, isLight
+        )
+        if (mobileSignalIconId != null && mobileSignal2IconId != null) {
+            mobileSignal.post {
+                mobileSignal.setImageResource(mobileSignalIconId)
+                mobileSignal2?.setImageResource(mobileSignal2IconId)
+                mobileSignal2?.imageTintList = if (color != null) {
+                    // 清除 tag 跳过原始图标设置
+                    mobileSignal.tag = null
+                    if (isUseTint) {
+                        ColorStateList.valueOf(color)
+                    } else {
+                        null
+                    }
+                } else {
+                    mobileSignal.imageTintList
+                }
             }
+        }
     }
 
     private fun getSignalIconResName(
@@ -414,7 +467,7 @@ class DualRowSignalHookV : BaseHook() {
     }
 
     data object MobileInfo {
-        const val ID_SUB_NO_DATA_SIM = -1
+        private const val ID_SUB_NO_DATA_SIM = -1
 
         var subId = ID_SUB_NO_DATA_SIM
         var dataSimLevel = 0

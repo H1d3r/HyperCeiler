@@ -18,29 +18,27 @@
 */
 package com.sevtinge.hyperceiler.module.hook.securitycenter.sidebar.game
 
-import com.github.kyuubiran.ezxhelper.EzXHelper.safeClassLoader
 import com.github.kyuubiran.ezxhelper.HookFactory.`-Static`.createHook
 import com.github.kyuubiran.ezxhelper.HookFactory.`-Static`.createHooks
 import com.github.kyuubiran.ezxhelper.finders.MethodFinder.`-Static`.methodFinder
 import com.sevtinge.hyperceiler.module.base.*
 import com.sevtinge.hyperceiler.module.base.dexkit.*
-import com.sevtinge.hyperceiler.module.base.dexkit.DexKitTool.toClass
-import com.sevtinge.hyperceiler.module.base.dexkit.DexKitTool.toMethod
+import java.lang.reflect.*
 
 class RemoveMacroBlackList : BaseHook() {
     override fun init() {
-        DexKit.getDexKitBridge("RemoveMacroBlackList1") {
+        DexKit.findMember<Method>("RemoveMacroBlackList1") {
             it.findMethod {
                 matcher {
                     addEqString("pref_gb_unsupport_macro_apps")
                     paramCount = 0
                 }
-            }.single().getMethodInstance(safeClassLoader)
-        }.toMethod().createHook {
+            }.single()
+        }.createHook {
             returnConstant(ArrayList<String>())
         }
 
-        DexKit.getDexKitBridge("RemoveMacroBlackList2") {
+        DexKit.findMember<Method>("RemoveMacroBlackList2") {
             it.findMethod {
                 matcher {
                     returnType = "boolean"
@@ -49,19 +47,19 @@ class RemoveMacroBlackList : BaseHook() {
                         paramCount = 0
                     }
                 }
-            }.single().getMethodInstance(safeClassLoader)
-        }.toMethod().createHook {
+            }.single()
+        }.createHook {
             returnConstant(false)
         }
 
-        DexKit.getDexKitBridge("RemoveMacroBlackList3") {
+        DexKit.findMember<Class<*>>("RemoveMacroBlackList3") {
             it.findClass {
                 matcher {
                     usingStrings =
                         listOf("content://com.xiaomi.macro.MacroStatusProvider/game_macro_change")
                 }
-            }.single().getInstance(safeClassLoader)
-        }.toClass().apply {
+            }.single()
+        }.apply {
             methodFinder().filterByParamCount(2)
                 .toList().createHooks {
                     returnConstant(true)

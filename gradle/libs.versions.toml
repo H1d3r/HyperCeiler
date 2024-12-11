@@ -1,5 +1,5 @@
 [versions]
-agp = "8.7.2"
+agp = "8.7.3"
 kotlin-android = "2.1.0"
 lsparanoid = "0.6.0"
 autoService = "1.1.1"
@@ -28,6 +28,7 @@ hiddenapibypass = "4.3"
 annotation-processor = "4.4.0"
 hooktool = "v.1.0.9"
 lyricGetterApi = "6.0.0"
+mmkv = "2.0.1"
 
 [libraries]
 annotation = { module = "androidx.annotation:annotation", version.ref = "annotation" }
@@ -56,6 +57,7 @@ dexkit = { group = "org.luckypray", name = "dexkit", version.ref = "dexkit" }
 ezxhelper = { group = "com.github.kyuubiran", name = "EzXHelper", version.ref = "ezxhelper" }
 hiddenapibypass = { group = "org.lsposed.hiddenapibypass", name = "hiddenapibypass", version.ref = "hiddenapibypass" }
 lyric-getter-api = { module = "com.github.xiaowine:Lyric-Getter-Api", version.ref = "lyricGetterApi" }
+mmkv = { group = "com.tencent", name = "mmkv", version.ref = "mmkv" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }

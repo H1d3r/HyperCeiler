@@ -21,54 +21,52 @@ package com.sevtinge.hyperceiler.module.hook.voicetrigger
 import com.github.kyuubiran.ezxhelper.HookFactory.`-Static`.createHook
 import com.sevtinge.hyperceiler.module.base.*
 import com.sevtinge.hyperceiler.module.base.dexkit.*
-import com.sevtinge.hyperceiler.module.base.dexkit.DexKitTool.addUsingStringsEquals
-import com.sevtinge.hyperceiler.module.base.dexkit.DexKitTool.toMethod
 import java.lang.reflect.*
 
 object BypassUDKWordLegalCheck : BaseHook() {
     override fun init() {
         try {
             // Pangaea引擎录入时的联网检查
-            DexKit.getDexKitBridge("BypassPangaeaWordCheck") {
+            DexKit.findMember<Method>("BypassPangaeaWordCheck") {
                 it.findMethod {
                     matcher {
-                        addUsingStringsEquals("PangaeaTrainingSession", "onlineQuery=")
+                        usingEqStrings("PangaeaTrainingSession", "onlineQuery=")
                         returnType = "java.lang.Boolean"
                     }
-                }.single().getMethodInstance(lpparam.classLoader)
-            }.toMethod().createHook {
+                }.single()
+            }.createHook {
                 returnConstant(true)
             }
         } catch (_: Throwable) {
         }
         // 默认引擎录入时的联网检查
         try {
-            DexKit.getDexKitBridge("BypassLegacyTrainingCheck") {
+            DexKit.findMember<Method>("BypassLegacyTrainingCheck") {
                 it.findMethod {
                     matcher {
-                        addUsingStringsEquals("LegacyTrainingSession", "onlineQuery=")
+                        usingEqStrings("LegacyTrainingSession", "onlineQuery=")
                         returnType = "java.lang.Boolean"
                     }
-                }.single().getMethodInstance(lpparam.classLoader)
-            }.toMethod().createHook {
+                }.single()
+            }.createHook {
                 returnConstant(true)
             }
         } catch (_: Throwable) {
         }
         // 判断唤醒词是否合规
         try {
-            DexKit.getDexKitBridge("BypassDefineWordCheck") {
+            DexKit.findMember<Method>("BypassDefineWordCheck") {
                 it.findMethod {
                     matcher {
-                        addUsingStringsEquals(
+                        usingEqStrings(
                             "https://i.ai.mi.com/api/skillstore/assistant/store/visitors/checkWakeUpWord",
                             "NetUtils",
                             "checkUDKWordLegal, callResult="
                         )
                         returnType = "boolean"
                     }
-                }.single().getMethodInstance(lpparam.classLoader)
-            }.toMethod().createHook {
+                }.single()
+            }.createHook {
                 returnConstant(true)
             }
         } catch (_: Throwable) {
@@ -76,18 +74,18 @@ object BypassUDKWordLegalCheck : BaseHook() {
         // 根据对应的唤醒词得到其精度，并返回其是否可用
         val accUser = mPrefsMap.getInt("voicetrigger_accuracy_percent", 70).toFloat() / 100
         try {
-            DexKit.getDexKitBridge("BypassOnlineAccuracyResult") {
+            DexKit.findMember<Method>("BypassOnlineAccuracyResult") {
                 it.findMethod {
                     matcher {
-                        addUsingStringsEquals(
+                        usingEqStrings(
                             "https://i.ai.mi.com/api/skillstore/assistant/store/visitors/checkWakeUpWord",
                             "NetUtils",
                             "getUDKEnrollWordLegal can't get result"
                         )
                         returnType = "java.lang.String"
                     }
-                }.single().getMethodInstance(lpparam.classLoader)
-            }.toMethod().createHook {
+                }.single()
+            }.createHook {
                 returnConstant(
                     "{\"data\":{\"status\":0,\"msg\":\"\",\"accuracy\":\"" + String.format(
                         "%.1f",
@@ -99,10 +97,10 @@ object BypassUDKWordLegalCheck : BaseHook() {
         }
         try {
             // 禁止判断当前系统网络状态
-            DexKit.getDexKitBridge("BypassNetworkStateCheckForUdkEnroll") {
+            DexKit.findMember<Method>("BypassNetworkStateCheckForUdkEnroll") {
                 it.findMethod {
                     matcher {
-                        addUsingStringsEquals("connectivity")
+                        usingEqStrings("connectivity")
                         paramCount = 1
                         paramTypes("android.content.Context")
                         modifiers = Modifier.STATIC
@@ -119,8 +117,8 @@ object BypassUDKWordLegalCheck : BaseHook() {
                         )
 
                     }
-                }.single().getMethodInstance(lpparam.classLoader)
-            }.toMethod().createHook {
+                }.single()
+            }.createHook {
                 returnConstant(true)
             }
         } catch (_: Throwable) {

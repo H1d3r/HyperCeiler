@@ -26,36 +26,43 @@ import com.sevtinge.hyperceiler.module.base.dexkit.DexKit;
 import com.sevtinge.hyperceiler.module.base.dexkit.IDexKit;
 
 import org.luckypray.dexkit.DexKitBridge;
-import org.luckypray.dexkit.query.*;
-import org.luckypray.dexkit.query.matchers.*;
-import org.luckypray.dexkit.result.*;
+import org.luckypray.dexkit.query.FindClass;
+import org.luckypray.dexkit.query.FindField;
+import org.luckypray.dexkit.query.FindMethod;
+import org.luckypray.dexkit.query.matchers.ClassMatcher;
+import org.luckypray.dexkit.query.matchers.FieldMatcher;
+import org.luckypray.dexkit.query.matchers.MethodMatcher;
+import org.luckypray.dexkit.result.ClassData;
+import org.luckypray.dexkit.result.FieldData;
+import org.luckypray.dexkit.result.FieldDataList;
+import org.luckypray.dexkit.result.MethodData;
+import org.luckypray.dexkit.result.base.BaseData;
 
-import java.lang.reflect.AnnotatedElement;
-import java.lang.reflect.Method;
 import java.lang.reflect.Field;
+import java.lang.reflect.Method;
 
 public class AlwaysShowDownloadLink extends BaseHook {
 
     @Override
     public void init() {
 
-        Class<?> class1 = (Class<?>) DexKit.getDexKitBridge("DownloadInfo", new IDexKit() {
+        Class<?> class1 = DexKit.findMember("DownloadInfo", new IDexKit() {
             @Override
-            public AnnotatedElement dexkit(DexKitBridge bridge) throws ReflectiveOperationException {
+            public BaseData dexkit(DexKitBridge bridge) throws ReflectiveOperationException {
                 ClassData classData = bridge.findClass(FindClass.create()
                         .excludePackages("androidx")
                         .matcher(
                                 ClassMatcher.create()
                                         .usingEqStrings("/s", " | ", "/")
                         )).singleOrNull();
-                return classData.getInstance(lpparam.classLoader);
+                return classData;
             }
         });
 
 
-        Method method1 = (Method) DexKit.getDexKitBridge("ShowTaskDetailMatcher", new IDexKit() {
+        Method method1 = DexKit.findMember("ShowTaskDetailMatcher", new IDexKit() {
             @Override
-            public AnnotatedElement dexkit(DexKitBridge bridge) throws ReflectiveOperationException {
+            public BaseData dexkit(DexKitBridge bridge) throws ReflectiveOperationException {
                 MethodData methodData = bridge.findMethod(FindMethod.create()
                         .matcher(MethodMatcher.create()
                                 .declaredClass(ClassMatcher.create().usingStrings("onEventMainThread noScrollListView="))
@@ -63,13 +70,13 @@ public class AlwaysShowDownloadLink extends BaseHook {
                                 .paramTypes(class1)
                                 .returnType(void.class)
                         )).singleOrNull();
-                return methodData.getMethodInstance(lpparam.classLoader);
+                return methodData;
             }
         });
 
-        Field field1 = (Field) DexKit.getDexKitBridge("DownloadUrl", new IDexKit() {
+        Field field1 = DexKit.findMember("DownloadUrl", new IDexKit() {
             @Override
-            public AnnotatedElement dexkit(DexKitBridge bridge) throws ReflectiveOperationException {
+            public BaseData dexkit(DexKitBridge bridge) throws ReflectiveOperationException {
                 FieldData fieldData = bridge.findField(FindField.create()
                         .matcher(FieldMatcher.create()
                                 .addReadMethod(MethodMatcher.create()
@@ -77,13 +84,13 @@ public class AlwaysShowDownloadLink extends BaseHook {
                                 .declaredClass(class1)
                                 .type(String.class)
                         )).singleOrNull();
-                return fieldData.getFieldInstance(lpparam.classLoader);
+                return fieldData;
             }
         });
 
-        Field field2 = (Field) DexKit.getDexKitBridge("DownloadDesc", new IDexKit() {
+        Field field2 = DexKit.findMember("DownloadDesc", new IDexKit() {
             @Override
-            public AnnotatedElement dexkit(DexKitBridge bridge) throws ReflectiveOperationException {
+            public BaseData dexkit(DexKitBridge bridge) throws ReflectiveOperationException {
                 FieldDataList fieldDataList = bridge.findField(FindField.create()
                         .matcher(FieldMatcher.create()
                                 .addReadMethod(MethodMatcher.create()
@@ -96,7 +103,7 @@ public class AlwaysShowDownloadLink extends BaseHook {
                 // 感觉不太优雅 先这样吧.jpg 暂时没有更好的匹配方式了 反正method里就这两string
                 for (FieldData field : fieldDataList) {
                     if (field.getName().equals(field1.getName())) continue;
-                    return field.getFieldInstance(lpparam.classLoader);
+                    return field;
                 }
                 return null;
 

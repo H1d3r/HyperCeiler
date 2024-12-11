@@ -19,36 +19,35 @@
 package com.sevtinge.hyperceiler.module.hook.securitycenter.other
 
 import android.view.*
-import com.github.kyuubiran.ezxhelper.ClassLoaderProvider.safeClassLoader
 import com.github.kyuubiran.ezxhelper.ClassUtils.loadClass
 import com.github.kyuubiran.ezxhelper.HookFactory.`-Static`.createHook
 import com.github.kyuubiran.ezxhelper.finders.MethodFinder.`-Static`.methodFinder
 import com.sevtinge.hyperceiler.module.base.*
 import com.sevtinge.hyperceiler.module.base.dexkit.*
-import com.sevtinge.hyperceiler.module.base.dexkit.DexKitTool.toMethod
 import org.luckypray.dexkit.query.enums.*
+import java.lang.reflect.*
 
 object LockOneHundredPoints : BaseHook() {
-    private val score by lazy {
-        DexKit.getDexKitBridge("LockOneHundredPoints1N") {
+    private val score by lazy<Method> {
+        DexKit.findMember("LockOneHundredPoints1N") {
             it.findMethod {
                 matcher {
                     declaredClass = "com.miui.securityscan.scanner.ScoreManager"
                     addUsingString("getMinusPredictScore", StringMatchType.Contains)
                     returnType = "int"
                 }
-            }.single().getMethodInstance(safeClassLoader)
-        }.toMethod()
+            }.single()
+        }
     }
 
-    private val scoreOld by lazy {
-        DexKit.getDexKitBridge("LockOneHundredPoints2") {
+    private val scoreOld by lazy<Method> {
+        DexKit.findMember("LockOneHundredPoints2") {
             it.findMethod {
                 matcher {
                     addUsingString("getMinusPredictScore", StringMatchType.Contains)
                 }
-            }.single().getMethodInstance(safeClassLoader)
-        }.toMethod()
+            }.single()
+        }
     }
 
     override fun init() {

@@ -16,11 +16,20 @@
 
   * Copyright (C) 2023-2024 HyperCeiler Contributions
 */
-package com.sevtinge.hyperceiler.module.base.dexkit;
+package com.sevtinge.hyperceiler.module.hook.systemui.other
 
-import org.luckypray.dexkit.DexKitBridge;
-import org.luckypray.dexkit.result.BaseDataList;
+import com.github.kyuubiran.ezxhelper.ClassUtils.loadClass
+import com.github.kyuubiran.ezxhelper.HookFactory.`-Static`.createAfterHook
+import com.github.kyuubiran.ezxhelper.finders.MethodFinder.`-Static`.methodFinder
+import com.sevtinge.hyperceiler.utils.log.XposedLogUtils.*
 
-public interface IDexKitData {
-    BaseDataList<?> dexkit(DexKitBridge bridge);
+object DefaultPluginTheme {
+    fun initDefaultPluginTheme(mClassLoader: ClassLoader) {
+        loadClass("miui.systemui.util.ThemeUtils", mClassLoader).methodFinder()
+            .filterByName("getDefaultPluginTheme").single()
+            .createAfterHook {
+                it.result = true
+            }
+        logD("DefaultPluginTheme", "initDefaultPluginTheme hook success")
+    }
 }

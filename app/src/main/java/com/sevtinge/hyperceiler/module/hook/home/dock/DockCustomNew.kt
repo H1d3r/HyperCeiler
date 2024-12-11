@@ -22,8 +22,11 @@ import android.app.*
 import android.view.*
 import android.widget.*
 import com.github.kyuubiran.ezxhelper.ClassUtils.loadClass
+import com.github.kyuubiran.ezxhelper.HookFactory.`-Static`.createHook
 import com.github.kyuubiran.ezxhelper.HookFactory.`-Static`.createHooks
+import com.github.kyuubiran.ezxhelper.finders.MethodFinder.`-Static`.methodFinder
 import com.sevtinge.hyperceiler.module.base.*
+import com.sevtinge.hyperceiler.module.base.dexkit.*
 import com.sevtinge.hyperceiler.utils.*
 import com.sevtinge.hyperceiler.utils.blur.MiBlurUtilsKt.addMiBackgroundBlendColor
 import com.sevtinge.hyperceiler.utils.blur.MiBlurUtilsKt.clearMiBackgroundBlendColor
@@ -34,17 +37,41 @@ import com.sevtinge.hyperceiler.utils.blur.MiBlurUtilsKt.setMiViewBlurMode
 import com.sevtinge.hyperceiler.utils.blur.MiBlurUtilsKt.setPassWindowBlurEnabled
 import com.sevtinge.hyperceiler.utils.devicesdk.DisplayUtils.*
 import de.robv.android.xposed.*
+import org.luckypray.dexkit.query.enums.*
+import java.lang.reflect.*
+import java.util.function.*
 
 object DockCustomNew : BaseHook() {
     private val launcherClass by lazy {
         loadClass("com.miui.home.launcher.Launcher")
     }
+    private val animationCompatComplexClass by lazy {
+        loadClass("com.miui.home.launcher.compat.UserPresentAnimationCompatComplex")
+    }
+
+    private val showAnimationLambda by lazy {
+        DexKit.findMember("ShowAnimationLambda") { bridge ->
+            bridge.findMethod {
+                matcher {
+                    declaredClass("com.miui.home.launcher.compat.UserPresentAnimationCompatV12Phone")
+                    addInvoke {
+                        name = "conversionValueFrom3DTo2D"
+                    }
+                    addInvoke {
+                        name = "setTranslationZ"
+                    }
+                }
+            }.singleOrNull()
+        } as Method
+    }
+
+    private var mDockBlur: Any? = null
 
     override fun init() {
         launcherClass.constructors.toList().createHooks {
             after {
                 val context = AndroidAppHelper.currentApplication().applicationContext
-                var mDockBlur = XposedHelpers.getAdditionalInstanceField(it.thisObject, "mDockBlur")
+                mDockBlur = XposedHelpers.getAdditionalInstanceField(it.thisObject, "mDockBlur")
                 if (mDockBlur != null) return@after
                 mDockBlur = FrameLayout(context)
                 XposedHelpers.setAdditionalInstanceField(it.thisObject, "mDockBlur", mDockBlur)
@@ -67,11 +94,11 @@ object DockCustomNew : BaseHook() {
             )
             if (mPrefsMap.getStringAsInt("home_dock_add_blur", 0) == 1) {
                 mDockBlur.setPassWindowBlurEnabled(true)
-                mDockBlur.setMiBackgroundBlurMode(1) //非0时截断
+                mDockBlur.setMiBackgroundBlurMode(1) // 非0时截断
                 mDockBlur.setMiBackgroundBlurRadius(
                     mPrefsMap.getInt(
-                    "custom_background_blur_degree",
-                    200
+                        "custom_background_blur_degree",
+                        200
                     )
                 )
                 mDockBlur.clearMiBackgroundBlendColor()
@@ -81,7 +108,11 @@ object DockCustomNew : BaseHook() {
             }
             val mAllApp = mPrefsMap.getBoolean("home_dock_bg_all_app")
             mDockBlur.setBlurRoundRect(mDockRadius)
-            if (mPrefsMap.getStringAsInt("home_dock_add_blur", 0) == 0) mDockBlur.setBackgroundColor(mPrefsMap.getInt("home_dock_bg_color", 0))
+            if (mPrefsMap.getStringAsInt(
+                    "home_dock_add_blur",
+                    0
+                ) == 0
+            ) mDockBlur.setBackgroundColor(mPrefsMap.getInt("home_dock_bg_color", 0))
             mDockBlur.layoutParams =
                 FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, mDockHeight)
                     .also { layoutParams ->
@@ -92,5 +123,28 @@ object DockCustomNew : BaseHook() {
             mHotSeats.addView(mDockBlur, 0)
         }
 
+        // 添加动画
+        animationCompatComplexClass.methodFinder()
+            .filterByName("operateAllPresentAnimationRelatedViews")
+            .single()
+            .createHook {
+                after { param ->
+                    if (mDockBlur == null) {
+                        return@after
+                    }
+
+                    val consumer = param.args[0] as Consumer<Any>
+                    consumer.accept(mDockBlur!!)
+                }
+            }
+        showAnimationLambda?.createHook {
+            after { param ->
+                val view = param.args[2] as View
+
+                if (view == mDockBlur) {
+                    view.translationZ = 0F
+                }
+            }
+        } ?: logD(TAG, lpparam.packageName, "can't find lambda\$showUserPresentAnimation")
     }
 }

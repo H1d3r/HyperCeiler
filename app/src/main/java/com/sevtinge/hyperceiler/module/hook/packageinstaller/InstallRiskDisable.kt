@@ -21,12 +21,12 @@ package com.sevtinge.hyperceiler.module.hook.packageinstaller
 import com.github.kyuubiran.ezxhelper.HookFactory.`-Static`.createHooks
 import com.sevtinge.hyperceiler.module.base.*
 import com.sevtinge.hyperceiler.module.base.dexkit.*
-import com.sevtinge.hyperceiler.module.base.dexkit.DexKitTool.toElementList
 import org.luckypray.dexkit.query.enums.*
+import java.lang.reflect.*
 
 object InstallRiskDisable : BaseHook() {
     override fun init() {
-        DexKit.getDexKitBridgeList("InstallRiskDisable") {
+        DexKit.findMemberList<Method>("InstallRiskDisable") {
             it.findMethod {
                 matcher {
                     addUsingString("secure_verify_enable", StringMatchType.Equals)
@@ -40,8 +40,8 @@ object InstallRiskDisable : BaseHook() {
                     addUsingString("android.provider.MiuiSettings\$Ad", StringMatchType.Equals)
                     returnType = "boolean"
                 }
-            }.toElementList()
-        }.toMethodList().createHooks {
+            }
+        }.createHooks {
             returnConstant(false)
         }
     }
