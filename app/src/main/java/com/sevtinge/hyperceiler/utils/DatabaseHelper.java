@@ -24,8 +24,13 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
+import com.sevtinge.hyperceiler.utils.log.XposedLogUtils;
+
 public class DatabaseHelper extends SQLiteOpenHelper {
 
+    /**
+     * 一定要使用try-catch块包围，因为永远不知道会出现什么奇奇怪怪的问题
+     */
     public DatabaseHelper(Context context, String databaseName) {
         super(context, databaseName, null, getUserVersion(context, databaseName));
     }
@@ -56,7 +61,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     }
 
     public static int getUserVersion(Context context, String databaseName) {
-        int userVersion = 0;
+        int userVersion = 1;
         SQLiteDatabase db = null;
         Cursor cursor = null;
 
@@ -67,7 +72,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 userVersion = cursor.getInt(0);
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            XposedLogUtils.logD("DatabaseHelper", e.toString());
         } finally {
             if (cursor != null) {
                 cursor.close();

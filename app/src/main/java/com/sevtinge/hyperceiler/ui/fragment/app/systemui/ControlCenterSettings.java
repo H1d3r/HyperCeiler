@@ -21,7 +21,7 @@ package com.sevtinge.hyperceiler.ui.fragment.app.systemui;
 import static com.sevtinge.hyperceiler.utils.devicesdk.SystemSDKKt.getWhoAmI;
 import static com.sevtinge.hyperceiler.utils.devicesdk.SystemSDKKt.isMoreAndroidVersion;
 import static com.sevtinge.hyperceiler.utils.devicesdk.SystemSDKKt.isMoreHyperOSVersion;
-import static com.sevtinge.hyperceiler.utils.shell.ShellUtils.safeExecCommandWithRoot;
+import static com.sevtinge.hyperceiler.utils.shell.ShellUtils.rootExecCmd;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -76,6 +76,7 @@ public class ControlCenterSettings extends DashboardFragment implements Preferen
     DropDownPreference mSunshineMode;
     DropDownPreference mSunshineModeHigh;
     SeekBarPreferenceCompat mSunshineModeHighBrightness;
+    SwitchPreference mSpotlightNotifColorMix;
 
     SwitchPreference mTaplus;
     SwitchPreference mNotifrowmenu;
@@ -124,10 +125,11 @@ public class ControlCenterSettings extends DashboardFragment implements Preferen
         mSunshineMode = findPreference("prefs_key_system_control_center_sunshine_new_mode");
         mSunshineModeHigh = findPreference("prefs_key_system_control_center_sunshine_new_mode_high");
         mSunshineModeHighBrightness = findPreference("prefs_key_system_control_center_sunshine_mode_brightness");
+        mSpotlightNotifColorMix = findPreference("prefs_key_system_ui_control_center_opt_notification_element_background_color");
         handler = new Handler();
 
         try {
-            mMaxBrightness = Integer.parseInt(safeExecCommandWithRoot("cat /sys/class/backlight/panel0-backlight/max_brightness"));
+            mMaxBrightness = Integer.parseInt(rootExecCmd("cat /sys/class/backlight/panel0-backlight/max_brightness"));
         } catch (Exception ignore) {}
 
         mExpandNotification.setOnPreferenceClickListener(
@@ -182,6 +184,7 @@ public class ControlCenterSettings extends DashboardFragment implements Preferen
             mRoundedRectRadius.setVisible(false);
         }
         mRedirectNotice.setVisible(!isMoreAndroidVersion(35));
+        mSpotlightNotifColorMix.setVisible(isMoreHyperOSVersion(2f) && isMoreAndroidVersion(35));
         mShadeHeaderBlur.setVisible(isMoreHyperOSVersion(2f) && isMoreAndroidVersion(35));
         mFiveG.setVisible(TelephonyManager.getDefault().isFiveGCapable());
         mProgressModeThickness.setVisible(Integer.parseInt(PrefsUtils.mSharedPreferences.getString("prefs_key_system_ui_control_center_media_control_progress_mode", "0")) == 2);

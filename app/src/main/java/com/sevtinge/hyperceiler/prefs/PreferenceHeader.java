@@ -19,8 +19,9 @@
 package com.sevtinge.hyperceiler.prefs;
 
 import static com.sevtinge.hyperceiler.BuildConfig.APPLICATION_ID;
+import static com.sevtinge.hyperceiler.utils.devicesdk.SystemSDKKt.getCurrentUserId;
 import static com.sevtinge.hyperceiler.utils.devicesdk.SystemSDKKt.getWhoAmI;
-import static com.sevtinge.hyperceiler.utils.shell.ShellUtils.safeExecCommandWithRoot;
+import static com.sevtinge.hyperceiler.utils.shell.ShellUtils.rootExecCmd;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -48,6 +49,7 @@ public class PreferenceHeader extends XmlPreference {
     public static List<String> notInSelectedScope = new ArrayList<String>();
 
     private static boolean isScopeGet = false;
+    private static boolean isScopeGetFailed = false;
 
     public PreferenceHeader(@NonNull Context context) {
         super(context);
@@ -67,7 +69,7 @@ public class PreferenceHeader extends XmlPreference {
 
     private void init(Context context) {
         setLayoutResource(R.layout.preference_header);
-        if (!isScopeGet) if (getWhoAmI().equals("root")) getScope();
+        if (!isScopeGet && !isScopeGetFailed) if (getWhoAmI().equals("root")) getScope();
         if (isUninstall(context)) {
             mUninstallApp.add(" - " + getTitle() + " (" + getSummary() + ")");
             setVisible(false);
@@ -100,12 +102,17 @@ public class PreferenceHeader extends XmlPreference {
 
     @SuppressLint("Range")
     private void getScope() {
-        UserHandle currentUserHandle = android.os.Process.myUserHandle();
-        int userId = currentUserHandle.hashCode();
+        int userId = getCurrentUserId();
 
-        safeExecCommandWithRoot("mkdir -p /data/local/tmp/HyperCeiler/cache/ && cp -r /data/adb/lspd/config /data/local/tmp/HyperCeiler/cache/ && chmod -R 777 /data/local/tmp/HyperCeiler/cache/config");
+        DatabaseHelper dbHelper = null;
 
-        DatabaseHelper dbHelper = new DatabaseHelper(this.getContext(), "/data/local/tmp/HyperCeiler/cache/config/modules_config.db");
+        try {
+            rootExecCmd("mkdir -p /data/local/tmp/HyperCeiler/cache/ && cp -r /data/adb/lspd/config /data/local/tmp/HyperCeiler/cache/ && chmod -R 777 /data/local/tmp/HyperCeiler/cache/config");
+            dbHelper = new DatabaseHelper(this.getContext(), "/data/local/tmp/HyperCeiler/cache/config/modules_config.db");
+        } catch (Exception ignore) {
+            isScopeGetFailed = true;
+            return;
+        }
 
         String tableName = "modules";
         String[] columns = {"mid"};
