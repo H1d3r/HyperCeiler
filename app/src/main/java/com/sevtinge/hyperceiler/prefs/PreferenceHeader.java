@@ -19,6 +19,8 @@
 package com.sevtinge.hyperceiler.prefs;
 
 import static com.sevtinge.hyperceiler.BuildConfig.APPLICATION_ID;
+import static com.sevtinge.hyperceiler.utils.SQLiteDatabaseHelper.isDatabaseLocked;
+import static com.sevtinge.hyperceiler.utils.SQLiteDatabaseHelper.queryList;
 import static com.sevtinge.hyperceiler.utils.devicesdk.SystemSDKKt.getCurrentUserId;
 import static com.sevtinge.hyperceiler.utils.devicesdk.SystemSDKKt.getWhoAmI;
 import static com.sevtinge.hyperceiler.utils.shell.ShellUtils.rootExecCmd;
@@ -26,15 +28,15 @@ import static com.sevtinge.hyperceiler.utils.shell.ShellUtils.rootExecCmd;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.database.Cursor;
-import android.os.UserHandle;
+import android.database.sqlite.SQLiteDatabase;
 import android.util.AttributeSet;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.sevtinge.hyperceiler.R;
-import com.sevtinge.hyperceiler.utils.DatabaseHelper;
 import com.sevtinge.hyperceiler.utils.PackagesUtils;
+import com.sevtinge.hyperceiler.utils.log.AndroidLogUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -77,7 +79,7 @@ public class PreferenceHeader extends XmlPreference {
             mDisableOrHiddenApp.add(" - " + getTitle() + " (" + getSummary() + ")");
             setVisible(false);
         }
-        if (!scope.contains(getSummary()) && (getSummary() != null) && isScopeGet) {
+        if (!scope.contains(getSummary()) && (getSummary() != null) && isScopeGet && !isScopeGetFailed) {
             notInSelectedScope.add((String) getSummary());
             String string = " - " + getTitle() + " (" + getSummary() + ")";
             if (!mDisableOrHiddenApp.contains(string) && !mUninstallApp.contains(string) && !mNoScoped.contains(string)) mNoScoped.add(string);
@@ -103,66 +105,53 @@ public class PreferenceHeader extends XmlPreference {
     @SuppressLint("Range")
     private void getScope() {
         int userId = getCurrentUserId();
-
-        DatabaseHelper dbHelper = null;
+        SQLiteDatabase db = null;
+        Cursor cursor = null;
 
         try {
             rootExecCmd("mkdir -p /data/local/tmp/HyperCeiler/cache/ && cp -r /data/adb/lspd/config /data/local/tmp/HyperCeiler/cache/ && chmod -R 777 /data/local/tmp/HyperCeiler/cache/config");
-            dbHelper = new DatabaseHelper(this.getContext(), "/data/local/tmp/HyperCeiler/cache/config/modules_config.db");
-        } catch (Exception ignore) {
+
+            String dbPath = "/data/local/tmp/HyperCeiler/cache/config/modules_config.db";
+            db = SQLiteDatabase.openDatabase(dbPath, null, SQLiteDatabase.OPEN_READWRITE);
+
+            if (isDatabaseLocked(db)) {
+                AndroidLogUtils.logW("PreferenceHeader", "Database locked, skip get scope.");
+                isScopeGetFailed = true;
+                return;
+            }
+
+            String tableName = "modules";
+            String[] columns = {"mid"};
+            String selection = "module_pkg_name = ?";
+            String[] selectionArgs = {APPLICATION_ID};
+
+            cursor = db.query(tableName, columns, selection, selectionArgs, null, null, null);
+
+            if (cursor != null && cursor.moveToFirst()) {
+                List<String> scopeMid = new ArrayList<>();
+                List<String> scopeUid = new ArrayList<>();
+
+                do {
+                    String mid = cursor.getString(cursor.getColumnIndex("mid"));
+
+                    scopeMid = queryList(db, "app_pkg_name", "scope", "mid = ?", new String[]{mid}, true);
+                    scopeUid = queryList(db, "app_pkg_name", "scope", "user_id = ?", new String[]{String.valueOf(userId)}, true);
+
+                    scope = new ArrayList<>(scopeMid);
+                    scope.retainAll(scopeUid);
+
+                } while (cursor.moveToNext());
+            }
+
+        } catch (Exception e) {
             isScopeGetFailed = true;
-            return;
+            AndroidLogUtils.logW("PreferenceHeader", "Database error: ", e);
+        } finally {
+            if (cursor != null) cursor.close();
+            if (db != null) db.close();
         }
 
-        String tableName = "modules";
-        String[] columns = {"mid"};
-        String selection = "module_pkg_name = ?";
-        String[] selectionArgs = {APPLICATION_ID};
-
-        Cursor cursor = dbHelper.customQuery(tableName, columns, selection, selectionArgs, null);
-
-        if (cursor != null && cursor.moveToFirst()) {
-            do {
-                List<String> scopeMid = new ArrayList<String>();
-                List<String> scopeUid = new ArrayList<String>();
-                String mid = cursor.getString(cursor.getColumnIndex("mid"));
-
-                tableName = "scope";
-                columns = new String[]{"app_pkg_name"};
-                selection = "mid = ?";
-                selectionArgs = new String[]{mid};
-
-                cursor = dbHelper.customQuery(tableName, columns, selection, selectionArgs, null);
-
-                if (cursor != null && cursor.moveToFirst()) {
-                    do {
-                        String getScope = cursor.getString(cursor.getColumnIndex("app_pkg_name"));
-                        if (getScope.equals("system")) getScope = "android";
-                        scopeMid.add(getScope);
-                    } while (cursor.moveToNext());
-                }
-
-                tableName = "scope";
-                columns = new String[]{"app_pkg_name"};
-                selection = "user_id = ?";
-                selectionArgs = new String[]{String.valueOf(userId)};
-
-                cursor = dbHelper.customQuery(tableName, columns, selection, selectionArgs, null);
-
-                if (cursor != null && cursor.moveToFirst()) {
-                    do {
-                        String getScope = cursor.getString(cursor.getColumnIndex("app_pkg_name"));
-                        if (getScope.equals("system")) getScope = "android";
-                        scopeUid.add(getScope);
-                    } while (cursor.moveToNext());
-                }
-
-                scope = scopeMid;
-                scope.retainAll(scopeUid);
-            } while (cursor.moveToNext());
-        }
-
-        cursor.close();
         isScopeGet = true;
     }
+
 }
