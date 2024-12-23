@@ -1,8 +1,8 @@
-name: Release Build
-# 待修改
+name: Release
+
 on:
-  push:
-    branches: [ "main2" ]
+  pull_request:
+    types: [opened, synchronize]
     paths-ignore:
       - ".github/**"
       - "!.github/workflows/**"
@@ -12,11 +12,21 @@ on:
       - "app/src/assets/**"
       - ".github/workflows/crowdin.yml"
       - "crowdin.yml"
+  push:
+    branches: [main,nolog]
+    paths-ignore:
+      - ".github/**"
+      - "!.github/workflows/**"
+      - ".idea/"
+      - "doc/*"
+      - "*.md"
+      - "app/src/assets/**"
+      - "crowdin.yml"
   workflow_dispatch:
 
 jobs:
-  build:
-    runs-on: ubuntu-latest
+  build_app:
+    runs-on: macos-latest
     name: Build App
     steps:
       - name: Checkout Git Repository
@@ -28,14 +38,14 @@ jobs:
       - name: Setup JDK
         uses: actions/setup-java@v4
         with:
-          java-version: '21'
           distribution: 'temurin'
+          java-version: '22'
 
       - name: Setup Gradle
         uses: gradle/actions/setup-gradle@v4
 
       - name: Create Sign File
-        if: github.ref == 'refs/heads/main'
+        if: github.event_name != 'pull_request' 
         run: |
           touch signing.properties
           echo storePassword=${{ secrets.KEY_STORE_PASSWORD }} >> signing.properties
@@ -44,34 +54,52 @@ jobs:
           echo storeFile=../key.jks >> signing.properties
           echo ${{ secrets.SIGNING_KEY }} | base64 --decode > key.jks
 
-      - name: Build with Gradle
+      - name: Build with Gradle (Canary)
+        if: github.event_name != 'pull_request'
         shell: bash
-        run: ./gradlew assembleCanary
+        run: |
+          echo "IS_DEBUG=false" >> $GITHUB_ENV
+          ./gradlew assembleRelease
+          
 
       - name: Find APKs
         run: |
-          echo "APK_FILE_CANARY=$(find app/build/outputs/apk/canary -name '*.apk')" >> $GITHUB_ENV
+          APK_FILE=$(find app/build/outputs/apk/release -name '*.apk')
+          echo "APK_FILE=$APK_FILE" >> $GITHUB_ENV
+          echo "APK_FILE_NAME=$(basename $APK_FILE .apk)" >> $GITHUB_ENV
 
       - name: Show APKs SHA256
         if: success()
         run: |
           echo "### Build Success" >> $GITHUB_STEP_SUMMARY
           echo "|Artifact|SHA256|" >> $GITHUB_STEP_SUMMARY
-          echo "|:--------:|:----------|" >> $GITHUB_STEP_SUMMARY
-          canary=$(sha256sum "${{ env.APK_FILE_CANARY }}")
-          echo "SHA256=$canary" >> $GITHUB_ENV
-          echo "|Canary|$canary" >> $GITHUB_STEP_SUMMARY
+          echo "|:---:|:---|" >> $GITHUB_STEP_SUMMARY
+          APK_SHA256=($(shasum -a 256 ${{ env.APK_FILE }}))
+          echo "|Canary|$APK_SHA256" >> $GITHUB_STEP_SUMMARY
 
-      - name: Upload Canary APK
-        if: ${{ contains(github.event.head_commit.message, '[unupload]') == false && contains(github.event.head_commit.message, '[skp]') == false  }}
+      - name: Upload APKs
         uses: actions/upload-artifact@v4
         with:
-          name: HyperCeiler Canary
-          path: ${{ env.APK_FILE_CANARY }}
+          name: ${{ env.APK_FILE_NAME }}
+          path: ${{ env.APK_FILE }}
+          compression-level: 9
+
+  push_to_canary_channel:
+    if: github.event_name == 'push'  && !contains(github.event.head_commit.message, '[skp]') && !contains(github.event.head_commit.message, 's#')
+    runs-on: ubuntu-latest
+    name: Push to Canary Channel
+    needs: build_app
+    steps:
+      - name: Download Artifacts
+        uses: actions/download-artifact@v4
+        with:
+          path: artifacts
+
+      - name: Find Artifacts
+        run: |
+          echo "APK_FILE_CANARY=$(find artifacts -name '*.apk')" >> $GITHUB_ENV
 
       - name: Post to Canary Channel
-        if: ${{ github.ref == 'refs/heads/main' && github.ref_type != 'tag' && contains(github.event.head_commit.message, '[skp]') == false && contains(github.event.head_commit.message, 's#') == false }}
-        shell: bash
         env:
           CHANNEL_ID: ${{ secrets.CHANNEL_ID }}
           BOT_TOKEN: ${{ secrets.BOT_TOKEN }}
