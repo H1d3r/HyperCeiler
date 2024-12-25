@@ -27,7 +27,7 @@ import java.util.Locale;
 
 public class LanguageHelper {
     public static final String[] appLanguages = {
-            "en", "zh_CN", "zh_TW", "zh_HK", "ja_JP", "pl-rPL", "ru_RU", "ar-rSA", "es_ES", "pt_BR", "in_ID", "tr_TR", "vi_VN", "it_IT", "zh_ME"
+            "en", "zh_CN", "zh_TW", "zh_HK", "ja_JP", "pl_PL", "ru_RU", "ar_SA", "es_ES", "pt_BR", "in_ID", "tr_TR", "vi_VN", "it_IT", "zh_ME"
     };
 
     public static void setLanguage(Context context, String language) {
@@ -79,34 +79,42 @@ public class LanguageHelper {
                 if (recreate) activity.recreate();
             }
             case 5 -> {
-                LanguageHelper.setLanguage(activity.getBaseContext(), "ru", "RU");
+                LanguageHelper.setLanguage(activity.getBaseContext(), "pl", "PL");
                 if (recreate) activity.recreate();
             }
             case 6 -> {
-                LanguageHelper.setLanguage(activity.getBaseContext(), "es", "ES");
+                LanguageHelper.setLanguage(activity.getBaseContext(), "ru", "RU");
                 if (recreate) activity.recreate();
             }
             case 7 -> {
-                LanguageHelper.setLanguage(activity.getBaseContext(), "pt", "BR");
+                LanguageHelper.setLanguage(activity.getBaseContext(), "ar", "SA");
                 if (recreate) activity.recreate();
             }
             case 8 -> {
-                LanguageHelper.setLanguage(activity.getBaseContext(), "in", "ID");
+                LanguageHelper.setLanguage(activity.getBaseContext(), "es", "ES");
                 if (recreate) activity.recreate();
             }
             case 9 -> {
-                LanguageHelper.setLanguage(activity.getBaseContext(), "tr", "TR");
+                LanguageHelper.setLanguage(activity.getBaseContext(), "pt", "BR");
                 if (recreate) activity.recreate();
             }
             case 10 -> {
-                LanguageHelper.setLanguage(activity.getBaseContext(), "vi", "VN");
+                LanguageHelper.setLanguage(activity.getBaseContext(), "in", "ID");
                 if (recreate) activity.recreate();
             }
             case 11 -> {
-                LanguageHelper.setLanguage(activity.getBaseContext(), "it", "IT");
+                LanguageHelper.setLanguage(activity.getBaseContext(), "tr", "TR");
                 if (recreate) activity.recreate();
             }
             case 12 -> {
+                LanguageHelper.setLanguage(activity.getBaseContext(), "vi", "VN");
+                if (recreate) activity.recreate();
+            }
+            case 13 -> {
+                LanguageHelper.setLanguage(activity.getBaseContext(), "it", "IT");
+                if (recreate) activity.recreate();
+            }
+            case 14 -> {
                 LanguageHelper.setLanguage(activity.getBaseContext(), "zh", "ME");
                 if (recreate) activity.recreate();
             }
@@ -137,7 +145,7 @@ public class LanguageHelper {
                 return index;
             }
         }
-        return index;
+        return -1;
     }
 
     public static boolean isUpperCase(String string) {
