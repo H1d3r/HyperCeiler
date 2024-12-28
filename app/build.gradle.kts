@@ -11,7 +11,6 @@ plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.lsparanoid)
-    // alias(libs.plugins.lspluginResopt)
 }
 
 lsparanoid {
@@ -44,6 +43,7 @@ val roots = mapOf(
     "recyclerview" to "libs/recyclerview-${buildTypes}.aar",
     "smooth" to "libs/smooth-${buildTypes}.aar",
     "springback" to "libs/springback-${buildTypes}.aar",
+    "slidingwidget" to "libs/slidingwidget-${buildTypes}.aar",
     "stretchablewidget" to "libs/stretchablewidget-${buildTypes}.aar",
     "theme" to "libs/theme-${buildTypes}.aar",
     "viewpager" to "libs/viewpager-${buildTypes}.aar",
@@ -256,7 +256,6 @@ android {
 dependencies {
     compileOnly(project(":hidden-api"))
     compileOnly(libs.xposed.api)
-    // compileOnly(libs.androidx.preference)
 
     implementation(libs.dexkit)
     implementation(libs.mmkv)
@@ -264,7 +263,6 @@ dependencies {
     implementation(libs.hiddenapibypass)
     implementation(libs.gson)
     implementation(libs.hooktool)
-    implementation(libs.gson)
     implementation(libs.lyric.getter.api)
 
     implementation(libs.core)
@@ -272,10 +270,6 @@ dependencies {
     implementation(libs.recyclerview)
     implementation(libs.fragment)
     implementation(libs.lifecycle.common)
-    implementation(libs.vectordrawable)
-    implementation(libs.vectordrawable.animated)
-    implementation(libs.customview)
-    implementation(libs.customview.poolingcontainer)
     implementation(libs.coordinatorlayout)
     implementation(libs.constraintlayout) {
         exclude("androidx.appcompat", "appcompat")
@@ -299,6 +293,7 @@ dependencies {
     implementation(files(roots["recyclerview"]))
     implementation(files(roots["smooth"]))
     implementation(files(roots["springback"]))
+    implementation(files(roots["slidingwidget"]))
     implementation(files(roots["stretchablewidget"]))
     implementation(files(roots["theme"]))
     implementation(files(roots["viewpager"]))

@@ -83,7 +83,7 @@
 
     <dimen name="screen_effect_actionbar_height">480dp</dimen>
 
-    <dimen name="my_card_bottom">162dp</dimen>
+    <dimen name="my_card_bottom">144dp</dimen>
     <dimen name="my_card_shadow_dx">0dp</dimen>
     <dimen name="my_card_shadow_dy">20dp</dimen>
     <dimen name="my_card_shadow_radius">40dp</dimen>
@@ -94,4 +94,6 @@
 
     <dimen name="miuix_preference_checkable_item_bg_padding_end">@dimen/miuix_theme_padding_horizontal_common</dimen>
     <dimen name="miuix_preference_checkable_item_mask_padding_start">@dimen/miuix_theme_padding_horizontal_common</dimen>
+
+    <dimen name="search_bar_margin_horizontal">0dp</dimen>
 </resources>
