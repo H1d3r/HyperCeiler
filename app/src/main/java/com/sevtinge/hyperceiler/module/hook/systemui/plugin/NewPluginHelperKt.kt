@@ -100,6 +100,11 @@ object NewPluginHelperKt : BaseHook() {
 
                 val loaders = listOf(
                     Triple(
+                        "QSVolumeOrBrightnessValue",
+                        mPrefsMap.getBoolean("system_ui_control_center_qs_brightness_top_value_show") || mPrefsMap.getBoolean("system_ui_control_center_qs_volume_top_value_show"),
+                        QSVolumeOrBrightnessValue::initQSVolumeOrBrightnessValue
+                    ),
+                    Triple(
                         "CustomCardTiles",
                         mPrefsMap.getBoolean("systemui_plugin_card_tiles_enabled") &&
                                 mPrefsMap.getString("systemui_plugin_card_tiles", "").isNotEmpty()
@@ -112,7 +117,7 @@ object NewPluginHelperKt : BaseHook() {
                     Triple(
                         "CCGridForHyperOS",
                         mPrefsMap.getBoolean("system_ui_control_center_rounded_rect"),
-                        CCGridForHyperOS::initCCGridForHyperOS
+                        CCGridForHyperOSKt::initCCGridForHyperOS
                     ),
                     Triple(
                         "QSColor",
