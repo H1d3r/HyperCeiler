@@ -10,7 +10,6 @@ import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.viewpager.widget.ViewPagerCompat;
 
 import com.sevtinge.hyperceiler.R;
 import com.sevtinge.hyperceiler.ui.widget.DraggableViewPager;
@@ -22,7 +21,10 @@ import fan.appcompat.app.ActionBar;
 import fan.appcompat.app.Fragment;
 import fan.navigator.Navigator;
 import fan.navigator.NavigatorFragmentListener;
+import fan.navigator.navigatorinfo.DetailFragmentNavInfo;
 import fan.navigator.navigatorinfo.UpdateFragmentNavInfo;
+import fan.os.Build;
+import fan.viewpager.widget.ViewPager;
 
 public class ContentFragment extends Fragment implements NavigatorFragmentListener {
 
@@ -72,6 +74,9 @@ public class ContentFragment extends Fragment implements NavigatorFragmentListen
         setCorrectNestedScrollMotionEventEnabled(true);
         mViewPager = view.findViewById(R.id.vp_fragments);
         setupViewPager();
+        if (Build.IS_TABLET && Navigator.get(this).getNavigationMode() == Navigator.Mode.NLC) {
+            Navigator.get(this).navigate(new DetailFragmentNavInfo(-1, DetailFragment.class, new Bundle()));
+        }
     }
 
     public void selectNavigationItem() {
@@ -162,7 +167,7 @@ public class ContentFragment extends Fragment implements NavigatorFragmentListen
                 }
             }
         }
-        mViewPager.setOnPageChangeListener(new ViewPagerCompat.OnPageChangeListener() {
+        mViewPager.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             String leftTab;
             float offSet = 1.0f;
             boolean isHandUp = false;

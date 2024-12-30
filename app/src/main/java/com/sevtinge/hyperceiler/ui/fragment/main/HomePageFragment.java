@@ -52,12 +52,16 @@ import java.util.Calendar;
 import java.util.Objects;
 
 import fan.appcompat.app.Fragment;
+import fan.navigator.Navigator;
+import fan.navigator.NavigatorFragmentListener;
+import fan.navigator.navigatorinfo.DetailFragmentNavInfo;
+import fan.navigator.navigatorinfo.UpdateDetailFragmentNavInfo;
 import fan.nestedheader.widget.NestedHeaderLayout;
 import fan.springback.view.SpringBackLayout;
 
 public class HomePageFragment extends DashboardFragment
-        implements HomepageEntrance.EntranceState,
-        ModSearchCallback.OnSearchListener, IFragmentChange {
+        implements HomepageEntrance.EntranceState, ModSearchCallback.OnSearchListener,
+        NavigatorFragmentListener, IFragmentChange {
 
     View mRootView;
     ViewGroup mPrefsContainer;
@@ -171,6 +175,7 @@ public class HomePageFragment extends DashboardFragment
     private void onSearchItemClickListener(ModData ad) {
         Bundle args = new Bundle();
         args.putString(":settings:fragment_args_key", ad.key);
+        args.putInt(":settings:fragment_resId", ad.xml);
         SettingLauncherHelper.onStartSettingsForArguments(
                 requireContext(),
                 SubSettings.class,
