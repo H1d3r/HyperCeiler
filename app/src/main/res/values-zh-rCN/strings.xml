@@ -32,7 +32,7 @@
     <string name="safe_mode_cancel">解除</string>
     <string name="safe_mode_ok">稍后处理</string>
     <string name="safe_mode_later_title">提示</string>
-    <string name="safe_mode_later_desc">%1$s目前处于安全模式中，HyperCeiler 对其的功能已停用。\n您可以解除对其的安全模式，或稍后处理。</string>
+    <string name="safe_mode_later_desc">%1$s 目前处于安全模式中，HyperCeiler 对其的功能已停用。\n您可以解除对其的安全模式，或稍后处理。</string>
     <string name="safe_mode_recorder_title">异常记录</string>
     <string name="safe_mode_recorder_file">文件名</string>
     <string name="safe_mode_recorder_class">抛出类</string>
@@ -40,6 +40,11 @@
     <string name="safe_mode_recorder_line">行号</string>
     <string name="safe_mode_recorder_msg">异常类型及信息</string>
     <string name="safe_mode_recorder_st">异常堆栈内容</string>
+
+    <string name="notification_channel_app_crash_name">应用运行异常</string>
+    <string name="notification_title_message_emergency_crash">%s 多次崩溃</string>
+    <string name="notification_content_message">点击查看详细信息</string>
+    <string name="notification_view" >查看</string>
 
     <string name="tip_default">Tip: 这里是默认 tip ~ 如果你能看见我，就说明 HyperCeiler 出现了问题，请及时且有效的反馈给开发者。</string>
 
@@ -1044,8 +1049,6 @@
     <string name="system_ui_control_center_rounded_rect">圆角矩形磁贴</string>
     <string name="system_ui_control_center_statusbar_blur">强制背景模糊</string>
     <string name="system_ui_control_center_rounded_rect_radius">圆角大小</string>
-    <string name="system_ui_control_center_rounded_rect_opt">使用更激进的圆角矩形磁贴优化</string>
-    <string name="system_ui_control_center_rounded_rect_opt_desc">可能导致部分或全部圆角矩形磁贴恢复默认</string>
     <string name="system_ui_control_center_fix_tiles_list">补全磁贴列表</string>
     <string name="system_ui_shade_header_gradient_blur">通知与控制中心头部渐变模糊</string>
     <string name="system_ui_control_center_switch_cc_and_notification_title">对调控制中心与通知抽屉</string>
