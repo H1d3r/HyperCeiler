@@ -14,11 +14,11 @@
   * You should have received a copy of the GNU Affero General Public License
   * along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-  * Copyright (C) 2023-2024 HyperCeiler Contributions
+  * Copyright (C) 2023-2025 HyperCeiler Contributions
 */
 package com.sevtinge.hyperceiler.ui.activity.base;
 
-import static com.sevtinge.hyperceiler.utils.GrayViewUtils.isNeedGrayView;
+import static com.sevtinge.hyperceiler.utils.PersistConfig.isNeedGrayView;
 
 import android.graphics.ColorMatrix;
 import android.graphics.ColorMatrixColorFilter;

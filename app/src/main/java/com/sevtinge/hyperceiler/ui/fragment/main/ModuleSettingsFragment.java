@@ -14,7 +14,7 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
- * Copyright (C) 2023-2024 HyperCeiler Contributions
+ * Copyright (C) 2023-2025 HyperCeiler Contributions
  */
 package com.sevtinge.hyperceiler.ui.fragment.main;
 
@@ -31,6 +31,7 @@ import com.sevtinge.hyperceiler.BuildConfig;
 import com.sevtinge.hyperceiler.R;
 import com.sevtinge.hyperceiler.ui.activity.LauncherActivity;
 import com.sevtinge.hyperceiler.ui.fragment.base.SettingsPreferenceFragment;
+import com.sevtinge.hyperceiler.ui.fragment.dashboard.DashboardFragment;
 import com.sevtinge.hyperceiler.utils.BackupUtils;
 import com.sevtinge.hyperceiler.utils.DialogHelper;
 import com.sevtinge.hyperceiler.utils.LanguageHelper;
@@ -42,7 +43,7 @@ import fan.appcompat.app.AppCompatActivity;
 import fan.navigator.NavigatorFragmentListener;
 import fan.preference.DropDownPreference;
 
-public class ModuleSettingsFragment extends SettingsPreferenceFragment
+public class ModuleSettingsFragment extends DashboardFragment
         implements Preference.OnPreferenceChangeListener, NavigatorFragmentListener, IFragmentChange {
     DropDownPreference mIconModePreference;
     DropDownPreference mIconModeValue;

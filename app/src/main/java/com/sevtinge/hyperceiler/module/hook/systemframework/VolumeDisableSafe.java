@@ -14,7 +14,7 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
- * Copyright (C) 2023-2024 HyperCeiler Contributions
+ * Copyright (C) 2023-2025 HyperCeiler Contributions
  */
 package com.sevtinge.hyperceiler.module.hook.systemframework;
 
@@ -37,9 +37,13 @@ public class VolumeDisableSafe extends BaseHook {
     @Override
     public void init() {
         if (isMoreAndroidVersion(34)) {
-            String SoundDoseHelperStub = isMoreAndroidVersion(35) ?
-                    "com.android.server.audio.SoundDoseHelperStub" :
-                    "com.android.server.audio.SoundDoseHelperStubImpl";
+            Class<?> SoundDoseHelperStub;
+            Class<?> SoundDoseHelper = findClass("com.android.server.audio.SoundDoseHelper", lpparam.classLoader);
+            try {
+                SoundDoseHelperStub = findClass("com.android.server.audio.SoundDoseHelperStub", lpparam.classLoader);
+            } catch (Throwable t) {
+                SoundDoseHelperStub = findClass("com.android.server.audio.SoundDoseHelperStubImpl", lpparam.classLoader);
+            }
 
             findAndHookMethod(SoundDoseHelperStub, "updateSafeMediaVolumeIndex", int.class, new MethodHook() {
                 @Override
@@ -52,7 +56,7 @@ public class VolumeDisableSafe extends BaseHook {
                 }
             });
 
-            findAndHookMethod("com.android.server.audio.SoundDoseHelper", "safeMediaVolumeIndex", int.class, new MethodHook() {
+            findAndHookMethod(SoundDoseHelper, "safeMediaVolumeIndex", int.class, new MethodHook() {
                 @Override
                 protected void before(MethodHookParam param) throws Throwable {
                     if (mode == 1) {
@@ -63,7 +67,7 @@ public class VolumeDisableSafe extends BaseHook {
                 }
             });
 
-            hookAllConstructors("com.android.server.audio.SoundDoseHelper", new MethodHook() {
+            hookAllConstructors(SoundDoseHelper, new MethodHook() {
                 @Override
                 protected void after(MethodHookParam param) throws Throwable {
                     if (mode == 1) {

@@ -96,8 +96,8 @@ android {
         applicationId = namespace
         minSdk = 33
         targetSdk = 35
-        versionCode = 154
-        versionName = "2.5.154"
+        versionCode = 155
+        versionName = "2.5.155"
 
         val sdf = SimpleDateFormat("yyyy-MM-dd HH:mm:ss")
         sdf.timeZone = TimeZone.getTimeZone("Asia/Shanghai")
@@ -264,6 +264,7 @@ dependencies {
     implementation(libs.gson)
     implementation(libs.hooktool)
     implementation(libs.lyric.getter.api)
+    implementation(libs.lunarcalendar)
 
     implementation(libs.core)
     implementation(libs.collection)

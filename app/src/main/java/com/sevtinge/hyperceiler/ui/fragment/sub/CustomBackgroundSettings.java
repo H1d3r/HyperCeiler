@@ -14,7 +14,7 @@
   * You should have received a copy of the GNU Affero General Public License
   * along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-  * Copyright (C) 2023-2024 HyperCeiler Contributions
+  * Copyright (C) 2023-2025 HyperCeiler Contributions
 */
 package com.sevtinge.hyperceiler.ui.fragment.sub;
 
@@ -30,6 +30,7 @@ import fan.preference.ColorPickerPreference;
 import fan.preference.SeekBarPreferenceCompat;
 
 import androidx.preference.Preference;
+import androidx.preference.SeekBarPreference;
 import androidx.preference.SwitchPreference;
 
 public class CustomBackgroundSettings extends SettingsPreferenceFragment implements Preference.OnPreferenceChangeListener {
@@ -45,10 +46,10 @@ public class CustomBackgroundSettings extends SettingsPreferenceFragment impleme
     private SwitchPreference mCustomEnabledPreference;
 
     private ColorPickerPreference mColorPickerPreference;
-    private SeekBarPreferenceCompat mCornerRadiusPreference;
+    private SeekBarPreference mCornerRadiusPreference;
 
     private SwitchPreference mBlurEnabledPreference;
-    private SeekBarPreferenceCompat mBlurRadiusPreference;
+    private SeekBarPreference mBlurRadiusPreference;
 
     @Override
     public int getPreferenceScreenResId() {
@@ -96,9 +97,9 @@ public class CustomBackgroundSettings extends SettingsPreferenceFragment impleme
     private void loadData() {
         mCustomEnabledPreference.setChecked(isCustomEnabled());
         mColorPickerPreference.setColor(getColor(-1));
-        //mCornerRadiusPreference.setValue(getSeekBarValue(mCornerRadiusKey, 18));
+        mCornerRadiusPreference.setValue(getSeekBarValue(mCornerRadiusKey, 18));
         mBlurEnabledPreference.setChecked(isBackgroundBlurEnabled());
-        //mBlurRadiusPreference.setValue(getSeekBarValue(mBlurRadiusKey, 60));
+        mBlurRadiusPreference.setValue(getSeekBarValue(mBlurRadiusKey, 60));
     }
 
     private boolean isCustomEnabled() {

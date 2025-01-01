@@ -14,7 +14,7 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
- * Copyright (C) 2023-2024 HyperCeiler Contributions
+ * Copyright (C) 2023-2025 HyperCeiler Contributions
  */
 package com.sevtinge.hyperceiler.module.app.SystemUI.Phone;
 
@@ -23,6 +23,7 @@ import static com.sevtinge.hyperceiler.utils.devicesdk.SystemSDKKt.isMoreHyperOS
 
 import com.hchen.database.HookBase;
 import com.sevtinge.hyperceiler.module.base.BaseModule;
+import com.sevtinge.hyperceiler.module.hook.systemframework.FlagSecure;
 import com.sevtinge.hyperceiler.module.hook.systemui.AllowManageAllNotifications;
 import com.sevtinge.hyperceiler.module.hook.systemui.AutoCollapse;
 import com.sevtinge.hyperceiler.module.hook.systemui.BluetoothRestrict;
@@ -160,6 +161,8 @@ public class SystemUiU extends BaseModule {
 
         // Monet
         initHook(new MonetThemeOverlay(), mPrefsMap.getBoolean("system_ui_monet_overlay_custom"));
+
+        initHook(new FlagSecure(), mPrefsMap.getBoolean("system_other_flag_secure"));
 
         // 状态栏图标
         boolean isHideSim = (mPrefsMap.getBoolean("system_ui_status_bar_icon_mobile_network_hide_card_1") ||

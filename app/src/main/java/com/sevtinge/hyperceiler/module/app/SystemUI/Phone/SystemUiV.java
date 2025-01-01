@@ -14,7 +14,7 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  *
- * Copyright (C) 2023-2024 HyperCeiler Contributions
+ * Copyright (C) 2023-2025 HyperCeiler Contributions
  */
 
 package com.sevtinge.hyperceiler.module.app.SystemUI.Phone;
@@ -23,6 +23,7 @@ import static com.sevtinge.hyperceiler.utils.devicesdk.SystemSDKKt.isMoreHyperOS
 
 import com.hchen.database.HookBase;
 import com.sevtinge.hyperceiler.module.base.BaseModule;
+import com.sevtinge.hyperceiler.module.hook.systemframework.FlagSecure;
 import com.sevtinge.hyperceiler.module.hook.systemui.AllowManageAllNotifications;
 import com.sevtinge.hyperceiler.module.hook.systemui.AutoCollapse;
 import com.sevtinge.hyperceiler.module.hook.systemui.BrightnessPct;
@@ -137,6 +138,7 @@ public class SystemUiV extends BaseModule {
         // PluginHelper
         initHook(NewPluginHelperKt.INSTANCE);
         // initHook(Island.INSTANCE, true); // 灵动岛
+        initHook(new FlagSecure(), mPrefsMap.getBoolean("system_other_flag_secure"));
 
         // 小窗
         initHook(new NotificationFreeform(), mPrefsMap.getBoolean("system_ui_notification_freeform"));

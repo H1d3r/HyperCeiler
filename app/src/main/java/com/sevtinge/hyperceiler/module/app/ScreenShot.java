@@ -14,7 +14,7 @@
   * You should have received a copy of the GNU Affero General Public License
   * along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-  * Copyright (C) 2023-2024 HyperCeiler Contributions
+  * Copyright (C) 2023-2025 HyperCeiler Contributions
 */
 package com.sevtinge.hyperceiler.module.app;
 
@@ -26,6 +26,7 @@ import com.sevtinge.hyperceiler.module.hook.screenshot.DeviceShellCustomize;
 import com.sevtinge.hyperceiler.module.hook.screenshot.SaveToPictures;
 import com.sevtinge.hyperceiler.module.hook.screenshot.UnlockMinimumCropLimit2;
 import com.sevtinge.hyperceiler.module.hook.screenshot.UnlockPrivacyMarking;
+import com.sevtinge.hyperceiler.module.hook.systemframework.FlagSecure;
 import com.sevtinge.hyperceiler.module.hook.various.UnlockSuperClipboard;
 
 @HookBase(targetPackage = "com.miui.screenshot")
@@ -39,5 +40,6 @@ public class ScreenShot extends BaseModule {
         initHook(UnlockPrivacyMarking.INSTANCE, mPrefsMap.getBoolean("screenshot_unlock_privacy_marking"));
         // 超级剪切板
         initHook(UnlockSuperClipboard.INSTANCE, mPrefsMap.getStringAsInt("various_super_clipboard_e", 0) != 0);
+        initHook(new FlagSecure(), mPrefsMap.getBoolean("system_other_flag_secure"));
     }
 }
