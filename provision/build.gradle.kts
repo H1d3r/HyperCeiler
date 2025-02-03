@@ -18,14 +18,6 @@ android {
                 "proguard-rules.pro"
             )
         }
-
-        release {
-            isMinifyEnabled = false
-            proguardFiles(
-                getDefaultProguardFile("proguard-android-optimize.txt"),
-                "proguard-rules.pro"
-            )
-        }
         create("beta") {
             isMinifyEnabled = false
             proguardFiles(
@@ -48,26 +40,45 @@ android {
             )
         }
     }
+}
 
-    java {
-        toolchain {
-            languageVersion = JavaLanguageVersion.of(22)
-        }
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(21)
     }
 }
 
 dependencies {
-    api(libs.core)
-    api(libs.recyclerview)
-    api(libs.fragment)
-    api(libs.coordinatorlayout)
-    api(libs.constraintlayout) {
+    implementation(libs.core)
+    implementation(libs.fragment)
+    implementation(libs.recyclerview)
+    implementation(libs.coordinatorlayout)
+    implementation(libs.constraintlayout) {
         exclude("androidx.appcompat", "appcompat")
     }
 
-    api(
-        fileTree(
-            mapOf("dir" to "libs", "include" to listOf("*-debug.aar"))
-        )
-    )
+    implementation(libs.miuix.animation)
+    implementation(libs.miuix.appcompat)
+    implementation(libs.miuix.basewidget)
+    implementation(libs.miuix.bottomsheet)
+    implementation(libs.miuix.cardview)
+    implementation(libs.miuix.core)
+    implementation(libs.miuix.flexible)
+    implementation(libs.miuix.folme)
+    implementation(libs.miuix.graphics)
+    implementation(libs.miuix.haptic)
+    implementation(libs.miuix.mgl)
+    implementation(libs.miuix.navigator)
+    implementation(libs.miuix.nestedheader)
+    implementation(libs.miuix.pickerwidget)
+    implementation(libs.miuix.popupwidget)
+    implementation(libs.miuix.preference)
+    implementation(libs.miuix.recyclerview)
+    implementation(libs.miuix.slidingwidget)
+    implementation(libs.miuix.smooth)
+    implementation(libs.miuix.springback)
+    implementation(libs.miuix.stretchablewidget)
+    implementation(libs.miuix.theme)
+    implementation(libs.miuix.viewpager)
+    implementation(libs.miuix.visualcheck)
 }

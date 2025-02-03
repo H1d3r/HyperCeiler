@@ -1,11 +1,13 @@
 // file:noinspection DependencyNotationArgument
-import com.android.build.gradle.internal.api.*
-import com.android.build.gradle.tasks.*
-import java.io.*
-import java.text.*
-import java.time.*
-import java.time.format.*
-import java.util.*
+import com.android.build.gradle.internal.api.BaseVariantOutputImpl
+import com.android.build.gradle.tasks.PackageAndroidArtifact
+import java.io.ByteArrayOutputStream
+import java.text.SimpleDateFormat
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
+import java.util.Date
+import java.util.Properties
+import java.util.TimeZone
 
 plugins {
     alias(libs.plugins.android.application)
@@ -70,7 +72,7 @@ android {
         minSdk = 34
         targetSdk = 35
         versionCode = getVersionCode()
-        versionName = "2.5.157"
+        versionName = "2.5.158"
 
         val sdf = SimpleDateFormat("yyyy-MM-dd HH:mm:ss").apply {
             timeZone = TimeZone.getTimeZone("Asia/Shanghai")
@@ -96,6 +98,7 @@ android {
     }
 
     buildFeatures {
+        aidl = true
         buildConfig = true
     }
 
@@ -140,12 +143,6 @@ android {
             enableV3Signing = true
             enableV4Signing = true
         }
-        create("withoutProperties") {
-            enableV1Signing = true
-            enableV2Signing = true
-            enableV3Signing = true
-            enableV4Signing = true
-        }
     }
 
     buildTypes {
@@ -162,7 +159,7 @@ android {
             signingConfig = if (properties != null) {
                 signingConfigs["hasProperties"]
             } else {
-                signingConfigs["withoutProperties"]
+                signingConfigs["debug"]
             }
         }
         create("beta") {
@@ -177,7 +174,7 @@ android {
             signingConfig = if (properties != null) {
                 signingConfigs["hasProperties"]
             } else {
-                signingConfigs["withoutProperties"]
+                signingConfigs["debug"]
             }
         }
         create("canary") {
@@ -192,7 +189,7 @@ android {
             signingConfig = if (properties != null) {
                 signingConfigs["hasProperties"]
             } else {
-                signingConfigs["withoutProperties"]
+                signingConfigs["debug"]
             }
         }
         debug {
@@ -205,25 +202,55 @@ android {
         }
     }
 
-    java {
-        toolchain {
-            languageVersion = JavaLanguageVersion.of(21)
-        }
-    }
+}
 
-    kotlin.jvmToolchain(21)
+// https://stackoverflow.com/a/77745844
+tasks.withType<PackageAndroidArtifact> {
+    doFirst { appMetadata.asFile.orNull?.writeText("") }
+}
 
-    buildFeatures {
-        aidl = true
-    }
-
-    // https://stackoverflow.com/a/77745844
-    tasks.withType<PackageAndroidArtifact> {
-        doFirst { appMetadata.asFile.orNull?.writeText("") }
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(21)
     }
 }
 
+kotlin.jvmToolchain(21)
+
 dependencies {
+    implementation(libs.core)
+    implementation(libs.fragment)
+    implementation(libs.recyclerview)
+    implementation(libs.coordinatorlayout)
+    implementation(libs.constraintlayout) {
+        exclude("androidx.appcompat", "appcompat")
+    }
+
+    implementation(libs.miuix.animation)
+    implementation(libs.miuix.appcompat)
+    implementation(libs.miuix.basewidget)
+    implementation(libs.miuix.bottomsheet)
+    implementation(libs.miuix.cardview)
+    implementation(libs.miuix.core)
+    implementation(libs.miuix.flexible)
+    implementation(libs.miuix.folme)
+    implementation(libs.miuix.graphics)
+    implementation(libs.miuix.haptic)
+    implementation(libs.miuix.navigator)
+    implementation(libs.miuix.nestedheader)
+    implementation(libs.miuix.pickerwidget)
+    implementation(libs.miuix.popupwidget)
+    implementation(libs.miuix.preference)
+    implementation(libs.miuix.recyclerview)
+    implementation(libs.miuix.slidingwidget)
+    implementation(libs.miuix.smooth)
+    implementation(libs.miuix.springback)
+    implementation(libs.miuix.stretchablewidget)
+    implementation(libs.miuix.theme)
+    implementation(libs.miuix.viewpager)
+    implementation(libs.miuix.visualcheck)
+    implementation(files("libs/hyperceiler_expansion_packs-debug.aar"))
+
     compileOnly(projects.hiddenApi)
     compileOnly(libs.xposed.api)
 

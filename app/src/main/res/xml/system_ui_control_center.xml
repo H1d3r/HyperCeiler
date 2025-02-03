@@ -46,7 +46,7 @@
 
     <PreferenceCategory android:title="@string/system_ui_control_center_notification_title">
         <Preference
-            android:fragment="com.sevtinge.hyperceiler.ui.app.systemui.MediaCardSettings"
+            android:fragment="com.sevtinge.hyperceiler.ui.hooker.systemui.MediaCardSettings"
             android:key="prefs_key_system_ui_control_center_media_control_media_custom"
             android:title="@string/system_ui_controlcenter_media_card_title" />
 
@@ -111,7 +111,7 @@
 
     <PreferenceCategory android:title="@string/system_ui_controlcenter_new_title">
         <Preference
-            android:fragment="com.sevtinge.hyperceiler.ui.app.systemui.TileSettings"
+            android:fragment="com.sevtinge.hyperceiler.ui.hooker.systemui.TileSettings"
             android:key="prefs_key_system_ui_control_center_tile_settings"
             android:title="@string/system_ui_control_center_magnet_tile_settings" />
 
@@ -124,32 +124,6 @@
             android:defaultValue="false"
             android:key="prefs_key_system_ui_control_center_disable_device_managed"
             android:title="@string/system_ui_control_center_disable_device_managed" />
-
-        <SwitchPreference
-            android:defaultValue="false"
-            android:key="prefs_key_system_ui_control_center_qs_brightness_top_value_show"
-            android:title="@string/system_ui_control_center_qs_brightness_top_value_show_title" />
-
-        <fan.preference.DropDownPreference
-            android:defaultValue="0"
-            android:dependency="prefs_key_system_ui_control_center_qs_brightness_top_value_show"
-            android:key="prefs_key_system_ui_control_center_qs_brightness_top_value_show_value"
-            android:title="@string/system_ui_control_center_qs_top_value_title"
-            app:entries="@array/system_ui_control_center_qs_top"
-            app:entryValues="@array/system_ui_control_center_qs_top_value" />
-
-        <SwitchPreference
-            android:defaultValue="false"
-            android:key="prefs_key_system_ui_control_center_qs_volume_top_value_show"
-            android:title="@string/system_ui_control_center_qs_volume_top_value_show_title" />
-
-        <fan.preference.DropDownPreference
-            android:defaultValue="0"
-            android:dependency="prefs_key_system_ui_control_center_qs_volume_top_value_show"
-            android:key="prefs_key_system_ui_control_center_qs_volume_top_value_show_value"
-            android:title="@string/system_ui_control_center_qs_top_value_title"
-            app:entries="@array/system_ui_control_center_qs_top"
-            app:entryValues="@array/system_ui_control_center_qs_top_value" />
 
         <SwitchPreference
             android:defaultValue="false"
