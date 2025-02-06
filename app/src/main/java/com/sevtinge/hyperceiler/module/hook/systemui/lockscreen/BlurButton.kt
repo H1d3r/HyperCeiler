@@ -18,25 +18,28 @@
 */
 package com.sevtinge.hyperceiler.module.hook.systemui.lockscreen
 
-import android.app.*
-import android.content.*
-import android.graphics.*
-import android.graphics.drawable.*
-import android.view.*
-import android.widget.*
-import com.github.kyuubiran.ezxhelper.*
-import com.github.kyuubiran.ezxhelper.ClassUtils.loadClassOrNull
+import android.app.KeyguardManager
+import android.content.Context
+import android.graphics.Color
+import android.graphics.Outline
+import android.graphics.drawable.LayerDrawable
+import android.view.View
+import android.view.ViewOutlineProvider
+import android.widget.ImageView
 import com.github.kyuubiran.ezxhelper.HookFactory.`-Static`.createHooks
+import com.github.kyuubiran.ezxhelper.ObjectUtils
 import com.github.kyuubiran.ezxhelper.finders.MethodFinder.`-Static`.methodFinder
-import com.sevtinge.hyperceiler.module.base.*
-import com.sevtinge.hyperceiler.utils.*
-import com.sevtinge.hyperceiler.utils.blur.BlurUtils.*
+import com.sevtinge.hyperceiler.module.base.BaseHook
+import com.sevtinge.hyperceiler.module.hook.systemui.base.lockscreen.Keyguard.keyguardBottomAreaInjector
+import com.sevtinge.hyperceiler.module.hook.systemui.base.lockscreen.Keyguard.leftButtonType
+import com.sevtinge.hyperceiler.utils.blur.BlurUtils.createBlurDrawable
 import com.sevtinge.hyperceiler.utils.blur.MiBlurUtilsKt.addMiBackgroundBlendColor
 import com.sevtinge.hyperceiler.utils.blur.MiBlurUtilsKt.clearMiBackgroundBlendColor
 import com.sevtinge.hyperceiler.utils.blur.MiBlurUtilsKt.setMiBackgroundBlurRadius
 import com.sevtinge.hyperceiler.utils.blur.MiBlurUtilsKt.setMiViewBlurMode
-import com.sevtinge.hyperceiler.utils.devicesdk.*
-import de.robv.android.xposed.*
+import com.sevtinge.hyperceiler.utils.devicesdk.isHyperOSVersion
+import com.sevtinge.hyperceiler.utils.setBooleanField
+import de.robv.android.xposed.XC_MethodHook
 
 object BlurButton : BaseHook() {
     private val removeLeft by lazy {
@@ -57,7 +60,7 @@ object BlurButton : BaseHook() {
 
     override fun init() {
         // by StarVoyager
-        loadClassOrNull("com.android.keyguard.injector.KeyguardBottomAreaInjector")!!.methodFinder()
+        keyguardBottomAreaInjector.methodFinder()
             .filter {
                 name in setOf(
                     "updateLeftIcon",
@@ -80,15 +83,6 @@ object BlurButton : BaseHook() {
     private fun setNewBackgroundBlur(imageView: ImageView): LayerDrawable {
         val blurDrawable = createBlurDrawable(
             imageView, 40, 100, Color.argb(60, 255, 255, 255)
-        )
-        val layoutDrawable = LayerDrawable(arrayOf(blurDrawable))
-        layoutDrawable.setLayerInset(0, radius, radius, radius, radius)
-        return layoutDrawable
-    }
-
-    private fun setOldBackgroundBlur(view: View): LayerDrawable {
-        val blurDrawable = createBlurDrawable(
-            view, 40, 100, Color.argb(60, 255, 255, 255)
         )
         val layoutDrawable = LayerDrawable(arrayOf(blurDrawable))
         layoutDrawable.setLayerInset(0, radius, radius, radius, radius)
@@ -133,7 +127,7 @@ object BlurButton : BaseHook() {
             "mRightButton"
         )!!
 
-        if (!removeLeft) {
+        if ((!removeLeft && isHyperOSVersion(1f)) || leftButtonType == 1) {
             addHyBlur(mLeftAffordanceView)
         }
         if (!removeRight) {

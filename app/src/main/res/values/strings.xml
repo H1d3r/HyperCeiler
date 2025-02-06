@@ -43,7 +43,6 @@
     <string name="summary_collapsed_preference_list" translatable="false">%1$s%2$s</string>
     <string name="networkboost" translatable="false">NetworkBoost</string>
     <string name="crc_value" translatable="false">399F71FC</string>
-    <string name="home_title_custom_anim_param_1_title" translatable="false">BREAK_OPEN</string>
     <string name="home_title_custom_anim_param_2_title" translatable="false">OPEN_FROM_HOME</string>
     <string name="home_title_custom_anim_param_3_title" translatable="false">OPEN_FROM_RECENTS</string>
     <string name="home_title_custom_anim_param_4_title" translatable="false">CLOSE_TO_RECENTS</string>
@@ -51,6 +50,7 @@
     <string name="home_title_custom_anim_param_6_title" translatable="false">CLOSE_FROM_FEED</string>
     <string name="home_title_custom_anim_param_7_title" translatable="false">APP_TO_APP</string>
     <string name="home_title_custom_anim_param_8_title" translatable="false">START_FIRST_TASK</string>
+    <string name="home_title_custom_anim_param_9_title" translatable="false">CLOSE_TO_DRAG</string>
     <string name="home_title_custom_anim_param_RECT_CENTERX_title" translatable="false">RECT_CENTERX</string>
     <string name="home_title_custom_anim_param_RECT_CENTERY_title" translatable="false">RECT_CENTERY</string>
     <string name="home_title_custom_anim_param_RECT_WIDTH_title" translatable="false">RECT_WIDTH</string>
@@ -89,7 +89,10 @@
     <string name="new_cta_app_main_purpose">modify system apps</string>
     <string name="new_cta_app_all_purpose_title">Welcome to HyperCeiler! This app relies on the Xposed framework to run. You can use this app to hijack and modify other supported apps to enhance the system. During usage, in order to provide you with more functions, we may apply for Root/Su permissions from you. You can manage it at any time by going to your Root/Su Manager.</string>
     <!--HyperCeiler Tips-->
+    <string name="error">Error</string>
     <string name="warn">Attention</string>
+    <string name="app_error_desc">This module had a fatal collapse and could not continue to run! Please bring the following error information for feedback! \n\n</string>
+    <string name="app_exit">Ending process</string>
     <string name="safe_mode_desc">%1$s has entered Safe mode due to multiple crashes, and HyperCeiler features has been temporarily disabled.</string>
     <string name="safe_mode_history">View exception records</string>
     <string name="safe_mode_cancel">Disable Safe mode</string>
@@ -244,6 +247,7 @@
     <string name="clearable_edittext_clear_description">Clear</string>
     <string name="preference_on">Turned on</string>
     <string name="preference_off">Turned off</string>
+    <string name="preference_enable_failed">Failed to enable %s</string>
     <string name="preference_copied">\"%1$s\" copied to clipboard.</string>
     <string name="preference_default_value_text">Default</string>
     <string name="preference_dialog_color_picker_default_title">Choose the color</string>
@@ -336,6 +340,7 @@
     <string name="system_ui_statusbar_indicator_bold">Bold</string>
     <!--Multi-list Array-->
     <string name="array_close">Close</string>
+    <string name="array_hide">Hide</string>
     <string name="array_default">Default</string>
     <string name="array_align_left">Left</string>
     <string name="array_align_right">Right</string>
@@ -670,6 +675,7 @@
     <string name="system_ui_lock_screen_show_spacing">Display refresh interval</string>
     <string name="system_ui_lock_screen_hide_camera">Hide camera</string>
     <string name="system_ui_lock_screen_hide_smart_screen">Hide smart screen</string>
+    <string name="system_ui_lock_screen_bottom_left_button">Left button at the bottom</string>
     <string name="system_ui_lock_screen_current">Current</string>
     <string name="system_ui_lock_screen_blur_button">Blur Lock screen buttons</string>
     <string name="system_ui_lock_screen_blur_button_desc">After enabling, the background of the camera and negative screen button on the Lock screen is blurred, which may cause high power consumption.\nSupport default theme only.</string>
@@ -745,7 +751,7 @@
     <string name="system_ui_status_bar_icon_wifi_slave">Auxiliary Wi-Fi</string>
     <string name="system_ui_status_bar_icon_wifi_standard">Wi-Fi standard</string>
     <string name="system_ui_status_bar_icon_hotspot">Hotspot Wi-Fi</string>
-    <string name="system_ui_status_bar_icon_wifi_network_indicator">Wi-Fi activity indicator</string>
+    <string name="system_ui_status_bar_icon_wifi_network_indicator">Hide Wi-Fi activity indicator</string>
     <string name="system_ui_status_bar_icon_bluetooth">Bluetooth</string>
     <string name="system_ui_status_bar_icon_bluetooth_battery">Bluetooth battery</string>
     <string name="system_ui_status_bar_icon_new_hd">New HD icon</string>
