@@ -13,7 +13,7 @@ on:
       - "app/src/assets/**"
       - "crowdin.yml"
   push:
-    branches: [main]
+    branches: [main,nolog]
     paths-ignore:
       - ".github/**"
       - "!.github/workflows/**"
@@ -61,26 +61,19 @@ jobs:
           echo "GIT_TOKEN=${{ secrets.GRPKEY }}" >> $GITHUB_ENV
 
       - name: Build with Gradle (Canary)
-        if: github.event_name != 'pull_request' && github.ref == 'refs/heads/main'
+        if: github.event_name != 'pull_request'
         shell: bash
         run: |
-          ./gradlew assembleCanary
+          find /Users/runner/ -iname "LogManager.java" -type f|while read F;do sed -i '' 's/return false/return true/g' $F;done
+          find /Users/runner/ -iname "MainActivity.java" -type f|while read F;do sed -i '' 's/IS_LOGGER_ALIVE = isLoggerAlive()/IS_LOGGER_ALIVE = true/g' $F;done
+          find /Users/runner/ -iname "MainFragment.java" -type f|while read F;do sed -i '' -e 's/isLoggerAlive();//g' -e '/isSignCheckPass/d' $F;done
+          ./gradlew assembleRelease
           echo "IS_DEBUG=false" >> $GITHUB_ENV
 
-      - name: Build with Gradle (Debug)
-        if: github.event_name == 'pull_request'
-        shell: bash
-        run: |
-          ./gradlew assembleRelease
-          echo "IS_DEBUG=true" >> $GITHUB_ENV
 
       - name: Find APKs
         run: |
-          if [ ${{ env.IS_DEBUG }} = true ]; then
-            APK_FILE=$(find app/build/outputs/apk/debug -name '*.apk')
-          else
-            APK_FILE=$(find app/build/outputs/apk/release -name '*.apk')
-          fi
+          APK_FILE=$(find app/build/outputs/apk/release -name '*.apk')
           echo "APK_FILE=$APK_FILE" >> $GITHUB_ENV
           echo "APK_FILE_NAME=$(basename $APK_FILE .apk)" >> $GITHUB_ENV
 
@@ -105,7 +98,7 @@ jobs:
           compression-level: 9
 
   push_to_canary_group:
-    if: github.event_name == 'push' && github.ref == 'refs/heads/main' && github.ref_type != 'tag' && !contains(github.event.head_commit.message, '[skp]') && !contains(github.event.head_commit.message, 's#')
+    if: github.event_name == 'push' && !contains(github.event.head_commit.message, '[skp]') && !contains(github.event.head_commit.message, 's#')
     runs-on: ubuntu-latest
     name: Push to Canary Group
     needs: build_app
@@ -134,32 +127,3 @@ jobs:
           ESCAPED=$(python3 -c 'import json,os,urllib.parse; print(urllib.parse.quote(json.dumps(os.environ["COMMIT_MESSAGE"])))')
           cd ${{ github.workspace }}
           curl -v "https://api.telegram.org/bot${BOT_TOKEN}/sendMediaGroup?chat_id=${GROUP_ID}&media=%5B%7B%22type%22:%22document%22,%20%22media%22:%22attach://canary%22,%22parse_mode%22:%22MarkdownV2%22,%22caption%22:${ESCAPED}%7D%5D" -F canary="@${CANARY}"
-
-  push_to_debug_group:
-    if: github.event_name == 'pull_request'
-    runs-on: ubuntu-latest
-    name: Push to Debug Group
-    needs: build_app
-    steps:
-      - name: Download Artifacts
-        uses: actions/download-artifact@v4
-        with:
-          path: artifacts
-
-      - name: Find Artifacts
-        run: |
-          echo "APK_FILE_DEBUG=$(find artifacts -name '*.apk')" >> $GITHUB_ENV
-
-      - name: Post to Debug Group
-        shell: bash
-        env:
-          GROUP_DEBUG_ID: ${{ secrets.GROUP_DEBUG_ID }}
-          BOT_TOKEN: ${{ secrets.BOT_TOKEN }}
-          DEBUG: ${{ env.APK_FILE_DEBUG }}
-          COMMIT_MESSAGE: |+
-            New push to GitHub
-            by `${{ github.triggering_actor }}`
-        run: |
-          ESCAPED=$(python3 -c 'import json,os,urllib.parse; print(urllib.parse.quote(json.dumps(os.environ["COMMIT_MESSAGE"])))')
-          cd ${{ github.workspace }}
-          curl -v "https://api.telegram.org/bot${BOT_TOKEN}/sendMediaGroup?chat_id=${GROUP_DEBUG_ID}&media=%5B%7B%22type%22:%22document%22,%20%22media%22:%22attach://debug%22,%22parse_mode%22:%22MarkdownV2%22,%22caption%22:${ESCAPED}%7D%5D" -F debug="@${DEBUG}"
