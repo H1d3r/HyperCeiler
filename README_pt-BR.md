@@ -6,7 +6,7 @@
 
 ### Torne o HyperOS ótimo novamente!
 
-[简体中文](/README.md)&nbsp;&nbsp;|&nbsp;&nbsp;[繁體中文](/README_zh-HK.md)&nbsp;&nbsp;|&nbsp;&nbsp;[English](/README_en-US.md)&nbsp;&nbsp;|&nbsp;&nbsp;Português (Brasil)
+[简体中文](/README.md)&nbsp;&nbsp;|&nbsp;&nbsp;[繁體中文](/README_zh-HK.md)&nbsp;&nbsp;|&nbsp;&nbsp;[English](/README_en-US.md)&nbsp;&nbsp;|&nbsp;&nbsp;[Українська](/README_uk_UA.md)&nbsp;&nbsp;|&nbsp;&nbsp;Português (Brasil)
 
 </div>
 
@@ -20,15 +20,23 @@ Por favor, ative o HyperCeiler no [LSPosed](https://github.com/LSPosed/LSPosed/r
 
 Este módulo <b>não suporta</b> `ROM Xiaomi HyperOS de terceiros com muitas modificações`, `software de sistema com muitas modificações` e algumas `ROM Xiaomi HyperOS internacionais`.
 
-Atualmente, o HyperCeiler está adaptado para dispositivos móveis Xiaomi HyperOS 2.0 baseados em Android 15. A cobertura não é muito abrangente e requer testes e melhorias contínuas.
+Atualmente, o HyperCeiler está adaptado para dispositivos móveis Xiaomi HyperOS 2.0.200 baseados em Android 15. A cobertura não é muito abrangente e requer testes e melhorias contínuas.
 
 Antes de enviar feedback, preste atenção se já existe o mesmo feedback para evitar problemas aos desenvolvedores. Gastar a mesma energia lendo o mesmo feedback é uma perda de tempo.
 
 O HyperCeiler deixou de ser mantido em ROM MIUI para o Android 11-13 e ROM HyperOS 1.0 para Android 13.
 
 > Para ROM MIUI no Android 11-12, use [esta versão](https://github.com/ReChronoRain/Cemiuiler/releases/tag/1.3.130).
-> 
+>
 > Para ROM MIUI no Android 13 e ROM HyperOS 1.0, use [esta versão](https://github.com/Xposed-Modules-Repo/com.sevtinge.hyperceiler/releases/download/3866-2.5.156_20250118/HyperCeiler_2.5.156_20250118_3866_release_miui.apk).
+>
+> O HyperOS 1.0/2.0 do Android 14 foi arquivado e o suporte para o Android 14 será removido a partir da versão 2.6.162.
+
+## Planejamento do projeto
+
+Espera-se que o Android 16 seja gradualmente adaptado à maioria dos dispositivos após o lançamento do Xiaomi HyperOS 3.0. No entanto, devido às políticas de desbloqueio do Xiaomi HyperOS, o número de dispositivos com root será significativamente reduzido em comparação com a versão anterior.
+
+Os dispositivos disponíveis para os desenvolvedores só podem ser parcialmente adaptados e não há garantia de que todos os recursos funcionarão corretamente. Existe também a possibilidade de o projeto ser arquivado e o desenvolvimento descontinuado.
 
 ## Apps suportados
 
@@ -44,7 +52,6 @@ O HyperCeiler deixou de ser mantido em ROM MIUI para o Android 11-13 e ROM Hyper
 | Joyose                                         | com.xiaomi.joyose                  |
 | Configurações Mi                               | com.xiaomi.misettings              |
 | Segurança                                      | com.miui.securitycenter            |
-| Notas                                          | com.miui.notes                     |
 | Plano de fundo Mi                              | com.miui.miwallpaper               |
 | Taplus                                         | com.miui.contentextension          |
 | Barragem                                       | com.xiaomi.barrage                 |
@@ -83,7 +90,6 @@ O HyperCeiler deixou de ser mantido em ROM MIUI para o Android 11-13 e ROM Hyper
 | Câmera                                         | com.android.camera                 |
 | Mi AI Translate                                | com.xiaomi.aiasst.vision           |
 | Scanner                                        | com.xiaomi.scanner                 |
-| Mi AI                                          | com.miui.voiceassist               |
 | Serviço NFC                                    | com.android.nfc                    |
 | Fones de ouvido                                | com.miui.misound                   |
 | Backup                                         | com.miui.backup                    |
@@ -127,9 +133,9 @@ Você pode fornecer traduções para o projeto [aqui](https://crwd.in/cemiuiler)
 - [「Android」 por Android Open Source Project, Google Inc.](https://source.android.google.cn/license)
 - [「AndroidHiddenApiBypass」 por LSPosed](https://github.com/LSPosed/AndroidHiddenApiBypass)
 - [「AndroidX」 por Android Open Source Project, Google Inc.](https://github.com/androidx/androidx)
-- [「AutoSEffSwitch」 por 焕晨 HChen](https://github.com/HChenX/AutoSEffSwitch)
+- [「AutoSEffSwitch」 por 焕晨HChen](https://github.com/HChenX/AutoSEffSwitch)
 - [「AntiAntiDefraud」 por MinaMichita](https://github.com/MinaMichita/AntiAntiDefraud)
-- [「Auto NFC」 por GSWXXN](https://github.com/GSWXXN/AutoNFC)
+- [「AutoNFC」 por GSWXXN](https://github.com/GSWXXN/AutoNFC)
 - [「BypassSignCheck」 por Weverses](https://github.com/Weverses/BypassSignCheck)
 - [「CorePatch」 por LSPosed](https://github.com/LSPosed/CorePatch)
 - [「CustoMIUIzer」 por MonwF](https://github.com/MonwF/customiuizer)
@@ -145,28 +151,29 @@ Você pode fornecer traduções para o projeto [aqui](https://crwd.in/cemiuiler)
 - [「ForegroundPin」 por 焕晨HChen](https://github.com/HChenX/ForegroundPin)
 - [「FuckNFC」 por xiaowine](https://github.com/xiaowine/FuckNFC)
 - [「Gson」 por Android Open Source Project, Google Inc.](https://github.com/google/gson)
-- [「Hyper Helper」 por HowieHChen](https://github.com/HowieHChen/XiaomiHelper)
+- [「XiaomiHelper」 por HowieHChen](https://github.com/HowieHChen/XiaomiHelper)
 - [「HideMiuiClipboardDialog」 por zerorooot](https://github.com/zerorooot/HideMiuiClipboardDialog)
 - [「HyperSmartCharge」 por buffcow](https://github.com/buffcow/HyperSmartCharge)
 - [「HyperStar」 por YunZiA](https://github.com/YunZiA/HyperStar)
 - [「Kotlin」 por JetBrains](https://github.com/JetBrains/kotlin)
-- [「Lyric-Getter」 por xiaowine](https://github.com/xiaowine/Lyric-Getter)
 - [「MaxFreeForm」 por YifePlayte](https://github.com/YifePlayte/MaxFreeForm)
-- [「MediaControl-BlurBg」 por YuKongA](https://github.com/YuKongA/MediaControl-BlurBg)
-- [「Miui Feature」 por MoralNorm](https://github.com/moralnorm/miui_feature)
+- [「MediaControlOpt」 por YuKongA](https://github.com/YuKongA/MediaControlOpt)
+- [「MiuiFeature」 por MoralNorm](https://github.com/moralnorm/miui_feature)
 - [「MiuiHomeR」 por qqlittleice](https://github.com/qqlittleice/MiuiHome_R)
 - [「MIUI IME Unlock」 por RC1844](https://github.com/RC1844/MIUI_IME_Unlock)
-- [「MIUI QOL」 por chsbuffer](https://github.com/chsbuffer/MIUIQOL)
-- [「Miui XXL」 por Wine-Network](https://github.com/Wine-Network/Miui_XXL)
-- [「Miui XXL」 por YuKongA](https://github.com/YuKongA/Miui_XXL)
+- [「MIUIQOL」 por chsbuffer](https://github.com/chsbuffer/MIUIQOL)
+- [「MiuiXXL」 por Wine-Network](https://github.com/Wine-Network/Miui_XXL)
+- [「HyperOSXXL」 por YuKongA](https://github.com/YuKongA/HyperOS_XXL)
 - [「MIUI 通知修复」 por tehcneko](https://github.com/Xposed-Modules-Repo/io.github.tehcneko.miuinotificationfix)
 - [「ModemPro」 por Weverse](https://github.com/Weverses/ModemPro)
+- [「HookTool」 por 焕晨HChen](https://github.com/HChenX/HookTool)
 - [「NoStorageRestrict」 por DanGLES3](https://github.com/Xposed-Modules-Repo/com.github.dan.nostoragerestrict)
-- [「Portal Hook」 por Haocen2004](https://github.com/Haocen2004/PortalHook)
+- [「PortalHook」 por Haocen2004](https://github.com/Haocen2004/PortalHook)
 - [「PinningApp」 por 焕晨HChen](https://github.com/HChenX/PinningApp)
 - [「RemoveMiuiSystemSelfProtection」 por gfbjngjibn](https://github.com/gfbjngjibn/RemoveMiuiSystemSelfProtection)
 - [「SettingsDontThroughTheList」 por weixiansen574](https://github.com/weixiansen574/settingsdontthroughthelist)
 - [「StarVoyager」 por hosizoraru](https://github.com/hosizoraru/StarVoyager)
+- [「SuperLyric」 por 焕晨HChen](https://github.com/HChenX/SuperLyric)
 - [「WINI」 por ouhoukyo](https://github.com/ouhoukyo/WINI)
 - [「WOMMO」 por YifePlayte](https://github.com/YifePlayte/WOMMO)
 - [「Woobox For MIUI」 por hosizoraru](https://github.com/hosizoraru/WooBoxForMIUI)

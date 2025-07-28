@@ -12,16 +12,6 @@ import java.util.TimeZone
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
-    alias(libs.plugins.lsparanoid)
-}
-
-lsparanoid {
-    seed = 227263
-    classFilter = { true }
-    includeDependencies = true
-    variantFilter = { variant ->
-        variant.buildType != "debug"
-    }
 }
 
 val apkId = "HyperCeiler"
@@ -64,15 +54,15 @@ fun loadPropertiesFromFile(fileName: String): Properties? {
 
 android {
     namespace = "com.sevtinge.hyperceiler"
-    compileSdk = 35
-    buildToolsVersion = "35.0.1"
+    compileSdk = 36
+    buildToolsVersion = "36.0.0"
 
     defaultConfig {
         applicationId = namespace
         minSdk = 34
-        targetSdk = 35
+        targetSdk = 36
         versionCode = getVersionCode()
-        versionName = "2.5.158"
+        versionName = "2.6.161"
 
         val sdf = SimpleDateFormat("yyyy-MM-dd HH:mm:ss").apply {
             timeZone = TimeZone.getTimeZone("Asia/Shanghai")
@@ -129,6 +119,10 @@ android {
     }
     val gitCode = getVersionCode()
     val gitHash = getGitHash()
+    val sdf = SimpleDateFormat("MMddHHmm").apply {
+        timeZone = TimeZone.getTimeZone("Asia/Shanghai")
+    }
+    val buildTime = sdf.format(Date())
 
     signingConfigs {
         create("hasProperties") {
@@ -193,7 +187,7 @@ android {
             }
         }
         debug {
-            versionNameSuffix = "_${gitHash}_r${gitCode}"
+            versionNameSuffix = "_${buildTime}_r${gitCode}"
             buildConfigField("String", "GIT_HASH", "\"${getGitHashLong()}\"")
             buildConfigField("String", "GIT_CODE", "\"$gitCode\"")
             if (properties != null) {
@@ -218,52 +212,6 @@ java {
 kotlin.jvmToolchain(21)
 
 dependencies {
-    implementation(libs.core)
-    implementation(libs.fragment)
-    implementation(libs.recyclerview)
-    implementation(libs.coordinatorlayout)
-    implementation(libs.constraintlayout) {
-        exclude("androidx.appcompat", "appcompat")
-    }
-
-    implementation(libs.miuix.animation)
-    implementation(libs.miuix.appcompat)
-    implementation(libs.miuix.basewidget)
-    implementation(libs.miuix.bottomsheet)
-    implementation(libs.miuix.cardview)
-    implementation(libs.miuix.core)
-    implementation(libs.miuix.flexible)
-    implementation(libs.miuix.folme)
-    implementation(libs.miuix.graphics)
-    implementation(libs.miuix.haptic)
-    implementation(libs.miuix.navigator)
-    implementation(libs.miuix.nestedheader)
-    implementation(libs.miuix.pickerwidget)
-    implementation(libs.miuix.popupwidget)
-    implementation(libs.miuix.preference)
-    implementation(libs.miuix.recyclerview)
-    implementation(libs.miuix.slidingwidget)
-    implementation(libs.miuix.smooth)
-    implementation(libs.miuix.springback)
-    implementation(libs.miuix.stretchablewidget)
-    implementation(libs.miuix.theme)
-    implementation(libs.miuix.viewpager)
-    implementation(libs.miuix.visualcheck)
-    implementation(files("libs/hyperceiler_expansion_packs-debug.aar"))
-
-    compileOnly(projects.hiddenApi)
-    compileOnly(libs.xposed.api)
-
-    implementation(libs.dexkit)
-    implementation(libs.mmkv)
-    implementation(libs.ezxhelper)
-    implementation(libs.hiddenapibypass)
-    implementation(libs.gson)
-    implementation(libs.hooktool)
-    implementation(libs.lyric.getter.api)
-    implementation(libs.lunarcalendar)
-
-    implementation(projects.provision)
-    implementation(projects.processor)
-    annotationProcessor(projects.processor)
+    implementation(libs.expansion)
+    implementation(projects.library.commonUi)
 }
