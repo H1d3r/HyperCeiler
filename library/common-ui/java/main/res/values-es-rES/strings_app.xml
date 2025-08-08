@@ -547,7 +547,7 @@ aplicaciones del sistema</string>
     <string name="system_ui_status_bar_icon_mic">Micrófono</string>
     <string name="system_ui_status_bar_icon_alarm_clock">Alarma</string>
     <string name="system_ui_status_bar_icon_alarm_clock_n">Se muestra icono de alarma solo antes de que suena la alarma</string>
-    <string name="system_ui_status_bar_icon_alarm_clock_n_format">%d horas</string>
+    <string name="system_ui_status_bar_icon_alarm_clock_n_format">%s horas</string>
     <string name="system_ui_status_bar_icon_airplane">Modo de avión</string>
     <string name="system_ui_status_bar_icon_roaming">Se oculta el icono de itinerancia</string>
     <string name="system_ui_status_bar_icon_vowifi">Ocultar icono de VoWiFi</string>
@@ -626,7 +626,6 @@ aplicaciones del sistema</string>
     <string name="system_control_center_qs_columns">Columnas</string>
     <string name="system_control_center_qs_columns_format">%d Columnas</string>
     <string name="system_control_center_qs_columns_horizontal">Columnas (Horizontal)</string>
-    <string name="system_ui_control_center_media_control_panel_background_mix">Optimizar el efecto de mezcla de colores del panel de control de medios</string>
     <string name="system_ui_control_center_media_control_progress">Barra de progreso</string>
     <string name="system_ui_control_center_media_control_progress_wavy">Ondeado</string>
     <string name="system_ui_control_center_media_control_progress_sleek">Elegante</string>
@@ -635,9 +634,7 @@ aplicaciones del sistema</string>
     <string name="system_ui_control_center_media_control_seekbar_color">Color de la barra de progreso</string>
     <string name="system_ui_control_center_media_control_seekbar_thumb_color">Color del cursor</string>
     <string name="system_ui_control_center_media_control_media_button">Tamaño del botón de acción intrínseco</string>
-    <string name="system_ui_control_center_remove_media_control_panel_background">Remueve el fondo de color mixto de la tarjeta</string>
     <string name="system_ui_control_center_media_control_panel_background_mix_blur_radius">Radio de borrosidad de imagen de fondo</string>
-    <string name="system_ui_control_center_media_control_panel_background_mix_overlay">Opacidad de la capa de fondo</string>
     <string name="system_ui_control_center_redirect_notice">Redirigir configuraciones de notificación</string>
     <string name="system_ui_control_center_redirect_notice_desc">Cuando se abre la configuración del menú de notificación, se desplaza al canal de destino</string>
     <string name="system_ui_control_center_show_weather">Mostrar el tiempo</string>
@@ -912,7 +909,7 @@ aplicaciones del sistema</string>
     <string name="home_folder_shade_gradient">Solo el centro</string>
     <string name="home_folder_shade_level_title">Insensidad de color</string>
     <string name="home_folder_cols_title">Cantidad de aplicaciones en una columna de carpeta</string>
-    <string name="home_folder_cols_format">%d Columnas</string>
+    <string name="home_folder_cols_format">%s Columnas</string>
     <string name="home_folder_horizontal_padding_desc">Distancia de carpeta desde el margen lateral de la pantalla</string>
     <string name="home_folder_vertical_spacing_desc">Espacio horizontal de carpeta</string>
     <string name="home_folder_title_pos">Posición del título</string>
