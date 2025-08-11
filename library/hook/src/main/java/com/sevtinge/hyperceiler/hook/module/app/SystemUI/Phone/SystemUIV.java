@@ -23,7 +23,7 @@ import static com.sevtinge.hyperceiler.hook.utils.devicesdk.SystemSDKKt.isMoreSm
 
 import com.hchen.database.HookBase;
 import com.sevtinge.hyperceiler.hook.module.base.BaseModule;
-import com.sevtinge.hyperceiler.hook.module.hook.systemframework.ToastBlur;
+import com.sevtinge.hyperceiler.hook.module.hook.systemui.other.ToastBlur;
 import com.sevtinge.hyperceiler.hook.module.hook.systemframework.UnlockAlwaysOnDisplay;
 import com.sevtinge.hyperceiler.hook.module.hook.systemframework.volume.VolumeMediaSteps;
 import com.sevtinge.hyperceiler.hook.module.hook.systemui.AllowManageAllNotifications;
@@ -32,7 +32,6 @@ import com.sevtinge.hyperceiler.hook.module.hook.systemui.AutoSEffSwitchForSyste
 import com.sevtinge.hyperceiler.hook.module.hook.systemui.DisableTransparent;
 import com.sevtinge.hyperceiler.hook.module.hook.systemui.FuckStatusbarGestures;
 import com.sevtinge.hyperceiler.hook.module.hook.systemui.NotificationFix;
-import com.sevtinge.hyperceiler.hook.module.hook.systemui.StatusBarActions;
 import com.sevtinge.hyperceiler.hook.module.hook.systemui.StickyFloatingWindowsForSystemUI;
 import com.sevtinge.hyperceiler.hook.module.hook.systemui.UiLockApp;
 import com.sevtinge.hyperceiler.hook.module.hook.systemui.UnimportantNotification;
@@ -124,6 +123,7 @@ import com.sevtinge.hyperceiler.hook.module.hook.systemui.statusbar.network.Netw
 import com.sevtinge.hyperceiler.hook.module.hook.systemui.statusbar.network.NewNetworkSpeed;
 import com.sevtinge.hyperceiler.hook.module.hook.systemui.statusbar.network.NewNetworkSpeedStyle;
 import com.sevtinge.hyperceiler.hook.module.hook.systemui.statusbar.strongtoast.HideStrongToast;
+import com.sevtinge.hyperceiler.hook.module.skip.StatusBarActions;
 
 import java.util.Objects;
 
@@ -284,10 +284,10 @@ public class SystemUIV extends BaseModule {
         initHook(new VolumeMediaSteps(), mPrefsMap.getBoolean("system_framework_volume_media_steps_enable"));
 
         // 锁屏
-        initHook(CustomizeBottomButton.INSTANCE, Keyguard.getLeftButtonType() != 0);
+        initHook(CustomizeBottomButton.INSTANCE, Keyguard.getLeftButtonType() != 0 && !isMoreSmallVersion(200, 2f));
         initHook(new ScramblePIN(), mPrefsMap.getBoolean("system_ui_lock_screen_scramble_pin"));
         initHook(ChargingCVP.INSTANCE, mPrefsMap.getBoolean("system_ui_lock_screen_show_charging_cv"));
-        initHook(RemoveCamera.INSTANCE, mPrefsMap.getBoolean("system_ui_lock_screen_hide_camera"));
+        initHook(RemoveCamera.INSTANCE, mPrefsMap.getBoolean("system_ui_lock_screen_hide_camera") && !isMoreSmallVersion(200, 2f));
         initHook(LockScreenDoubleTapToSleep.INSTANCE, mPrefsMap.getBoolean("system_ui_lock_screen_double_lock"));
         initHook(NotificationShowOnKeyguard.INSTANCE, mPrefsMap.getBoolean("system_ui_lock_screen_unlock_notification_restrict"));
         initHook(HideLockscreenZenMode.INSTANCE, mPrefsMap.getBoolean("system_ui_lock_screen_not_disturb_mode"));

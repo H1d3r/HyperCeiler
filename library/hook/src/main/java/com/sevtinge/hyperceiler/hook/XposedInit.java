@@ -33,6 +33,7 @@ import static com.sevtinge.hyperceiler.hook.utils.prefs.PrefsUtils.mPrefsMap;
 import android.os.Process;
 
 import com.hchen.hooktool.HCInit;
+import com.hchen.hooktool.utils.ResInjectTool;
 import com.sevtinge.hyperceiler.hook.module.app.VariousThirdApps;
 import com.sevtinge.hyperceiler.hook.module.base.BaseModule;
 import com.sevtinge.hyperceiler.hook.module.base.tool.ResourcesTool;
@@ -69,10 +70,6 @@ public class XposedInit implements IXposedHookZygoteInit, IXposedHookLoadPackage
 
     @Override
     public void initZygote(StartupParam startupParam) throws Throwable {
-        // load ResourcesTool
-        mResHook = new ResourcesTool(startupParam.modulePath);
-        mModulePath = startupParam.modulePath;
-        // mXmlTool = new XmlTool(startupParam);
         // load New XSPrefs
         setXSharedPrefs();
 
@@ -82,11 +79,19 @@ public class XposedInit implements IXposedHookZygoteInit, IXposedHookLoadPackage
 
         // load HCInit
         HCInit.initBasicData(new HCInit.BasicData()
-                .setModulePackageName(BuildConfig.APP_MODULE_ID)
-                .setLogLevel(LogManager.getLogLevel())
-                .setTag("HyperCeiler")
+            .setModulePackageName(BuildConfig.APP_MODULE_ID)
+            .setLogLevel(LogManager.getLogLevel())
+            .setTag("HyperCeiler")
         );
         HCInit.initStartupParam(startupParam);
+
+        // get module path
+        mModulePath = startupParam.modulePath;
+        // mXmlTool = new XmlTool(startupParam);
+        // load ResourcesTool
+        if (!mPrefsMap.getBoolean("module_settings_reshook_new")) {
+            mResHook = new ResourcesTool(startupParam.modulePath);
+        }
 
         // load ZygoteHook
         // new BackgroundBlurDrawable().initZygote(startupParam); 留档
@@ -107,24 +112,21 @@ public class XposedInit implements IXposedHookZygoteInit, IXposedHookLoadPackage
 
     private void setXSharedPrefs() {
         if (mPrefsMap.isEmpty()) {
-            XSharedPreferences mXSharedPreferences;
             try {
-                mXSharedPreferences = new XSharedPreferences(ProjectApi.mAppModulePkg, PrefsUtils.mPrefsName);
+                XSharedPreferences mXSharedPreferences = new XSharedPreferences(ProjectApi.mAppModulePkg, PrefsUtils.mPrefsName);
                 mXSharedPreferences.makeWorldReadable();
                 Map<String, ?> allPrefs = mXSharedPreferences.getAll();
+
+                if (allPrefs == null || allPrefs.isEmpty()) {
+                    mXSharedPreferences = new XSharedPreferences(new File(PrefsUtils.mPrefsFile));
+                    mXSharedPreferences.makeWorldReadable();
+                    allPrefs = mXSharedPreferences.getAll();
+                }
 
                 if (allPrefs != null && !allPrefs.isEmpty()) {
                     mPrefsMap.putAll(allPrefs);
                 } else {
-                    mXSharedPreferences = new XSharedPreferences(new File(PrefsUtils.mPrefsFile));
-                    mXSharedPreferences.makeWorldReadable();
-                    allPrefs = mXSharedPreferences.getAll();
-
-                    if (allPrefs != null && !allPrefs.isEmpty()) {
-                        mPrefsMap.putAll(allPrefs);
-                    } else {
-                        logE("[UID" + Process.myUid() + "]", "Cannot read SharedPreferences, some mods might not work!");
-                    }
+                    logE("[UID" + Process.myUid() + "]", "Cannot read SharedPreferences, some mods might not work!");
                 }
             } catch (Throwable t) {
                 logE("setXSharedPrefs", t);
@@ -143,6 +145,11 @@ public class XposedInit implements IXposedHookZygoteInit, IXposedHookLoadPackage
             logI(packageName, "androidVersion = " + getAndroidVersion() + ", hyperosVersion = " + getHyperOSVersion());
         else
             logI(packageName, "versionName = " + getPackageVersionName(lpparam) + ", versionCode = " + getPackageVersionCode(lpparam));
+
+        // load ResourcesTool
+        if (mPrefsMap.getBoolean("module_settings_reshook_new")) {
+            ResInjectTool.injectModuleRes();
+        }
 
         invokeInit(lpparam);
         androidCrashEventHook(lpparam);

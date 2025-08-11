@@ -18,9 +18,11 @@
  */
 package com.sevtinge.hyperceiler.hook.module.app.SystemUI.Phone;
 
+import static com.sevtinge.hyperceiler.hook.utils.devicesdk.SystemSDKKt.isHyperOSVersion;
+
 import com.hchen.database.HookBase;
 import com.sevtinge.hyperceiler.hook.module.base.BaseModule;
-import com.sevtinge.hyperceiler.hook.module.hook.systemframework.ToastBlur;
+import com.sevtinge.hyperceiler.hook.module.hook.systemui.other.ToastBlur;
 import com.sevtinge.hyperceiler.hook.module.hook.systemframework.UnlockAlwaysOnDisplay;
 import com.sevtinge.hyperceiler.hook.module.hook.systemframework.volume.VolumeMediaSteps;
 import com.sevtinge.hyperceiler.hook.module.hook.systemui.AllowManageAllNotifications;
@@ -28,7 +30,6 @@ import com.sevtinge.hyperceiler.hook.module.hook.systemui.AutoCollapse;
 import com.sevtinge.hyperceiler.hook.module.hook.systemui.AutoSEffSwitchForSystemUi;
 import com.sevtinge.hyperceiler.hook.module.hook.systemui.DisableTransparent;
 import com.sevtinge.hyperceiler.hook.module.hook.systemui.NotificationFix;
-import com.sevtinge.hyperceiler.hook.module.hook.systemui.StatusBarActions;
 import com.sevtinge.hyperceiler.hook.module.hook.systemui.StickyFloatingWindowsForSystemUI;
 import com.sevtinge.hyperceiler.hook.module.hook.systemui.UiLockApp;
 import com.sevtinge.hyperceiler.hook.module.hook.systemui.UnimportantNotification;
@@ -111,6 +112,7 @@ import com.sevtinge.hyperceiler.hook.module.hook.systemui.statusbar.icon.all.Sta
 import com.sevtinge.hyperceiler.hook.module.hook.systemui.statusbar.icon.all.StatusBarIconPositionAdjust;
 import com.sevtinge.hyperceiler.hook.module.hook.systemui.statusbar.icon.all.WifiNetworkIndicator;
 import com.sevtinge.hyperceiler.hook.module.hook.systemui.statusbar.icon.all.WifiStandard;
+import com.sevtinge.hyperceiler.hook.module.hook.systemui.statusbar.icon.v.FocusNotifLyric;
 import com.sevtinge.hyperceiler.hook.module.hook.systemui.statusbar.model.DualRowSignalHook;
 import com.sevtinge.hyperceiler.hook.module.hook.systemui.statusbar.model.MobileNetwork;
 import com.sevtinge.hyperceiler.hook.module.hook.systemui.statusbar.model.MobilePublicHook;
@@ -121,6 +123,7 @@ import com.sevtinge.hyperceiler.hook.module.hook.systemui.statusbar.network.Netw
 import com.sevtinge.hyperceiler.hook.module.hook.systemui.statusbar.network.NewNetworkSpeed;
 import com.sevtinge.hyperceiler.hook.module.hook.systemui.statusbar.network.NewNetworkSpeedStyle;
 import com.sevtinge.hyperceiler.hook.module.hook.systemui.statusbar.strongtoast.HideStrongToast;
+import com.sevtinge.hyperceiler.hook.module.skip.StatusBarActions;
 
 import java.util.Objects;
 
@@ -191,6 +194,9 @@ public class SystemUIU extends BaseModule {
         initHook(new FixColor(), mPrefsMap.getBoolean("system_ui_statusbar_clock_fix_color"));
 
         // initHook(new DisplayHardwareDetailForHyper(), true);
+
+        // 焦点歌词
+        initHook(FocusNotifLyric.INSTANCE, mPrefsMap.getBoolean("system_ui_statusbar_music_switch") && isHyperOSVersion(2f));
 
         // 灵动舞台
         initHook(HideStrongToast.INSTANCE, mPrefsMap.getBoolean("system_ui_status_bar_hide_smart_strong_toast"));
