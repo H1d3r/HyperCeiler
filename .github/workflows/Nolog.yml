@@ -1,4 +1,4 @@
-name: CI Build
+name: Nolog Build
 
 on:
   pull_request:
