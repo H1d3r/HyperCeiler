@@ -350,6 +350,8 @@
     <string name="system_framework_volume_media_steps">Poziom głośności multimediów</string>
     <string name="system_framework_volume_media_steps_desc">Po włączeniu przewijanie paska głośności może się zawiesić lub głośność Bluetooth może działać nieprawidłowo</string>
     <string name="system_framework_volume_steps">Mnożnik poziomu głośności</string>
+    <string name="system_ui_display_cutout_title">Wcięcie ekranu</string>
+    <string name="system_ui_display_hide_cutout">Ukryj wcięcie ekranu</string>
     <string name="system_ui_display_use_aosp_screenshot">Użyj zrzutu ekranu AOSP</string>
     <string name="system_ui_display_use_aosp_screenshot_desc">Przekieruję aplikację do zrzutów ekranu, aby używała przechwytywania zrzutów ekranu AOSP. Aplikacja do zrzutów ekranu w HyperOS nie będzie reagować na operację zrzutu ekranu.</string>
     <string name="phone_double_5g_nr">Użycie 5G z obu kart SIM (SA+NSA)</string>
@@ -828,7 +830,6 @@
     <string name="system_settings_unlock_xiaomihyperai_entrance">Odblokuj Xiaomi HyperAI</string>
     <string name="system_settings_unlock_xiaomihyperai_entrance_desc">Po włączeniu tej opcji w Ustawieniach zostanie wyświetlona opcja Xiaomi HyperAI. Wsparcie dla funkcji AI urządzenia jest określone przez Xiaomi.</string>
     <string name="system_settings_lab_title">Wyróżnione funkcje</string>
-    <string name="system_settings_voip_assistant_controller">Asystent VoIP</string>
     <string name="system_settings_display_and_lockscreen_title">Wyświetlanie i jasność</string>
     <string name="system_settings_ai_image_unlock_sr">Odblokuj superrozdzielczość</string>
     <string name="system_settings_ai_image_unlock_ai">Odblokuj poprawę obrazu SI i HDR</string>
@@ -1522,7 +1523,6 @@
     <string name="location_simulation_work_base_station">Stacja bazowa</string>
     <string name="location_simulation_work_longitude_latitude">Długość i szerokość geograficzna</string>
     <string name="location_simulation_work_remarks">Ocena</string>
-    <string name="unlimited">Nieograniczony</string>
     <string name="calls">Połączenia</string>
     <string name="notification_volume">Powiadomienie</string>
     <string name="freeform_notification">Pływające okno powiadomień</string>

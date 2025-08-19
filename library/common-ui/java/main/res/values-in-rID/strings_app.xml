@@ -278,6 +278,8 @@
     <string name="system_framework_volume_media_steps">Tingkat volume media</string>
     <string name="system_framework_volume_media_steps_desc">Hal ini dapat menyebabkan pengguliran bilah volume terhenti atau volume Bluetooth menjadi tidak normal</string>
     <string name="system_framework_volume_steps">Pengganda tingkat volume</string>
+    <string name="system_ui_display_cutout_title">Potongan Tampilan</string>
+    <string name="system_ui_display_hide_cutout">Sembunyikan Potongan Tampilan</string>
     <string name="system_ui_display_use_aosp_screenshot">Gunakan Tangkapan Layar AOSP</string>
     <string name="system_ui_display_use_aosp_screenshot_desc">Arahkan ulang aplikasi tangkapan layar ke tangkapan layar AOSP, aplikasi tangkapan layar di HyperOS tidak akan merespons operasi tangkapan layar</string>
     <string name="phone_double_5g_nr">Kartu ganda menggunakan 5G (SA+NSA)</string>
@@ -654,7 +656,6 @@
     <string name="system_settings_new_nfc_page">Halaman NFC Baru</string>
     <string name="system_settings_new_nfc_page_desc">Setelah dibuka, aplikasi pembayaran default untuk model yang tidak didukung tidak dapat memilih Xiaomi Wallet</string>
     <string name="system_settings_lab_title">Fungsi unggulan</string>
-    <string name="system_settings_voip_assistant_controller">Asisten VoIP</string>
     <string name="system_settings_display_and_lockscreen_title">Tampilan &amp; Layar kunci</string>
     <string name="system_settings_ai_image_unlock_sr">Buka kunci resolusi Super</string>
     <string name="system_settings_ai_image_unlock_ai">Buka kunci peningkatan gambar AI dan peningkatan AI HDR</string>
@@ -1263,7 +1264,6 @@
     <string name="location_simulation_work_base_station">Stasiun pangkalan</string>
     <string name="location_simulation_work_longitude_latitude">Bujur dan lintang</string>
     <string name="location_simulation_work_remarks">Tanda</string>
-    <string name="unlimited">Tak terbatas</string>
     <string name="calls">Panggilan</string>
     <string name="system_volume">Sistem</string>
     <string name="notification_volume">Pemberitahuan</string>

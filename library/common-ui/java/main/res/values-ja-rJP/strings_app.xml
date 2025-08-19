@@ -356,6 +356,8 @@
     <string name="system_framework_volume_media_steps">メディアの音量レベル</string>
     <string name="system_framework_volume_media_steps_desc">オンにすると、音量バーのスクロールがフリーズしたり、Bluetooth の音量が異常になったりする場合があります</string>
     <string name="system_framework_volume_steps">音量のステップ数</string>
+    <string name="system_ui_display_cutout_title">画面のノッチ</string>
+    <string name="system_ui_display_hide_cutout">画面のノッチを隠す</string>
     <string name="system_ui_display_use_aosp_screenshot">AOSP スクリーンショットを使用</string>
     <string name="system_ui_display_use_aosp_screenshot_desc">スクリーンショットアプリを AOSP スクリーンショットにリダイレクトします。HyperOS のスクリーンショットアプリはスクリーンショット操作に応答しなくなります</string>
     <string name="phone_double_5g_nr">2枚の SIM で 5G を使用 (SA+NSA)</string>
@@ -869,11 +871,9 @@
     <string name="system_settings_lang_menu_shouw_all_app">言語管理メニューにすべてのアプリを表示</string>
     <string name="system_settings_new_nfc_page">新しい NFC ページ</string>
     <string name="system_settings_new_nfc_page_desc">これを有効にすると、サポートされていないモデルではデフォルトの支払いアプリとしてMiウォレットを選択できません</string>
-    <string name="system_settings_xiaomihyperai">Xiaomi HyperAI</string>
     <string name="system_settings_unlock_xiaomihyperai_entrance">Xiaomi HyperAI をアンロック</string>
     <string name="system_settings_unlock_xiaomihyperai_entrance_desc">Xiaomi HyperAI オプションは有効にした後設定に表示されます。デバイスの AI 機能のサポートは Xiaomi によって決定されます。</string>
     <string name="system_settings_lab_title">注目の機能</string>
-    <string name="system_settings_voip_assistant_controller">VoIP アシスタント</string>
     <string name="system_settings_display_and_lockscreen_title">ディスプレイとロック画面</string>
     <string name="system_settings_ai_image_unlock_sr">超解像をアンロック</string>
     <string name="system_settings_ai_image_unlock_ai">AI 画像補正と AI HDR 補正機能をアンロック</string>
@@ -1592,7 +1592,6 @@
     <string name="location_simulation_work_base_station">基地局</string>
     <string name="location_simulation_work_longitude_latitude">経度と緯度</string>
     <string name="location_simulation_work_remarks">Mark</string>
-    <string name="unlimited">無制限</string>
     <string name="calls">通話</string>
     <string name="system_volume">システム</string>
     <string name="notification_volume">通知</string>

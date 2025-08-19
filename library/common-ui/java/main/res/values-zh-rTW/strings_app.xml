@@ -357,6 +357,8 @@
     <string name="system_framework_volume_media_steps">媒體音量階數</string>
     <string name="system_framework_volume_media_steps_desc">可能會導致音量條的滾動卡頓或藍牙音量異常</string>
     <string name="system_framework_volume_steps">音量級數倍增</string>
+    <string name="system_ui_display_cutout_title">顯示瀏海</string>
+    <string name="system_ui_display_hide_cutout">隱藏螢幕瀏海</string>
     <string name="system_ui_display_use_aosp_screenshot">使用原生截圖</string>
     <string name="system_ui_display_use_aosp_screenshot_desc">將截圖指令重新導向到原生截圖，HyperOS 中的截圖應用程式不會回應截圖操作</string>
     <string name="phone_double_5g_nr">雙卡 5G (SA+NSA)</string>
@@ -870,11 +872,9 @@
     <string name="system_settings_lang_menu_shouw_all_app">在原生的語言管理選單中顯示所有應用程式</string>
     <string name="system_settings_new_nfc_page">新版 NFC 頁面</string>
     <string name="system_settings_new_nfc_page_desc">開啟後，不支援的裝置預設付款應用程式無法選中小米錢包</string>
-    <string name="system_settings_xiaomihyperai">小米澎湃 AI</string>
     <string name="system_settings_unlock_xiaomihyperai_entrance">解鎖小米澎湃 AI</string>
     <string name="system_settings_unlock_xiaomihyperai_entrance_desc">開啟後，設定中會顯示小米澎湃 AI 選項。 對裝置 AI 功能的支援由小米決定。</string>
     <string name="system_settings_lab_title">特色功能</string>
-    <string name="system_settings_voip_assistant_controller">網路通話助手</string>
     <string name="system_settings_display_and_lockscreen_title">顯示與鎖定螢幕</string>
     <string name="system_settings_ai_image_unlock_sr">解鎖超解析度增強</string>
     <string name="system_settings_ai_image_unlock_ai">解鎖 AI 智慧場景最佳化與影片畫質增強</string>
@@ -1595,7 +1595,6 @@
     <string name="location_simulation_work_base_station">基地台</string>
     <string name="location_simulation_work_longitude_latitude">經緯度</string>
     <string name="location_simulation_work_remarks">備註</string>
-    <string name="unlimited">無限制</string>
     <string name="calls">通話</string>
     <string name="system_volume">系統</string>
     <string name="notification_volume">通知</string>

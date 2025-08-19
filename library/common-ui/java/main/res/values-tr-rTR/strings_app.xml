@@ -290,6 +290,8 @@
     <string name="system_framework_volume_media_steps">Medya ses seviyesi</string>
     <string name="system_framework_volume_media_steps_desc">Ses çubuğunun kaydırılmasının donmasına veya Bluetooth ses seviyesinin anormal olmasına neden olabilir</string>
     <string name="system_framework_volume_steps">Ses seviyesi çarpanı</string>
+    <string name="system_ui_display_cutout_title">Ekran kesimi</string>
+    <string name="system_ui_display_hide_cutout">Ekran kesimini gizle</string>
     <string name="system_ui_display_use_aosp_screenshot">AOSP Ekran Görüntüsü kullanın</string>
     <string name="system_ui_display_use_aosp_screenshot_desc">Ekran görüntüsü uygulamasını AOSP ekran görüntüsüne yönlendirin, HyperOS\'taki ekran görüntüsü uygulaması ekran görüntüsü işlemine yanıt vermeyecektir.</string>
     <string name="phone_double_5g_nr">Çift sim 5G kullansın (SA+NSA)</string>
@@ -684,7 +686,6 @@
     <string name="system_settings_new_nfc_page">Yeni NFC sayfası</string>
     <string name="system_settings_new_nfc_page_desc">Açıldıktan sonra, desteklenmeyen modeller için varsayılan ödeme uygulaması Xiaomi Cüzdan\'ı seçemiyor</string>
     <string name="system_settings_lab_title">Öne çıkan işlevler</string>
-    <string name="system_settings_voip_assistant_controller">VoIP asistanı</string>
     <string name="system_settings_display_and_lockscreen_title">Ekran ve parlaklık</string>
     <string name="system_settings_ai_image_unlock_sr">Süper çözünürlüğün kilidini aç</string>
     <string name="system_settings_ai_image_unlock_ai">AI görüntü iyileştirme ve AI HDR iyileştirmenin kilidini açın</string>
@@ -1231,7 +1232,6 @@
     <string name="location_simulation_work_base_station">Baz istasyonu</string>
     <string name="location_simulation_work_longitude_latitude">Boylam ve enlem</string>
     <string name="location_simulation_work_remarks">İşaretle</string>
-    <string name="unlimited">Sınırsız</string>
     <string name="calls">Ara</string>
     <string name="system_volume">Sistem</string>
     <string name="notification_volume">Bildirim</string>

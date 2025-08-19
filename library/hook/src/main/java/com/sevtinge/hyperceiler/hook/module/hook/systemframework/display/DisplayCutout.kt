@@ -16,19 +16,20 @@
 
   * Copyright (C) 2023-2025 HyperCeiler Contributions
 */
-package com.sevtinge.hyperceiler.hook.module.hook.systemsettings;
+package com.sevtinge.hyperceiler.hook.module.hook.systemframework.display
 
-import com.sevtinge.hyperceiler.hook.module.base.BaseHook;
+import com.sevtinge.hyperceiler.hook.module.base.BaseHook
+import com.sevtinge.hyperceiler.hook.module.base.tool.HookTool
 
-public class VoipAssistantController extends BaseHook {
-    @Override
-    public void init() {
-        findAndHookMethod("com.android.settings.lab.MiuiVoipAssistantController", "isNotSupported", new MethodHook() {
-            @Override
-            protected void before(MethodHookParam param) throws Throwable {
-                param.setResult(false);
+object DisplayCutout : BaseHook() {
+    override fun init() {
+        hookAllMethods("android.view.DisplayCutout", "pathAndDisplayCutoutFromSpec",
+            object : HookTool.MethodHook() {
+                override fun before(param: MethodHookParam) {
+                    param.args[0] = "M 0,0 H 0 V 0 Z"
+                    param.args[1] = ""
+                }
             }
-        });
-
+        )
     }
 }

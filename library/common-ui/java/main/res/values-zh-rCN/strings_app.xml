@@ -419,6 +419,8 @@
     <string name="system_framework_volume_media_steps_desc">可能会导致音量条的滚动卡顿或蓝牙音量异常</string>
     <string name="system_framework_volume_steps">音量级数倍增</string>
 
+    <string name="system_ui_display_cutout_title">屏幕缺口</string>
+    <string name="system_ui_display_hide_cutout">隐藏屏幕缺口</string>
     <string name="system_ui_display_use_aosp_screenshot">使用原生截屏</string>
     <string name="system_ui_display_use_aosp_screenshot_desc">将截屏应用重定向至原生截屏，HyperOS 中的截屏应用将不会对截屏操作响应</string>
 
@@ -503,8 +505,6 @@
     <string name="system_framework_market_use_detailmini_desc">解除应用在未使用 appClientId 的情况下跳转到小米应用商店其他应用的详情页会被拒绝展示的限制</string>
     <string name="system_framework_bypass_force_downloadui">打开下载页面时不强制使用小米下载管理器</string>
     <string name="system_framework_bypass_force_downloadui_desc">解决 Google 快速分享查看下载内容跳转错误的问题</string>
-
-
     <!--核心破解-->
     <string name="system_framework_corepatch_title">包管理服务</string>
     <string name="system_framework_core_patch_downgr">允许降级安装应用</string>
@@ -901,6 +901,8 @@
     <string name="system_ui_control_center_remove_notif_num_limit_desc">允许显示 10 条或 17 条及以上的通知</string>
     <string name="system_ui_control_center_opt_notification_element_background_color">优化焦点通知背景混色</string>
     <string name="system_ui_control_center_opt_notification_element_background_color_desc">恢复为普通通知混色样式，手电筒焦点通知还原需要同时勾选系统界面组件作用域</string>
+    <string name="system_ui_control_center_opt_notification_element_background_color_advanced">增强优化焦点通知背景混色</string>
+    <string name="system_ui_control_center_opt_notification_element_background_color_advanced_desc">可能与全屏 AOD 不兼容</string>
     <string name="system_ui_control_center_qs_brightness_top_value_show_title">亮度值显示</string>
     <string name="system_ui_control_center_qs_volume_top_value_show_title">音量值显示</string>
     <string name="system_ui_control_center_zen_fix">勿扰模式修复</string>
@@ -986,12 +988,10 @@
     <string name="system_settings_new_nfc_page_desc">此功能会导致不支持的机型默认付款应用无法选中小米钱包</string>
     <string name="system_settings_more_vpn_types">显示更多 VPN 类型</string>
 
-    <string name="system_settings_xiaomihyperai">小米澎湃 AI</string>
     <string name="system_settings_unlock_xiaomihyperai_entrance">解锁小米澎湃 AI 入口</string>
     <string name="system_settings_unlock_xiaomihyperai_entrance_desc">开启后在设置中展示小米澎湃 AI 入口\n设备 AI 功能支持由小米决定</string>
 
     <string name="system_settings_lab_title">特色功能</string>
-    <string name="system_settings_voip_assistant_controller">解锁网络通话助手</string>
 
     <string name="system_settings_display_and_lockscreen_title">显示与锁屏</string>
     <string name="system_settings_allow_never_lock_screen">允许永不锁屏</string>
@@ -1018,6 +1018,7 @@
     <string name="system_settings_window_animation_scale">窗口动画缩放</string>
     <string name="system_settings_transition_animation_scale">过渡动画缩放</string>
     <string name="system_settings_animator_duration_scale">Animator 时长缩放</string>
+    <string name="system_settings_set_failed_toast">设置 %1$s 数值为 %2$s 失败</string>
     <!--主题壁纸-->
     <string name="theme_manager">主题壁纸</string>
     <string name="theme_manager_version_code_modify">调整检测版本</string>
@@ -1787,8 +1788,6 @@
     <string name="disable_app_title">确定要禁用该应用吗？</string>
     <string name="disable_app_text">如果这是一个必要的系统应用，将其禁用可能会造成损坏</string>
     <string name="disable_app_fail">更改应用状态失败</string>
-
-    <string name="unlimited">无限制</string>
 
     <string name="calls">通话</string>
     <string name="system_volume">系统</string>

@@ -356,6 +356,8 @@
     <string name="system_framework_volume_media_steps">مستوى صوت الوسائط</string>
     <string name="system_framework_volume_media_steps_desc">قد تتسبب في تجميد شريط تمرير الصوت أو أن يكون مستوى صوت البلوتوث غير طبيعي</string>
     <string name="system_framework_volume_steps">مضاعف مستوى الصوت</string>
+    <string name="system_ui_display_cutout_title">قطع الشاشة</string>
+    <string name="system_ui_display_hide_cutout">إخفاء قطع الشاشة</string>
     <string name="system_ui_display_use_aosp_screenshot">استخدام لقطة الشاشة AOSP</string>
     <string name="system_ui_display_use_aosp_screenshot_desc">إعادة توجيه تطبيق لقطة الشاشة لاستخدام وظيفة AOSP لالتقاط الصور. تطبيق لقطة الشاشة في HyperOS لن يستجيب لأوامر لقطة الشاشة.</string>
     <string name="phone_double_5g_nr">استخدام بطاقة مزدوجة 5G (SA+NSA )</string>
@@ -867,11 +869,9 @@
     <string name="system_settings_lang_menu_shouw_all_app">عرض جميع التطبيقات في قائمة إدارة اللغة</string>
     <string name="system_settings_new_nfc_page">صفحة NFC جديدة</string>
     <string name="system_settings_new_nfc_page_desc">بعد تفعيلها، لا يمكن اختيار تطبيق المحفظة الافتراضي للنماذج غير المدعومة من Xiaomi Wallet.</string>
-    <string name="system_settings_xiaomihyperai">Xiaomi HyperAI</string>
     <string name="system_settings_unlock_xiaomihyperai_entrance">فتح Xiaomi HyperAI</string>
     <string name="system_settings_unlock_xiaomihyperai_entrance_desc">بعد تفعيلها، يتم عرض خيار Xiaomi HyperAI في الإعدادات. دعم ميزات الذكاء الاصطناعي للجهاز يتم تحديده بواسطة Xiaomi.</string>
     <string name="system_settings_lab_title">الوظائف المميزة</string>
-    <string name="system_settings_voip_assistant_controller">مساعد VoIP</string>
     <string name="system_settings_display_and_lockscreen_title">الشاشة والإضاءة الخلفية</string>
     <string name="system_settings_ai_image_unlock_sr">فتح دقة الصورة الفائقة</string>
     <string name="system_settings_ai_image_unlock_ai">فتح تحسين الصورة باستخدام الذكاء الاصطناعي وتحسين AI HDR</string>
@@ -1585,7 +1585,6 @@
     <string name="location_simulation_work_base_station">المحطة الأساسية</string>
     <string name="location_simulation_work_longitude_latitude">خطوط الطول والعرض</string>
     <string name="location_simulation_work_remarks">ملاحظات</string>
-    <string name="unlimited">غير محدود</string>
     <string name="calls">مكالمات</string>
     <string name="system_volume">النظام</string>
     <string name="notification_volume">الإشعارات</string>
