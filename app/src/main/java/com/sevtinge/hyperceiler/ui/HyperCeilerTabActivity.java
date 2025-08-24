@@ -18,6 +18,7 @@
  */
 package com.sevtinge.hyperceiler.ui;
 
+import static com.sevtinge.hyperceiler.common.utils.DialogHelper.showUserAgreeDialog;
 import static com.sevtinge.hyperceiler.common.utils.PersistConfig.isLunarNewYearThemeView;
 import static com.sevtinge.hyperceiler.hook.utils.devicesdk.DeviceSDKKt.isTablet;
 import static com.sevtinge.hyperceiler.common.utils.LSPosedScopeHelper.mDisableOrHiddenApp;
@@ -29,12 +30,15 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.text.TextUtils;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.preference.Preference;
 import androidx.preference.PreferenceFragmentCompat;
 
 import com.sevtinge.hyperceiler.common.prefs.XmlPreference;
+import com.sevtinge.hyperceiler.common.utils.CtaUtils;
 import com.sevtinge.hyperceiler.common.utils.DialogHelper;
 import com.sevtinge.hyperceiler.common.utils.LanguageHelper;
 import com.sevtinge.hyperceiler.common.utils.search.SearchHelper;
@@ -84,6 +88,8 @@ public class HyperCeilerTabActivity extends NaviBaseActivity
 
         appCrash = CrashData.toPkgList();
         mHandler.postDelayed(this::showSafeModeDialogIfNeeded, 600);
+
+        requestCta();
     }
 
     @SuppressLint("StringFormatInvalid")
@@ -175,17 +181,33 @@ public class HyperCeilerTabActivity extends NaviBaseActivity
         return true;
     }
 
-    /*@Override
+    @Override
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
         requestCta();
     }
 
     private void requestCta() {
-        if (!CtaUtils.isCtaEnabled(this)) {
-            CtaUtils.showCtaDialog(this, 10001);
+        if (CtaUtils.isCtaNeedShow(this)) {
+            if (CtaUtils.isCtaBypass()) {
+                ActivityResultLauncher<Intent> ctaLauncher = registerForActivityResult(
+                    new ActivityResultContracts.StartActivityForResult(),
+                    result -> {
+                        if (result != null) {
+                            if (result.getResultCode() != 1) {
+                                finishAffinity();
+                                System.exit(0);
+                            }
+                            CtaUtils.setCtaValue(getApplicationContext(), result.getResultCode() == 1);
+                        }
+                    }
+                );
+                CtaUtils.showCtaDialog(ctaLauncher, this);
+            } else {
+                showUserAgreeDialog(this);
+            }
         }
-    }*/
+    }
 
     /*public void test() {
         boolean ls = shellExec.append("ls").sync().isResult();

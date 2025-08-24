@@ -16,50 +16,46 @@
 
  * Copyright (C) 2023-2025 HyperCeiler Contributions
  */
-package com.sevtinge.hyperceiler.hook.module.hook.securitycenter;
+package com.sevtinge.hyperceiler.hook.module.hook.systemui.plugin.systemui;
 
-import android.content.Context;
+import static com.sevtinge.hyperceiler.hook.module.base.tool.HookTool.hookMethod;
+import static com.sevtinge.hyperceiler.hook.utils.PropUtils.getProp;
 
-import com.sevtinge.hyperceiler.hook.module.base.BaseHook;
 import com.sevtinge.hyperceiler.hook.module.base.dexkit.DexKit;
 import com.sevtinge.hyperceiler.hook.module.base.dexkit.IDexKit;
+import com.sevtinge.hyperceiler.hook.module.base.tool.HookTool;
 
 import org.luckypray.dexkit.DexKitBridge;
 import org.luckypray.dexkit.query.FindMethod;
-import org.luckypray.dexkit.query.matchers.ClassMatcher;
 import org.luckypray.dexkit.query.matchers.MethodMatcher;
+import org.luckypray.dexkit.result.MethodData;
 import org.luckypray.dexkit.result.base.BaseData;
 
 import java.lang.reflect.Method;
-import java.util.Arrays;
 
-public class PrivacyThumbnailBlur extends BaseHook {
-    @Override
-    public void init() {
-        Method method = DexKit.findMember("ptb", new IDexKit() {
+import de.robv.android.xposed.XC_MethodHook;
+
+public class ShowDeviceName {
+
+    static String deviceName = getProp("persist.sys.device_name");
+
+    public static void initShowDeviceName(ClassLoader classLoader) {
+        Method method = DexKit.findMember("OnCarrierTextChanged", new IDexKit() {
             @Override
             public BaseData dexkit(DexKitBridge bridge) throws ReflectiveOperationException {
-                return bridge.findMethod(FindMethod.create()
+                MethodData methodData = bridge.findMethod(FindMethod.create()
                         .matcher(MethodMatcher.create()
-                                .declaredClass(ClassMatcher.create()
-                                        .usingStrings("miui_recents_privacy_thumbnail_blur")
-                                )
-                                .paramTypes(Context.class, String.class, boolean.class)
-                        )
-                ).singleOrNull();
+                                .name("onCarrierTextChanged")
+                        )).singleOrNull();
+                return methodData;
             }
         });
-
-        hookMethod(method, new MethodHook() {
+        hookMethod(method, new HookTool.MethodHook() {
             @Override
-            protected void before(MethodHookParam param) throws Throwable {
-                StackTraceElement[] stackTraceElements = Thread.currentThread().getStackTrace();
-                if (Arrays.stream(stackTraceElements).noneMatch(stackTraceElement ->
-                        stackTraceElement.getClassName().equals("PrivacyThumbnailBlurSettings")
-                )) {
-                    param.setResult(null);
-                }
+            protected void before(XC_MethodHook.MethodHookParam param) throws Throwable {
+                param.args[0] = deviceName;
             }
         });
     }
 }
+

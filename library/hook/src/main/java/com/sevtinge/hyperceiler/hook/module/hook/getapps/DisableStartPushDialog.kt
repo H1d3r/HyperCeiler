@@ -27,15 +27,29 @@ import io.github.kyuubiran.ezxhelper.xposed.dsl.HookFactory.`-Static`.createHook
 object DisableStartPushDialog : BaseHook() {
     override fun init() {
         // 禁用开启推送弹窗
-        loadClass("com.xiaomi.market.ui.UpdateListFragment").methodFinder()
-            .filterByName("tryShowDialog")
-            .first().createHook {
-                interrupt()
+        runCatching {
+            loadClass("com.xiaomi.market.data.NotificationRecallController").methodFinder().apply {
+                filterByName("tryShowDialog")
+                    .first().createHook {
+                        interrupt()
+                    }
+
+                filterByName("checkAndTryShowDialog")
+                    .first().createHook {
+                        returnConstant(false)
+                    }
             }
-        loadClass("com.xiaomi.market.ui.update.UpdatePushDialogManager").methodFinder()
-            .filterByName("tryShowDialog")
-            .first().createHook {
-                interrupt()
-            }
+        }.onFailure {
+            loadClass("com.xiaomi.market.ui.UpdateListFragment").methodFinder()
+                .filterByName("tryShowDialog")
+                .first().createHook {
+                    interrupt()
+                }
+            loadClass("com.xiaomi.market.ui.update.UpdatePushDialogManager").methodFinder()
+                .filterByName("tryShowDialog")
+                .first().createHook {
+                    interrupt()
+                }
+        }
     }
 }

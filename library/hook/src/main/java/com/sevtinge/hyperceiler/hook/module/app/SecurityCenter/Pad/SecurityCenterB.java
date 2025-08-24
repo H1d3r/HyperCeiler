@@ -22,6 +22,7 @@ import com.hchen.database.HookBase;
 import com.sevtinge.hyperceiler.hook.module.base.BaseModule;
 import com.sevtinge.hyperceiler.hook.module.hook.securitycenter.AppLockPinScramble;
 import com.sevtinge.hyperceiler.hook.module.hook.securitycenter.BypassAdbInstallVerify;
+import com.sevtinge.hyperceiler.hook.module.hook.securitycenter.CtaBypassForHyperceiler;
 import com.sevtinge.hyperceiler.hook.module.hook.securitycenter.DisableReport;
 import com.sevtinge.hyperceiler.hook.module.hook.securitycenter.DisableRootedCheck;
 import com.sevtinge.hyperceiler.hook.module.hook.securitycenter.GetBubbleAppString;
@@ -29,8 +30,8 @@ import com.sevtinge.hyperceiler.hook.module.hook.securitycenter.HideXOptModeTip;
 import com.sevtinge.hyperceiler.hook.module.hook.securitycenter.InstallIntercept;
 import com.sevtinge.hyperceiler.hook.module.hook.securitycenter.IsSbnBelongToActiveBubbleApp;
 import com.sevtinge.hyperceiler.hook.module.hook.securitycenter.NewBoxBlur;
+import com.sevtinge.hyperceiler.hook.module.hook.securitycenter.NewPrivacyThumbnailBlur;
 import com.sevtinge.hyperceiler.hook.module.hook.securitycenter.PowerSaver;
-import com.sevtinge.hyperceiler.hook.module.hook.securitycenter.PrivacyThumbnailBlur;
 import com.sevtinge.hyperceiler.hook.module.hook.securitycenter.RemoveConversationBubbleSettingsRestriction;
 import com.sevtinge.hyperceiler.hook.module.hook.securitycenter.RemoveOpenAppConfirmationPopup;
 import com.sevtinge.hyperceiler.hook.module.hook.securitycenter.ScLockApp;
@@ -78,6 +79,9 @@ public class SecurityCenterB extends BaseModule {
 
     @Override
     public void handleLoadPackage() {
+
+        initHook(new CtaBypassForHyperceiler());
+
         // 应用管理
         initHook(new AppDefaultSort(), mPrefsMap.getStringAsInt("security_center_app_default_sort", 0) > 0);
         initHook(new AppRestrict(), mPrefsMap.getBoolean("security_center_app_restrict"));
@@ -134,7 +138,7 @@ public class SecurityCenterB extends BaseModule {
             mPrefsMap.getBoolean("security_center_unlock_s_resolution") ||
             mPrefsMap.getBoolean("security_center_unlock_enhance_contours");
 
-        initHook(new PrivacyThumbnailBlur(), mPrefsMap.getBoolean("security_center_privacy_thumbnail_blur"));
+        initHook(NewPrivacyThumbnailBlur.INSTANCE, mPrefsMap.getBoolean("security_center_privacy_thumbnail_blur"));
         initHook(new PowerSaver(), mPrefsMap.getBoolean("security_center_power_saver"));
         initHook(new NewBoxBlur(), mPrefsMap.getBoolean("security_center_newbox_custom_enable"));
         initHook(BlurSecurity.INSTANCE, mPrefsMap.getBoolean("se_enable"));

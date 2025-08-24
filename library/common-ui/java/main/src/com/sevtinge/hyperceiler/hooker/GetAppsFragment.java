@@ -18,7 +18,10 @@
 */
 package com.sevtinge.hyperceiler.hooker;
 
+import static com.sevtinge.hyperceiler.hook.utils.devicesdk.MiDeviceAppUtilsKt.isLargeUI;
+
 import androidx.preference.EditTextPreference;
+import androidx.preference.SwitchPreference;
 
 import com.sevtinge.hyperceiler.dashboard.DashboardFragment;
 import com.sevtinge.hyperceiler.ui.R;
@@ -31,6 +34,7 @@ public class GetAppsFragment extends DashboardFragment {
     EditTextPreference mModel;
     EditTextPreference mDevice;
     EditTextPreference mManufacturer;
+    SwitchPreference mRiskCheck;
 
     @Override
     public int getPreferenceScreenResId() {
@@ -43,8 +47,26 @@ public class GetAppsFragment extends DashboardFragment {
         mDevice = findPreference("prefs_key_market_device_modify_device");
         mModel = findPreference("prefs_key_market_device_modify_model");
         mManufacturer = findPreference("prefs_key_market_device_modify_manufacturer");
+        mRiskCheck = findPreference("prefs_key_market_bypass_risk_check");
 
-        if (Integer.parseInt(getSharedPreferences().getString("prefs_key_market_device_modify_new", "0")) == 1) {
+        if (isLargeUI()) {
+            setFuncHint(mRiskCheck, 1);
+        }
+
+        int[] allowedValues = getResources().getIntArray(R.array.market_device_modify_value);
+        int currentValue = Integer.parseInt(getSharedPreferences().getString("prefs_key_market_device_modify_new", "0"));
+        boolean isAllowed = false;
+        for (int v : allowedValues) {
+            if (v == currentValue) {
+                isAllowed = true;
+                break;
+            }
+        }
+        if (!isAllowed) {
+            cleanKey(mDeviceModify.getKey());
+        }
+
+        if (currentValue == 1) {
             mDevice.setVisible(true);
             mModel.setVisible(true);
             mManufacturer.setVisible(true);
