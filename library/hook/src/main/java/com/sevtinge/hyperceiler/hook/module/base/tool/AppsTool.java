@@ -19,6 +19,7 @@
 package com.sevtinge.hyperceiler.hook.module.base.tool;
 
 import static com.sevtinge.hyperceiler.hook.utils.log.XposedLogUtils.logE;
+import static com.sevtinge.hyperceiler.hook.utils.log.XposedLogUtils.logI;
 
 import android.annotation.SuppressLint;
 import android.app.backup.BackupManager;
@@ -47,6 +48,7 @@ import java.util.ArrayList;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 
+import de.robv.android.xposed.XC_MethodHook;
 import de.robv.android.xposed.XposedHelpers;
 import de.robv.android.xposed.callbacks.XC_LoadPackage;
 
@@ -189,10 +191,19 @@ public class AppsTool {
             Class<?> parserCls = XposedHelpers.findClass("android.content.pm.PackageParser", lpparam.classLoader);
             Object parser = parserCls.getDeclaredConstructor().newInstance();
             File apkPath = new File(lpparam.appInfo.sourceDir);
+            if (apkPath.toString().contains("com.miui.securecenter")) {
+                XposedHelpers.findAndHookMethod(parserCls, "setMaxAspectRatio", float.class, new XC_MethodHook() {
+                    @Override
+                    protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
+                        Object arg0 = param.args[0];
+                        if (arg0 instanceof Integer) param.args[0] = (float) (int) arg0;
+                    }
+                });
+            }
             Object pkg = XposedHelpers.callMethod(parser, "parsePackage", apkPath, 0);
             return (String) XposedHelpers.getObjectField(pkg, "mVersionName");
         } catch (Throwable e) {
-            logE("getPackageVersionCode", e);
+            logE("getPackageVersionName", e);
             return "null";
         }
     }
@@ -202,6 +213,15 @@ public class AppsTool {
             Class<?> parserCls = XposedHelpers.findClass("android.content.pm.PackageParser", lpparam.classLoader);
             Object parser = parserCls.getDeclaredConstructor().newInstance();
             File apkPath = new File(lpparam.appInfo.sourceDir);
+            if (apkPath.toString().contains("com.miui.securecenter")) {
+                XposedHelpers.findAndHookMethod(parserCls, "setMaxAspectRatio", float.class, new XC_MethodHook() {
+                    @Override
+                    protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
+                        Object arg0 = param.args[0];
+                        if (arg0 instanceof Integer) param.args[0] = (float) (int) arg0;
+                    }
+                });
+            }
             Object pkg = XposedHelpers.callMethod(parser, "parsePackage", apkPath, 0);
             return XposedHelpers.getIntField(pkg, "mVersionCode");
         } catch (Throwable e) {
@@ -241,10 +261,13 @@ public class AppsTool {
                         .add("if [[ $pids != \"\" ]]; then")
                         .add(" pid=$pids")
                         .add("fi")
+                        .add("killed=0")
                         .add("if [[ $pid != \"\" ]]; then")
                         .add(" for i in $pid; do")
                         .add("  kill -s " + signal + " $i &>/dev/null")
+                        .add("  if [[ $? -eq 0 ]]; then killed=1; fi")
                         .add(" done")
+                        .add(" if [[ $killed -eq 0 ]]; then echo \"No Permission!\"; fi")
                         .add("else")
                         .add(" echo \"No Find Pid!\"")
                         .add("fi").over().sync().isResult();
@@ -255,8 +278,15 @@ public class AppsTool {
             ArrayList<String> outPut = ShellInit.getShell().getOutPut();
             ArrayList<String> error = ShellInit.getShell().getError();
             if (shellResult) {
-                if (outPut != null && !outPut.isEmpty() && "No Find Pid!".equals(outPut.get(0))) {
-                    AndroidLogUtils.logW(TAG, "Didn't find a pid that can kill: " + pkg);
+                if (outPut != null && !outPut.isEmpty()) {
+                    String firstLine = outPut.get(0);
+                    if ("No Find Pid!".equals(firstLine)) {
+                        AndroidLogUtils.logW(TAG, "Didn't find a pid that can kill: " + pkg);
+                    } else if ("No Permission!".equals(firstLine)) {
+                        AndroidLogUtils.logW(TAG, "No permission to kill process: " + pkg);
+                    } else {
+                        hasSuccess = true;
+                    }
                 } else {
                     hasSuccess = true;
                 }
