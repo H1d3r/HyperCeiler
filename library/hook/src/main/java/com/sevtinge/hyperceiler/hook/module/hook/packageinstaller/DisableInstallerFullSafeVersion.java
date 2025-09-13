@@ -67,7 +67,7 @@ public class DisableInstallerFullSafeVersion extends BaseHook {
                                         .usingStrings("FullSafeHelper")
                                 )
                                 .type(boolean.class)
-                                .modifiers(Modifier.FINAL)
+                                // .modifiers(Modifier.FINAL) 5.3.6.1.0-20250814 改成了 static
                         )).singleOrNull();
                 return fieldData;
             }
