@@ -492,7 +492,6 @@
     <string name="camera_custom_theme_color_picker">選擇主題顏色</string>
     <string name="camera_cloud_watermark">強制伺服器下發浮水印</string>
     <string name="camera_cloud_watermark_desc">僅支援 6.2 及以上版本，可能會受到 Xiaomi 雲端伺服器影響</string>
-
     <!--Calendar-->
     <string name="calendar">日曆</string>
     <string name="calendar_unlock_subscription">解鎖訂閱服務</string>
@@ -926,6 +925,7 @@
     <string name="sound_recorder">錄音機</string>
     <string name="sound_recorder_disable_ai_watermark">停用 AI 浮水印</string>
     <string name="sound_recorder_unlock_recording_scene">解鎖語音場景</string>
+    <!--Notes-->
     <!--Always-on display-->
     <string name="aod_hyperos">待機與鎖定螢幕編輯</string>
     <string name="aod_unlock_always_on_display">解鎖待機顯示時長限制</string>
@@ -1227,20 +1227,15 @@
     <string name="home_other_opt_app_launch_delay">最佳化應用程式啟動延遲</string>
     <!--Gallery Editor-->
     <string name="mediaeditor">小米相簿-編輯</string>
-    <string name="mediaeditor_tip">使用說明：\n- 對於 1.7.5.0.4 或更高版本請用 v2 hook。對於 1.7.5.0.4 之前的版本則使用 v1 hook。</string>
-    <string name="mediaeditor_hook_type">相簿編輯器 hook 類型</string>
     <string name="mediaeditor_foundation">基礎</string>
     <string name="mediaeditor_authoring">創建</string>
-    <string name="mediaeditor_ai_authoring">AI 創作</string>
     <string name="mediaeditor_custom_photo_frames_title">訂製畫框類型</string>
     <string name="mediaeditor_custom_disney_title">協作功能</string>
     <string name="mediaeditor_unlock_disney_title">解鎖 Disney 客製功能</string>
-    <string name="mediaeditor_unlock_disney_desc">解鎖包括以下功能：\n- 訂製畫框-Disney 訂製畫框（與其他訂製畫框衝突）\n- 背景虛化-米奇虛化\n- 貼紙-Disney 貼紙</string>
     <string name="mediaeditor_unlock_spring_title">解鎖龍年春節訂製相框</string>
     <string name="mediaeditor_unlock_spring_desc">永久加入龍年春節訂製相框，前提是您需要徠卡訂製相框或紅米訂製相框。</string>
     <string name="mediaeditor_unlock_minimum_crop_limit">解除最小圖片裁切限制</string>
     <string name="mediaeditor_unlock_custom_photo_frames_v2_title">解鎖訂製畫框</string>
-    <string name="mediaeditor_unlock_custom_photo_frames_title">訂製畫框類型</string>
     <string name="mediaeditor_unlock_leica_filter_title">解鎖 Leica 濾鏡</string>
     <string name="mediaeditor_unlock_leica_filter_desc">僅支援部分版本</string>
     <string name="mediaeditor_unlock_aigc">解鎖 AIGC</string>
@@ -1323,8 +1318,8 @@
     <string name="security_center_simplify_home">精簡手機管家首頁</string>
     <string name="security_center_simplify_home_desc">移除功能推薦卡片</string>
     <string name="security_center_applock_pin_scramble">應用程式鎖亂序 PIN</string>
-    <string name="security_center_power_saver">妙享不省電</string>
     <string name="security_center_privacy_thumbnail_blur">停用自啟動最近任務卡片的模糊預覽圖</string>
+    <string name="security_center_power_saver">妙享不省電</string>
     <string name="security_center_power_saver_desc">透過小米妙享中心投影時停用省電模式</string>
     <string name="security_center_applock_pin_scramble_desc">隨機更改應用程式鎖 PIN 鍵盤順序</string>
     <string name="security_center_beauty_light_auto">解鎖智慧調節補光燈亮度</string>
@@ -1487,6 +1482,8 @@
     <string name="bypass_udk_word_legal_check_description">允許在無網狀態下錄入語音喚醒詞</string>
     <string name="voicetrigger_accuracy_percent_caption">設定喚醒詞檢測精準度</string>
     <string name="voicetrigger_accuracy_percent_description" formatted="false">數值越高越難以被偵測。預設值為 70%，對於「小愛同學」為 0%。設定完成後，您需要重新啟動目標應用程式並重新錄入您的喚醒詞。</string>
+    <!--Contacts-->
+    <!--Health-->
     <!--Other-->
     <string name="various">其他</string>
     <string name="input_method">輸入法</string>

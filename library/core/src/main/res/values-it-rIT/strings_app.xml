@@ -674,6 +674,7 @@
     <string name="milink_allow_camera_devices">Supporto forzato per lo streaming della fotocamera</string>
     <string name="milink_fuck_hpplay">Blocca la creazione di cartelle hpplay</string>
     <!--Sound Recorder-->
+    <!--Notes-->
     <!--Always-on display-->
     <string name="aod_hyperos">Display sempre attivo e editor schermata di blocco</string>
     <string name="aod_unlock_always_on_display">Sblocca il limite di tempo di visualizzazione dello schermo sempre attivo</string>
@@ -926,13 +927,10 @@
     <!--Gallery Editor-->
     <string name="mediaeditor">Editor Galleria</string>
     <string name="mediaeditor_foundation">Foundation</string>
-    <string name="mediaeditor_ai_authoring">AI Authoring</string>
     <string name="mediaeditor_unlock_disney_title">Sblocca funzionalità di personalizzazione Disney</string>
-    <string name="mediaeditor_unlock_disney_desc">Gli sblocchi includono le seguenti funzionalità:\n- Cornici personalizzate - Cornici personalizzate Disney (in conflitto con altre cornici personalizzate)\n- Sfondo bokeh - Topolino Mokeh\n- Adesivi - Adesivi Disney</string>
     <string name="mediaeditor_unlock_spring_title">Sblocca cornici personalizzate per il Capodanno cinese</string>
     <string name="mediaeditor_unlock_spring_desc">Per aggiungere permanentemente una cornice personalizzata per il Capodanno cinese, il prerequisito è che tu abbia bisogno di una cornice personalizzata Leica o di un Redmi cornice personalizzata.</string>
     <string name="mediaeditor_unlock_minimum_crop_limit">Rimuovi il limite minimo di ritaglio dell\'immagine</string>
-    <string name="mediaeditor_unlock_custom_photo_frames_title">Personalizza il tipo di cornice</string>
     <string name="mediaeditor_unlock_leica_filter_title">Sblocca il filtro Leica</string>
     <string name="mediaeditor_unlock_leica_filter_desc">Sono supportate solo alcune versioni</string>
     <!--Wallpaper-->
@@ -1126,6 +1124,8 @@
     <string name="scanner_ppt">Sblocca scansiona PPT</string>
     <string name="scanner_doc_ppt">Sblocca scansiona file</string>
     <!--Voice Trigger-->
+    <!--Contacts-->
+    <!--Health-->
     <!--Other-->
     <string name="various">Altro</string>
     <string name="app_version_not_supported">Versione non supportata</string>

@@ -229,6 +229,8 @@
     <string name="system_ui_statusbar_indicator_fixedcontent_width">Corrigir largura do conteúdo</string>
     <string name="system_ui_statusbar_indicator_fixedcontent_width_desc">Para evitar instabilidade horizontal</string>
     <string name="system_ui_statusbar_indicator_bold">Negrito</string>
+    <string name="unlock_ai">Desbloquear recursos de IA</string>
+    <string name="unlock_ai_wallpaper">Desbloquear acesso ao plano de fundo IA</string>
     <!--Multi-list Array-->
     <string name="array_close">Fechar</string>
     <string name="array_hide">Ocultar</string>
@@ -494,6 +496,8 @@
     <string name="camera_black_leica_desc">Altere a cor da marca d\'água Leica para preto ao usá-la. Alguns dispositivos ainda não são compatíveis.</string>
     <string name="camera_custom_theme_color">Personalizar cor do tema</string>
     <string name="camera_custom_theme_color_picker">Escolher cor do tema</string>
+    <string name="camera_cloud_watermark">Forçar marca d\'água da nuvem</string>
+    <string name="camera_cloud_watermark_desc">Compatível apenas com a versão 6.2 ou superior. Pode ser afetado pelos servidores em nuvem da Xiaomi.</string>
     <!--Calendar-->
     <string name="calendar">Calendário</string>
     <string name="calendar_unlock_subscription">Desbloquear Assinatura</string>
@@ -950,6 +954,9 @@
     <string name="sound_recorder">Gravador</string>
     <string name="sound_recorder_disable_ai_watermark">Desativar marca d\'água IA</string>
     <string name="sound_recorder_unlock_recording_scene">Desbloquear cena de gravação</string>
+    <!--Notes-->
+    <string name="notes">Anotações</string>
+    <string name="notes_disable_ai_watermark">Desativar marca d\'água IA</string>
     <!--Always-on display-->
     <string name="aod_hyperos">Tela ambiente e editor da Tela de bloqueio</string>
     <string name="aod_unlock_always_on_display">Desbloquear limite de tempo de exibição da Tela ambiente</string>
@@ -1252,20 +1259,15 @@
     <string name="home_other_opt_app_launch_delay">Otimizar atraso na abertura do app</string>
     <!--Gallery Editor-->
     <string name="mediaeditor">Editor da Galeria</string>
-    <string name="mediaeditor_tip">Instruções de uso:\n• Use o gancho v2 para versões 1.7.5.0.4 ou superiores. Para versões anteriores à 1.7.5.0.4, use o gancho v1.</string>
-    <string name="mediaeditor_hook_type">Tipo de gancho do Editor da Galeria</string>
     <string name="mediaeditor_foundation">Básico</string>
     <string name="mediaeditor_authoring">Criação</string>
-    <string name="mediaeditor_ai_authoring">Criação de IA</string>
     <string name="mediaeditor_custom_photo_frames_title">Personalizar moldura</string>
     <string name="mediaeditor_custom_disney_title">Função conjunta</string>
     <string name="mediaeditor_unlock_disney_title">Desbloquear recursos de personalização da Disney</string>
-    <string name="mediaeditor_unlock_disney_desc">Os desbloqueios incluem os seguintes recursos:\n• Molduras personalizadas - Molduras personalizadas da Disney (em conflito com outras molduras personalizadas)\n• Fundo Bokeh - Mickey Mokeh\n• Adesivos - Adesivos da Disney</string>
     <string name="mediaeditor_unlock_spring_title">Desbloquear molduras do Ano Novo Chinês</string>
     <string name="mediaeditor_unlock_spring_desc">Para manter permanentemente a moldura personalizada do Ano Novo Chinês, o pré-requisito é que você precise de uma moldura personalizada Leica ou de uma moldura personalizada Redmi.</string>
     <string name="mediaeditor_unlock_minimum_crop_limit">Remover limite mínimo de corte de imagem</string>
     <string name="mediaeditor_unlock_custom_photo_frames_v2_title">Desbloquear Personalizar moldura</string>
-    <string name="mediaeditor_unlock_custom_photo_frames_title">Personalizar tipo de moldura</string>
     <string name="mediaeditor_unlock_leica_filter_title">Desbloquear filtro Leica</string>
     <string name="mediaeditor_unlock_leica_filter_desc">Apenas algumas versões são suportadas</string>
     <string name="mediaeditor_unlock_aigc">Desbloquear AIGC</string>
@@ -1519,6 +1521,8 @@
     <string name="bypass_udk_word_legal_check_description">Permite a gravação de palavras do Acorde com voz quando estiver offline</string>
     <string name="voicetrigger_accuracy_percent_caption">Definir precisão da detecção do Acorde com voz</string>
     <string name="voicetrigger_accuracy_percent_description" formatted="false">Valores maiores são mais difíceis de detectar. O valor padrão é 70%, para a palavra-chave XATX é 0%. Após a configuração, você precisa gravar a frase de ativação novamente.</string>
+    <!--Contacts-->
+    <!--Health-->
     <!--Other-->
     <string name="various">Outros</string>
     <string name="input_method">Métodos de entrada</string>

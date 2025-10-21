@@ -915,6 +915,7 @@
     <string name="sound_recorder">Audiorecorder</string>
     <string name="sound_recorder_disable_ai_watermark">KI-Wasserzeichen deaktivieren</string>
     <string name="sound_recorder_unlock_recording_scene">Aufnahmeszene freischalten</string>
+    <!--Notes-->
     <!--Always-on display-->
     <string name="aod_hyperos">Immer-an-Anzeige und Sperrbildschirm-Editor</string>
     <string name="aod_unlock_always_on_display">Zeitlimit der Immer-an-Anzeige freischalten</string>
@@ -1215,20 +1216,15 @@
     <string name="home_other_opt_app_launch_delay">App-Startverzögerung optimieren</string>
     <!--Gallery Editor-->
     <string name="mediaeditor">Galerie-Editor</string>
-    <string name="mediaeditor_tip">Gebrauchsanweisung:\n• Verwenden Sie den v2-Hook für Versionen 1.7.5.0.4 oder höher. Für Versionen vor 1.7.5.0.4 verwenden Sie den v1-Hook.</string>
-    <string name="mediaeditor_hook_type">Galerie-Editor Hook-Typ</string>
     <string name="mediaeditor_foundation">Grundlegend</string>
     <string name="mediaeditor_authoring">Erstellung</string>
-    <string name="mediaeditor_ai_authoring">KI-Erstellung</string>
     <string name="mediaeditor_custom_photo_frames_title">Rahmen anpassen</string>
     <string name="mediaeditor_custom_disney_title">Kollaborationsfunktion</string>
     <string name="mediaeditor_unlock_disney_title">Disney-Anpassungsfunktionen freischalten</string>
-    <string name="mediaeditor_unlock_disney_desc">Freischaltungen beinhalten die folgenden Funktionen:\n• Benutzerdefinierte Rahmen - Disney-Spezialrahmen (kollidiert mit anderen benutzerdefinierten Rahmen)\n• Bokeh-Hintergrund - Mickey Bokeh\n•Sticker - Disney-Sticker</string>
     <string name="mediaeditor_unlock_spring_title">Chinesische Neujahrs-Bilderrahmen freischalten</string>
     <string name="mediaeditor_unlock_spring_desc">Um den chinesischen Neujahrs-Bilderrahmen dauerhaft zu behalten, ist die Voraussetzung, dass du einen Leica-Bilderrahmen oder einen Redmi-Bilderrahmen besitzt.</string>
     <string name="mediaeditor_unlock_minimum_crop_limit">Mindest-Zuschneidebild-Limit entfernen</string>
     <string name="mediaeditor_unlock_custom_photo_frames_v2_title">Rahmen anpassen entsperren</string>
-    <string name="mediaeditor_unlock_custom_photo_frames_title">Rahmentyp anpassen</string>
     <string name="mediaeditor_unlock_leica_filter_title">Leica-Filter freischalten</string>
     <string name="mediaeditor_unlock_leica_filter_desc">Nur einige Versionen werden unterstützt</string>
     <string name="mediaeditor_unlock_aigc">AIGC freischalten</string>
@@ -1311,8 +1307,8 @@
     <string name="security_center_simplify_home">Sicherheitszentrum-Startbildschirm vereinfachen</string>
     <string name="security_center_simplify_home_desc">Funktionsempfehlungskarte entfernen</string>
     <string name="security_center_applock_pin_scramble">App-Sperre mit Zufalls-PIN</string>
-    <string name="security_center_power_saver">Einschränkungen beim Spiegeln des Bildschirms entfernen</string>
     <string name="security_center_privacy_thumbnail_blur">Automatische Aktivierung verschwommener Vorschaubilder deaktivieren</string>
+    <string name="security_center_power_saver">Einschränkungen beim Spiegeln des Bildschirms entfernen</string>
     <string name="security_center_power_saver_desc">Energiesparmodus beim Spiegeln über Xiaomi Smart Hub deaktivieren</string>
     <string name="security_center_applock_pin_scramble_desc">Zufällige Änderung der Tastenfeldreihenfolge für die App-Sperr-PIN</string>
     <string name="security_center_beauty_light_auto">Vorderes Aufhelllicht entsperren</string>
@@ -1477,6 +1473,8 @@
     <string name="bypass_udk_word_legal_check_description">Ermöglicht die Aufnahme von Wörtern aus der Sprachaktivierung im Offline-Modus</string>
     <string name="voicetrigger_accuracy_percent_caption">Genauigkeit für Sprachaktivierungs-Erkennung festlegen</string>
     <string name="voicetrigger_accuracy_percent_description" formatted="false">Höhere Werte sind schwieriger zu erkennen. Der Standardwert ist 70%, für das Schlüsselwort XATX ist es 0%. Nach der Einstellung müssen Sie die Aktivierungsphrase erneut aufnehmen.</string>
+    <!--Contacts-->
+    <!--Health-->
     <!--Other-->
     <string name="various">Sonstiges</string>
     <string name="input_method">Eingabemethoden</string>

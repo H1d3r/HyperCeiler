@@ -754,6 +754,7 @@ aplicaciones del sistema</string>
     <!--Sound Recorder-->
     <string name="sound_recorder">Grabador de sonido</string>
     <string name="sound_recorder_disable_ai_watermark">Desactivar marca de agua de IA</string>
+    <!--Notes-->
     <!--Always-on display-->
     <string name="aod_hyperos">Editor de \"se muestra siempre\" y la pantalla de bloqueo</string>
     <string name="aod_unlock_always_on_display">Desbloquear el límite de tiempo de visualización de la pantalla siempre activada</string>
@@ -1024,13 +1025,10 @@ aplicaciones del sistema</string>
     <!--Gallery Editor-->
     <string name="mediaeditor">Editor de Galería</string>
     <string name="mediaeditor_foundation">Funciones básicas</string>
-    <string name="mediaeditor_ai_authoring">Autorización de IA</string>
     <string name="mediaeditor_unlock_disney_title">Desbloquear características de personalización de Disney</string>
-    <string name="mediaeditor_unlock_disney_desc">Se desbloquean las siguientes características:\n- Marcos personalizados - Marcos personalizados de Disney (en conflicto con otros marcos personalizados)\n- Viñeteado de fondo - Viñeteado de fondo de Mickey\n- Pegatinas - Pegatinas de Disney</string>
     <string name="mediaeditor_unlock_spring_title">Desbloquear fotogramas personalizados de Año Nuevo Chino</string>
     <string name="mediaeditor_unlock_spring_desc">Para añadir permanentemente un marco personalizado de Año Nuevo Chino, lo esencial es un marco de imagen personalizado de Leica o un marco de imagen personalizado Redmi.</string>
     <string name="mediaeditor_unlock_minimum_crop_limit">Desbloquear el límite mínimo de recorte de imagen</string>
-    <string name="mediaeditor_unlock_custom_photo_frames_title">Personalizar el tipo de marco</string>
     <string name="mediaeditor_unlock_leica_filter_title">Desbloquear filtros de Leica</string>
     <string name="mediaeditor_unlock_leica_filter_desc">Solo en algunas versiones se funciona</string>
     <string name="mediaeditor_unlock_aigc">Desbloquear AIGC</string>
@@ -1143,7 +1141,7 @@ aplicaciones del sistema</string>
     <string name="security_center_unlock_side_hide_freeform">Ventanas pequeñas pueden ocultarse lateralmente</string>
     <string name="security_center_unlock_side_hide_freeform_desc">Se permite que ventanas pequeñas pueden ocultarse lateralmente en dispositivos con sistemas soportados pero no funciona, lo cual también afectará el comportamiento de las ventanas pequeñas cuando aplicaciones se ponen en el segundo plano</string>
     <string name="security_center_unlock_smart_charge_title">Funciones completas de carga y batería</string>
-   <string name="security_center_super_wireless_charge">Desbloquear carga súper inalámbrica</string>
+    <string name="security_center_super_wireless_charge">Desbloquear carga súper inalámbrica</string>
     <string name="security_center_blur_model">Modelo de desenfoque de barra lateral</string>
     <string name="security_center_invert_color">Icono invertido</string>
     <string name="security_center_invert_color_summary">Invierta los colores seleccionados de los iconos en algunos fondos para una mejor visibilidad\n Esta función puede tener inversiones de color anormales, habilítela según corresponda</string>
@@ -1240,6 +1238,8 @@ aplicaciones del sistema</string>
     <string name="bypass_udk_word_legal_check_description">Permite la grabación de palabras desde el despertador con voz cuando esté desconectado</string>
     <string name="voicetrigger_accuracy_percent_caption">Establecer precisión para despertador con detección de voz</string>
     <string name="voicetrigger_accuracy_percent_description" formatted="false">Los valores más altos son más difíciles de detectar. El valor por defecto es 70%, para la palabra clave XATX es 0%. Después de ajustar, necesita reiniciar la aplicación de destino y volver a inscribir su palabra de activación.</string>
+    <!--Contacts-->
+    <!--Health-->
     <!--Other-->
     <string name="various">Otro</string>
     <string name="app_version_not_supported">Versión no soportada</string>
