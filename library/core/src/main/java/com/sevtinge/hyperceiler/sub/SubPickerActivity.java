@@ -18,12 +18,14 @@
 */
 package com.sevtinge.hyperceiler.sub;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Looper;
 import android.util.Log;
 import android.view.ActionMode;
 import android.view.LayoutInflater;
@@ -39,17 +41,16 @@ import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.sevtinge.hyperceiler.common.callback.IAppSelectCallback;
+import com.sevtinge.hyperceiler.common.callback.SearchCallback;
 import com.sevtinge.hyperceiler.common.model.adapter.AppDataAdapter;
 import com.sevtinge.hyperceiler.common.model.data.AppData;
 import com.sevtinge.hyperceiler.common.model.data.AppDataManager;
-import com.sevtinge.hyperceiler.common.callback.SearchCallback;
 import com.sevtinge.hyperceiler.core.R;
 import com.sevtinge.hyperceiler.hook.utils.BitmapUtils;
 import com.sevtinge.hyperceiler.hook.utils.prefs.PrefsUtils;
 
 import java.text.Collator;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Iterator;
 import java.util.LinkedHashSet;
 import java.util.List;
@@ -80,17 +81,16 @@ public class SubPickerActivity extends AppCompatActivity
     private int mModeSelection;
 
     private View mSearchBar;
-    private TextView mSearchInputView;
     private ProgressBar mProgressBar;
     private NestedHeaderLayout mNestedHeaderLayout;
     private RecyclerView mAppListRecyclerView;
     private AppDataAdapter mAppListAdapter;
-    private Handler mHandler = new Handler();
+    private final Handler mHandler = new Handler(Looper.myLooper());
     private SearchCallback mSearchCallback;
 
     private final AppDataManager mAppDataManager = new AppDataManager();
-    private List<AppData> mOriginalAppDataList = new ArrayList<>(); // 原始数据备份
-    private List<AppData> mCurrentAppDataList = new ArrayList<>();  // 当前显示数据
+    private final List<AppData> mOriginalAppDataList = new ArrayList<>(); // 原始数据备份
+    private final List<AppData> mCurrentAppDataList = new ArrayList<>();  // 当前显示数据
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -138,8 +138,8 @@ public class SubPickerActivity extends AppCompatActivity
 
     private void initializeSearchBar() {
         mSearchBar = findViewById(R.id.search_bar);
-        mSearchInputView = mSearchBar.findViewById(android.R.id.input);
-        mSearchInputView.setHint("搜索应用");
+        TextView mSearchInputView = mSearchBar.findViewById(android.R.id.input);
+        mSearchInputView.setHint(R.string.search_apps_hint);
         mSearchBar.setClickable(false);
     }
 
@@ -164,16 +164,12 @@ public class SubPickerActivity extends AppCompatActivity
     }
 
     private void setupItemClickListener() {
-        mAppListAdapter.setOnItemClickListener((itemView, appData, position) -> {
-            handleAppItemClick(appData);
-        });
+        mAppListAdapter.setOnItemClickListener((itemView, appData, position) -> handleAppItemClick(appData));
     }
 
     private void handleAppItemClick(AppData appData) {
         switch (mModeSelection) {
-            case CALLBACK_MODE -> {
-                sendCallbackResult(appData);
-            }
+            case CALLBACK_MODE -> sendCallbackResult(appData);
             case INPUT_MODE -> showEditDialog(appData);
             // LAUNCHER_MODE, APP_OPEN_MODE, PROCESS_TEXT_MODE 已经在Adapter中处理
         }
@@ -208,7 +204,7 @@ public class SubPickerActivity extends AppCompatActivity
                     dialog.dismiss();
                 })
                 .setNegativeButton(android.R.string.cancel, (dialog, which) -> dialog.dismiss())
-                .setOnCancelListener(dialog -> dialog.dismiss())
+                .setOnCancelListener(DialogInterface::dismiss)
                 .show();
         } catch (Exception e) {
             Log.e(TAG, "Error showing edit dialog", e);
@@ -268,7 +264,7 @@ public class SubPickerActivity extends AppCompatActivity
 
         // 1. 排序
         Collator collator = Collator.getInstance(Locale.getDefault());
-        Collections.sort(data, (app1, app2) -> collator.compare(app1.label, app2.label));
+        data.sort((app1, app2) -> collator.compare(app1.label, app2.label));
 
         // 2. 移动特定应用到顶部
         AppData tagApp = null;
