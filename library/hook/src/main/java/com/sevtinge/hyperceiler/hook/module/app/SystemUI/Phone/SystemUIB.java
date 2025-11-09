@@ -39,6 +39,7 @@ import com.sevtinge.hyperceiler.hook.module.rules.systemui.controlcenter.NewFlas
 import com.sevtinge.hyperceiler.hook.module.rules.systemui.controlcenter.NotificationImportanceHyperOSFix;
 import com.sevtinge.hyperceiler.hook.module.rules.systemui.controlcenter.NotificationWeather;
 import com.sevtinge.hyperceiler.hook.module.rules.systemui.controlcenter.OldWeather;
+import com.sevtinge.hyperceiler.hook.module.rules.systemui.controlcenter.RedirectToNotificationChannelSetting;
 import com.sevtinge.hyperceiler.hook.module.rules.systemui.controlcenter.ReduceBrightColorsTile;
 import com.sevtinge.hyperceiler.hook.module.rules.systemui.controlcenter.SnowLeopardModeTile;
 import com.sevtinge.hyperceiler.hook.module.rules.systemui.controlcenter.SunlightMode;
@@ -50,9 +51,14 @@ import com.sevtinge.hyperceiler.hook.module.rules.systemui.controlcenter.media.M
 import com.sevtinge.hyperceiler.hook.module.rules.systemui.controlcenter.media.UnlockCustomActions;
 import com.sevtinge.hyperceiler.hook.module.rules.systemui.controlcenter.media.b.MediaPicture;
 import com.sevtinge.hyperceiler.hook.module.rules.systemui.controlcenter.media.b.MediaSeekBar;
+import com.sevtinge.hyperceiler.hook.module.rules.systemui.lockscreen.AllowThirdLockScreenUseFace;
+import com.sevtinge.hyperceiler.hook.module.rules.systemui.lockscreen.DisableUnlockByBleToast;
 import com.sevtinge.hyperceiler.hook.module.rules.systemui.lockscreen.HideLockScreenHint;
+import com.sevtinge.hyperceiler.hook.module.rules.systemui.lockscreen.HideLockScreenStatusBar;
 import com.sevtinge.hyperceiler.hook.module.rules.systemui.lockscreen.HideLockscreenZenMode;
+import com.sevtinge.hyperceiler.hook.module.rules.systemui.lockscreen.KeepNotification;
 import com.sevtinge.hyperceiler.hook.module.rules.systemui.lockscreen.LockScreenDoubleTapToSleep;
+import com.sevtinge.hyperceiler.hook.module.rules.systemui.lockscreen.NotificationShowOnKeyguard;
 import com.sevtinge.hyperceiler.hook.module.rules.systemui.lockscreen.ScramblePIN;
 import com.sevtinge.hyperceiler.hook.module.rules.systemui.navigation.RotationButtonB;
 import com.sevtinge.hyperceiler.hook.module.rules.systemui.other.BrightnessPct;
@@ -103,8 +109,13 @@ public class SystemUIB extends BaseModule {
 
         // 锁屏
         initHook(HideLockScreenHint.INSTANCE, mPrefsMap.getBoolean("system_ui_lock_screen_unlock_tip"));
+        initHook(HideLockScreenStatusBar.INSTANCE, mPrefsMap.getBoolean("system_ui_lock_screen_hide_status_bar"));
+        initHook(NotificationShowOnKeyguard.INSTANCE, mPrefsMap.getBoolean("system_ui_lock_screen_unlock_notification_restrict"));
+        initHook(KeepNotification.INSTANCE, mPrefsMap.getBoolean("system_ui_lock_screen_keep_notification"));
         initHook(HideLockscreenZenMode.INSTANCE, mPrefsMap.getBoolean("system_ui_lock_screen_not_disturb_mode"));
         initHook(new ScramblePIN(), mPrefsMap.getBoolean("system_ui_lock_screen_scramble_pin"));
+        initHook(AllowThirdLockScreenUseFace.INSTANCE, mPrefsMap.getBoolean("system_ui_lock_screen_allow_third_face"));
+        initHook(new DisableUnlockByBleToast(), mPrefsMap.getBoolean("system_ui_lock_screen_disable_unlock_by_ble_toast"));
         initHook(LockScreenDoubleTapToSleep.INSTANCE, mPrefsMap.getBoolean("system_ui_lock_screen_double_lock"));
 
         // 状态栏图标
@@ -171,6 +182,7 @@ public class SystemUIB extends BaseModule {
         initHook(AutoDismissExpandedPopupsHook.INSTANCE, mPrefsMap.getBoolean("system_ui_control_center_auto_clean_expand_notification"));
         initHook(ExpandNotificationKt.INSTANCE, !mPrefsMap.getStringSet("system_ui_control_center_expand_notification").isEmpty());
         initHook(new UnimportantNotification(), mPrefsMap.getBoolean("system_ui_control_center_unimportant_notification"));
+        initHook(RedirectToNotificationChannelSetting.INSTANCE, mPrefsMap.getBoolean("system_ui_control_center_redirect_notice"));
         initHook(ControlCenterStyle.INSTANCE, mPrefsMap.getBoolean("system_control_center_unlock_old"));
 
         // 磁贴
