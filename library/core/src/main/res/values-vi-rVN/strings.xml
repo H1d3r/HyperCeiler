@@ -16,8 +16,7 @@
   ~ along with this program.  If not, see <https://www.gnu.org/licenses/>.
   ~
   ~ Copyright (C) 2023-2025 HyperCeiler Contributions
-  -->
-<resources>
+  --><resources>
     <string name="pull_to_enter_private">Kéo xuống để vào không gian riêng tư</string>
     <string name="release_enter_private">Thả ra để vào không gian riêng tư</string>
     <!--Pop-up window/miuix part-->
@@ -43,8 +42,6 @@
     <string name="pid_failed">Ứng dụng mục tiêu không chạy và không cần phải khởi động lại.</string>
     <string name="reboot_failed">Khởi động lại không thành công. Vui lòng kiểm tra xem HyperCeiler đã được cấp quyền Root/Su chưa.</string>
     <string name="experimental_features">Tính năng thử nghiệm</string>
-    <string name="experimental_reshook_new">Bật hook tài nguyên mới</string>
-    <string name="experimental_reshook_new_desc">Phiên bản mới của tính năng kết nối tài nguyên mang lại hiệu suất được cải thiện khi tiêm tài nguyên. Tuy nhiên, tính năng này vẫn có thể gặp một số vấn đề và chỉ được dùng cho mục đích thử nghiệm.\nLưu ý: Việc bật hoặc tắt tính năng này yêu cầu khởi động lại thiết bị để có hiệu lực.</string>
     <!--HyperCeiler Tips-->
     <string name="error">Lỗi</string>
     <string name="warn">Cảnh báo</string>
@@ -123,4 +120,6 @@
     <string name="debug_mode_switch">Phiên bản gỡ lỗi</string>
     <string name="debug_mode_home_version">Thiết lập mã phiên bản gốc</string>
     <string name="debug_mode_home_version_desc">Một số phiên bản quá cao vẫn sẽ bị chặn, vì vậy vui lòng điền cẩn thận.</string>
+    <string name="search_apps_hint">Tìm kiếm %d ứng dụng</string>
+    <string name="load_apps_failed">Không tải được danh sách ứng dụng</string>
 </resources>
